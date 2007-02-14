@@ -1,0 +1,173 @@
+This is the "EnigmaNG" skin for the Video Disk Recorder (VDR).
+
+Written by:                  Andreas Mair (andreas AT vdr - developer DOT org)
+
+Project's homepage:          http://andreas.vdr-developer.org
+
+Latest version available at: http://andreas.vdr-developer.org
+
+See the file COPYING for license information.
+
+
+Requirements
+------------
+
+- VDR version >= 1.4.0.
+
+- Logo pack from http://andreas.vdr-developer.org/enigmang
+
+
+Description
+-----------
+
+"EnigmaNG" is a standalone skin based on the "Enigma" text2skin addon.
+
+
+Compile time configuration
+--------------------------
+
+There are some configuration items you need to set before running
+"make plugins" in "Make.config":
+
+HAVE_EPGSEARCH = 1
+If you are using the epgsearch plugin and want to see the number of
+timer conflicts in the main menu's info area.
+
+NO_MENULOGO = 1
+This turns usage of logos in the main menu complete. This might also
+improve the performance of the menus. EXPERIMENTAL!!!
+
+
+Patches
+-------
+
+In the patches directory you'll find patches that might be of interest
+to you before compiling. Just check it out!
+Every patch (*.diff) has a corresponding description (*.txt). Read it
+for more information.
+
+
+Installation
+------------
+
+> cd /put/your/path/here/VDR/PLUGINS/src
+> tar -xzf /put/your/path/here/vdr-skinenigmang-X.Y.Z.tgz
+> ln -s skinenigmang-X.Y.Z skinenigmang
+> cd skinenigmang
+
+> cp -df themes/*.theme /path/to/vdrconf/themes/
+> cd /put/your/path/here/VDR
+> make
+> make plugins
+> ./vdr -P skinenigmang
+
+
+Update
+------
+
+That's the same procedure as "Installation" but you have to remove
+some things before:
+
+> cd /put/your/path/here/VDR/PLUGINS/src
+> rm -f skinenigmang
+> rm -rf /path/to/vdrconf/plugins/skinenigmang
+
+
+Usage
+-----
+
+In VDR go to the OSD settings menu and select the skin "EnigmaNG"
+
+
+Setup Options
+-------------
+
+- Show auxiliary information top/bottom
+  Here you can set where you want to have the auxiliary information
+	when you open an event's or recording's info screen. This information
+	includes for a recording its channel, size, priority, lifetime, audio
+	languages and some values that selected plugins (epgsearch, VDRAdmin-AM,
+	pin) have set. For an event the audio languages are shown.
+
+- Show remaining/elapsed time
+  Here you can set if you want to read the number of minutes an event is
+	already running (preceded by "+") or the number of minutes an event will
+	run (preceded by "-") in the channel info.
+
+- Show symbols in lists
+  This replaces "T", "t", "V"... in the EPG views symbols.
+
+- Show progressbar
+  This replaces progressbars shown with pipes (e.g. [||  ]) by a graphical
+	progressbar.
+
+- Show symbols
+  Here you can enable or disable the large symbols shown in top right corner
+	of the main menu, the recordings info and the event info and the "background"
+	symbol of the mode symbol when replaying recordings.
+
+- Show info area in main menu
+  This info area is shown in the main menu and it will show the current/next
+	timers and the number of timer conflicts (if HAVE_EPGSEARCH has been defined).
+
+- Show marker in lists
+  If enabled a small circle is drawn in front of the selected item in lists.
+
+- Show VPS
+  Hide or show VPS information in channel info and event info.
+  
+
+- Show channel logos
+  Hide or show channel logos in channel info.
+
+- Identify channel by name/data
+  Here you can choose if the channel logo should be searched by the channel's
+	name (e.g. "YLETV2" -> "YLETV2.xpm") or by the channel's unique id (e.g.
+	"T-8438-4097-33.xpm").
+
+- Channel logo cache size
+  The number of logos/symbols to keep in the cache.
+
+
+Notes
+-----
+
+- Only XPM format is supported for channel logos: 80x80 pixels and
+  13 colors (6 colors on DXR3) or less recommended.
+
+- If you'll add new channels logos on the fly, remember to flush the
+  channel logo cache.
+
+
+Credits
+-------
+
+- Rolf Ahrenberg for the Soppalusikka skin where I've lent some code.
+	http://www.saunalahti.fi/~rahrenbe/vdr/soppalusikka/
+
+- Andreas Burger for the original "Enigma" for Text2Skin and his Text2Skin patches.
+  http://brougs78.vdr-developer.org/
+	http://www.vdr-portal.de/board/thread.php?threadid=28730
+
+- Sascha Volkenandt for Text2Skin where I've lent some code.
+  http://linux.kompiliert.net/
+
+- Speedbomb for the hqlogos.
+  http://www.speedbomb.de/hobby/myhtpc/index.php?view=logos
+
+- zulu @vdr-portal.de for some symbols.
+	http://www.vdr-portal.de/board/thread.php?postid=514251#post514251
+
+- Thomas @vdr-portal.de for some logos.
+	http://senderlogos.vdr-developer.org/
+
+- FrankJepsen @vdr-portal.de for some logos.
+	http://www.vdr-portal.de/board/thread.php?postid=531412#post531412
+
+- chrisz @vdr-portal.de for some radio logos and original Enigma themes.
+	WomensLike: http://www.vdr-portal.de/board/thread.php?threadid=59651
+	WineRed:    http://www.vdr-portal.de/board/thread.php?threadid=59416
+	AppleGreen: http://www.vdr-portal.de/board/thread.php?threadid=59427
+
+- skiller2k @vdr-portal.de for Comedy Central logo.
+  http://www.vdr-portal.de/board/thread.php?postid=567887#post567887
