@@ -1,15 +1,15 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id$
+# $Id: Makefile,v 1.2 2007/02/15 13:37:17 amair Exp $
 
 # If you are using the epgsearch plugin and want to see the number of
 # timer conflicts in the main menu's info area.
-#HAVE_EPGSEARCH = 1
+#SKINENIGMA_HAVE_EPGSEARCH = 1
 
 # This turns usage of logos in the main menu complete. This might also
 # improve the performance of the menus. EXPERIMENTAL!!!
-#NO_MENULOGO = 1
+#SKINENIGMA_NO_MENULOGO = 1
 
 # Debugging on/off 
 #SKINENIGMA_DEBUG = 1
@@ -58,16 +58,16 @@ INCLUDES += -I$(VDRDIR)/include
 
 DEFINES += -D_GNU_SOURCE -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
 
-ifdef HAVE_EPGSEARCH
-DEFINES += -DHAVE_EPGSEARCH
+ifdef SKINENIGMA_HAVE_EPGSEARCH
+DEFINES += -DSKINENIGMA_HAVE_EPGSEARCH
 endif
 
 ifdef SKINENIGMA_DEBUG
 DEFINES += -DDEBUG
 endif
 
-ifdef NO_MENULOGO
-DEFINES += -DNO_MENULOGO
+ifdef SKINENIGMA_NO_MENULOGO
+DEFINES += -DSKINENIGMA_NO_MENULOGO
 endif
 
 ### The object files (add further files here):
@@ -103,7 +103,7 @@ dist: clean
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)
 	@mkdir $(TMPDIR)/$(ARCHIVE)
 	@cp -a * $(TMPDIR)/$(ARCHIVE)
-	@tar czf $(PACKAGE).tgz -C $(TMPDIR) $(ARCHIVE)
+	@tar czf $(PACKAGE).tgz --exclude CVS -C $(TMPDIR) $(ARCHIVE)
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)
 	@echo Distribution package created as $(PACKAGE).tgz
 

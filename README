@@ -2,9 +2,9 @@ This is the "EnigmaNG" skin for the Video Disk Recorder (VDR).
 
 Written by:                  Andreas Mair (andreas AT vdr - developer DOT org)
 
-Project's homepage:          http://andreas.vdr-developer.org
+Project's homepage:          http://andreas.vdr-developer.org/enigmang
 
-Latest version available at: http://andreas.vdr-developer.org
+Latest version available at: http://andreas.vdr-developer.org/enigmang
 
 See the file COPYING for license information.
 
@@ -29,11 +29,11 @@ Compile time configuration
 There are some configuration items you need to set before running
 "make plugins" in "Make.config":
 
-HAVE_EPGSEARCH = 1
+SKINENIGMA_HAVE_EPGSEARCH = 1
 If you are using the epgsearch plugin and want to see the number of
 timer conflicts in the main menu's info area.
 
-NO_MENULOGO = 1
+SKINENIGMA_NO_MENULOGO = 1
 This turns usage of logos in the main menu complete. This might also
 improve the performance of the menus. EXPERIMENTAL!!!
 
@@ -53,6 +53,8 @@ Installation
 > cd /put/your/path/here/VDR/PLUGINS/src
 > tar -xzf /put/your/path/here/vdr-skinenigmang-X.Y.Z.tgz
 > ln -s skinenigmang-X.Y.Z skinenigmang
+OR (for CVS checkout):
+> ln -s EnigmaNG skinenigmang
 > cd skinenigmang
 
 > cp -df themes/*.theme /path/to/vdrconf/themes/
@@ -68,10 +70,13 @@ Update
 That's the same procedure as "Installation" but you have to remove
 some things before:
 
+- Link to old sources
 > cd /put/your/path/here/VDR/PLUGINS/src
 > rm -f skinenigmang
-> rm -rf /path/to/vdrconf/plugins/skinenigmang
 
+- Old themes (only if you didn't change/add them!)
+> cd /path/to/vdrconf/themes/
+> rm -f EnigmaNG-*.theme
 
 Usage
 -----
@@ -108,7 +113,7 @@ Setup Options
 
 - Show info area in main menu
   This info area is shown in the main menu and it will show the current/next
-	timers and the number of timer conflicts (if HAVE_EPGSEARCH has been defined).
+	timers and the number of timer conflicts (if SKINENIGMA_HAVE_EPGSEARCH has been defined).
 
 - Show marker in lists
   If enabled a small circle is drawn in front of the selected item in lists.
@@ -124,6 +129,7 @@ Setup Options
   Here you can choose if the channel logo should be searched by the channel's
 	name (e.g. "YLETV2" -> "YLETV2.xpm") or by the channel's unique id (e.g.
 	"T-8438-4097-33.xpm").
+	NOTE: the available logo packs are named by channel name only!
 
 - Channel logo cache size
   The number of logos/symbols to keep in the cache.
@@ -169,5 +175,5 @@ Credits
 	WineRed:    http://www.vdr-portal.de/board/thread.php?threadid=59416
 	AppleGreen: http://www.vdr-portal.de/board/thread.php?threadid=59427
 
-- skiller2k @vdr-portal.de for Comedy Central logo.
+- skiller2k1 @vdr-portal.de for Comedy Central logo.
   http://www.vdr-portal.de/board/thread.php?postid=567887#post567887

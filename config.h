@@ -28,6 +28,7 @@ public:
   int showInfo;
   int showRemaining;
   int showMarker;
+  int singleArea;
 };
 
 extern cEnigmaConfig EnigmaConfig;

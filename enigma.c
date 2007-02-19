@@ -29,7 +29,7 @@
 #include <vdr/themes.h>
 #include <vdr/plugin.h>
 
-#ifdef HAVE_EPGSEARCH
+#ifdef SKINENIGMA_HAVE_EPGSEARCH
 #include "../epgsearch/services.h"
 #endif
 
@@ -295,7 +295,7 @@ cSkinEnigmaDisplayChannel::cSkinEnigmaDisplayChannel(bool WithInfo)
   // create osd
   osd = cOsdProvider::NewOsd(Setup.OSDLeft, Setup.OSDTop + Setup.OSDHeight - yBottomBottom);
   tArea Areas[] = { {0, 0, xBottomRight - 1, yBottomBottom - 1, fShowLogo ? 8 : 4} };
-  if (osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea) == oeOk)) {
+  if (EnigmaConfig.singleArea && osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea) == oeOk)) {
     osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
     // clear all
     osd->DrawRectangle(0, 0, osd->Width(), osd->Height(), clrTransparent);
@@ -309,8 +309,10 @@ cSkinEnigmaDisplayChannel::cSkinEnigmaDisplayChannel(bool WithInfo)
       eOsdError rc = osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea));
       if (rc == oeOk)
         osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
-      else
+      else {
         error("cSkinEnigmaDisplayChannel: CanHandleAreas() returned %d\n", rc);
+        return;
+      }
     } else {
       tArea Areas[] = { {xTitleLeft, yTitleTop, xTitleRight - 1, yTitleDecoBottom - 1, 2},
                         {xEventNowLeft, yEventNowTop, xEventNowRight - 1, yEventNextBottom - 1, 4},
@@ -319,8 +321,10 @@ cSkinEnigmaDisplayChannel::cSkinEnigmaDisplayChannel(bool WithInfo)
       eOsdError rc = osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea));
       if (rc == oeOk)
         osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
-      else
+      else {
         error("cSkinEnigmaDisplayChannel: CanHandleAreas() returned %d\n", rc);
+        return;
+      }
     }
   }
 }
@@ -517,27 +521,31 @@ void cSkinEnigmaDisplayChannel::SetChannel(const cChannel *Channel, int Number)
       // draw logo area
       osd->DrawRectangle(xLogoLeft, yLogoTop, xLogoRight - 1, yLogoBottom - 1, Theme.Color(clrLogoBg));
       osd->DrawRectangle(xLogoDecoLeft, yLogoTop, xLogoDecoRight - 1, yLogoBottom - 1, Theme.Color(clrLogoBg));
-      const char *logoname = EnigmaConfig.useChannelId ? *Channel->GetChannelID().ToString() : Channel->Name();
-      char *filename = (char *)malloc(strlen(logoname) + 20 /* should be enough for folder */);
-      if (filename == NULL) return;
-      strcpy(filename, "hqlogos/");
-      strcat(filename, logoname);
-      bool fFoundLogo = false;
-      if (!(fFoundLogo = EnigmaLogoCache.Load(filename))) {
-        strcpy(filename, "logos/");
+      char *strChannelID = EnigmaConfig.useChannelId ? strdup(*Channel->GetChannelID().ToString()) : NULL;
+      const char *logoname = EnigmaConfig.useChannelId ? strChannelID : Channel->Name();
+      if (logoname) {
+        char *filename = (char *)malloc(strlen(logoname) + 20 /* should be enough for folder */);
+        if (filename == NULL) return;
+        strcpy(filename, "hqlogos/");
         strcat(filename, logoname);
+        bool fFoundLogo = false;
         if (!(fFoundLogo = EnigmaLogoCache.Load(filename))) {
-          fFoundLogo = EnigmaLogoCache.Load("hqlogos/no_logo"); //TODO? different default logo for channel/group?
+          strcpy(filename, "logos/");
+          strcat(filename, logoname);
+          if (!(fFoundLogo = EnigmaLogoCache.Load(filename))) {
+            fFoundLogo = EnigmaLogoCache.Load("hqlogos/no_logo"); //TODO? different default logo for channel/group?
+          }
+        }
+        free(filename);
+
+        if (fFoundLogo) {
+          osd->DrawBitmap(xLogoLeft + (xLogoRight - xLogoLeft - ChannelLogoWidth) / 2,
+                          yLogoTop + (yLogoBottom - yLogoTop - ChannelLogoHeight) / 2,
+                          EnigmaLogoCache.Get(), EnigmaLogoCache.Get().Color(1),
+                          Theme.Color(clrLogoBg), true);
         }
       }
-      free(filename);
-
-      if (fFoundLogo) {
-        osd->DrawBitmap(xLogoLeft + (xLogoRight - xLogoLeft - ChannelLogoWidth) / 2,
-                        yLogoTop + (yLogoBottom - yLogoTop - ChannelLogoHeight) / 2,
-                        EnigmaLogoCache.Get(), EnigmaLogoCache.Get().Color(1),
-                        Theme.Color(clrLogoBg), true);
-      }
+      free(strChannelID);
     }
 
     if (Channel->GroupSep())
@@ -736,7 +744,7 @@ cSkinEnigmaDisplayMenu::cSkinEnigmaDisplayMenu(void)
   osd = NULL;
   strTitle = NULL;
   isMainMenu = true;
-#ifdef NO_MENULOGO
+#ifdef SKINENIGMA_NO_MENULOGO
   fShowLogo = false;
 #else
   fShowLogo = EnigmaConfig.showSymbols;
@@ -790,13 +798,14 @@ cSkinEnigmaDisplayMenu::cSkinEnigmaDisplayMenu(void)
   osd = cOsdProvider::NewOsd(Setup.OSDLeft, Setup.OSDTop);
 
   tArea Areas[] = { {xTitleLeft,   yTitleTop, xMessageRight - 1, yButtonsBottom - 1, 8} };
-  if (osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea)) == oeOk) {
+  if (EnigmaConfig.singleArea && osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea)) == oeOk) {
     osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
   } else { //TODO? single body area (-> no symbols in event/recording info)
     tArea Areas[] = { {xTitleLeft,   yTitleTop, xTitleRight - 1, yTitleDecoBottom - 1, 4}, //title area
                       {xBodyLeft,    yBodyTop, xBodyRight - 1, yLogoBottom - 1, 2}, //body area (beside date/logo area)
-#ifdef NO_MENULOGO
-                      {xDateLeft,    yDateTop, xDateRight - 1, yDateBottom - 1, 2}, //date
+#ifdef SKINENIGMA_NO_MENULOGO
+                      {xDateLeft,    yDateTop, xDateRight - 1, yBodyTop - 1, 2}, //date
+                      {xDateLeft,    yBodyTop, xDateRight - 1, yDateBottom - 1, 2}, //date/body
 #else
                       {xDateLeft,    yDateTop, xDateRight - 1, yInfoTop - 1, 4}, //date/logo area
 #endif
@@ -813,7 +822,7 @@ cSkinEnigmaDisplayMenu::cSkinEnigmaDisplayMenu(void)
       return;
     }
 
-#ifndef NO_MENULOGO
+#ifndef SKINENIGMA_NO_MENULOGO
     // set colors for info area
     osd->GetBitmap(4)->Reset();
     osd->GetBitmap(4)->SetColor(0, Theme.Color(clrTransparent));
@@ -848,7 +857,7 @@ void cSkinEnigmaDisplayMenu::SetupAreas(void)
     int w = xInfoRight - x;
     int yMaxHeight = yInfoBottom;
 
-#ifdef HAVE_EPGSEARCH
+#ifdef SKINENIGMA_HAVE_EPGSEARCH
     cPlugin *p = cPluginManager::GetPlugin("epgsearch");
     if (p) {
       Epgsearch_lastconflictinfo_v1_0 *serviceData = new Epgsearch_lastconflictinfo_v1_0;
@@ -875,7 +884,7 @@ void cSkinEnigmaDisplayMenu::SetupAreas(void)
         delete serviceData;
       }
     }
-#endif //HAVE_EPGSEARCH
+#endif //SKINENIGMA_HAVE_EPGSEARCH
 
     if (Timers.GetNextActiveTimer()) {
       // Show next active timers
@@ -988,7 +997,7 @@ void cSkinEnigmaDisplayMenu::SetTitle(const char *Title)
 
     if (strTitle == NULL || strncmp(tr("VDR"), strTitle, strlen(tr("VDR"))) == 0) {
       isMainMenu = true;
-#ifdef NO_MENULOGO
+#ifdef SKINENIGMA_NO_MENULOGO
       fShowLogo = false;
 #else
       fShowLogo = EnigmaConfig.showSymbols;
@@ -1262,7 +1271,7 @@ void cSkinEnigmaDisplayMenu::SetItem(const char *Text, int Index, bool Current, 
   //set editable width
   SetEditableWidth(xItemRight - Tab(1));
 
-#ifndef NO_MENULOGO
+#ifndef SKINENIGMA_NO_MENULOGO
 //  debug("SetItem: (%s) %d %d %d\n", Text, Index, Current, Selectable);
   if (Current && isMainMenu && fShowLogo && Text) {
     char *ItemText, *ItemText2;
@@ -1436,7 +1445,7 @@ void cSkinEnigmaDisplayMenu::SetEvent(const cEvent *Event)
 
   isMainMenu = false;
   fShowInfo = false;
-#ifdef NO_MENULOGO
+#ifdef SKINENIGMA_NO_MENULOGO
   fShowLogo = false;
 #else
   fShowLogo = EnigmaConfig.showSymbols;
@@ -1501,7 +1510,7 @@ void cSkinEnigmaDisplayMenu::SetEvent(const cEvent *Event)
     stringstream sstrInfo;
     for (int i = 0; i < Components->NumComponents(); i++) {
       const tComponent *p = Components->Component(i);
-      if ((p->stream == 2) && p->language) {
+      if (p && (p->stream == 2) && p->language) {
         if (p->description) {
           sstrInfo << p->description
                    << " (" << p->language << "), ";
@@ -1554,7 +1563,7 @@ void cSkinEnigmaDisplayMenu::SetEvent(const cEvent *Event)
   }
 
   string stringReruns;
-#ifdef HAVE_EPGSEARCH
+#ifdef SKINENIGMA_HAVE_EPGSEARCH
   // try to find a rerun of the show using epgsearch-service
   if (!isempty(Event->Title())) {
     stringstream sstrReruns;
@@ -1567,7 +1576,7 @@ void cSkinEnigmaDisplayMenu::SetEvent(const cEvent *Event)
     data.useDescription = false;
     if (cPluginManager::CallFirstService("Epgsearch-searchresults-v1.0", &data)) {
       cList<Epgsearch_searchresults_v1_0::cServiceSearchResult>* list = data.pResultList;
-      if (list) {
+      if (list && (list->Count() > 1)) {
         //TODO: current event is shown as rerun 
         sstrReruns << tr("RERUNS OF THIS SHOW") << ':' << endl;
         int i = 0;
@@ -1586,7 +1595,7 @@ void cSkinEnigmaDisplayMenu::SetEvent(const cEvent *Event)
     }
     stringReruns = sstrReruns.str();
   }
-#endif // HAVE_EPGSEARCH
+#endif // SKINENIGMA_HAVE_EPGSEARCH
 
   const char *strFirst = NULL;
   const char *strSecond = NULL;
@@ -1609,10 +1618,10 @@ void cSkinEnigmaDisplayMenu::SetEvent(const cEvent *Event)
                      mytext, smlfont, Theme.Color(clrMenuTxtFg),
                      Theme.Color(clrBackground));
     SetScrollbar();
-//    free(mytext);
+    free(mytext);
   }
 
-#ifndef NO_MENULOGO
+#ifndef SKINENIGMA_NO_MENULOGO
   if (fShowLogo) {
     // draw logo
     osd->DrawRectangle(xDateLeft + SmallGap, yDateTop, xDateRight - 1, yDateBottom - SmallGap - 1, Theme.Color(clrLogoBg));
@@ -1635,7 +1644,7 @@ void cSkinEnigmaDisplayMenu::SetRecording(const cRecording *Recording)
 
   isMainMenu = false;
   fShowInfo = false;
-#ifdef NO_MENULOGO
+#ifdef SKINENIGMA_NO_MENULOGO
   fShowLogo = false;
 #else
   fShowLogo = EnigmaConfig.showSymbols;
@@ -1740,7 +1749,7 @@ void cSkinEnigmaDisplayMenu::SetRecording(const cRecording *Recording)
     free(mytext);
   }
 
-#ifndef NO_MENULOGO
+#ifndef SKINENIGMA_NO_MENULOGO
   if (fShowLogo) {
     // draw logo
     osd->DrawRectangle(xDateLeft + SmallGap, yDateTop, xDateRight - 1, yDateBottom - SmallGap - 1, Theme.Color(clrLogoBg));
@@ -1860,6 +1869,8 @@ cSkinEnigmaDisplayReplay::cSkinEnigmaDisplayReplay(bool ModeOnly)
   nJumpWidth = 0;
   lineHeight = cFont::GetFont(fontOsd)->Height();
 
+  int logoWidth = LogoWidth;
+  logoWidth += (logoWidth % 2 ? 1 : 0);
   xTitleLeft = 0;
   xTitleRight = Setup.OSDWidth;
   yTitleTop = 0;
@@ -1867,7 +1878,7 @@ cSkinEnigmaDisplayReplay::cSkinEnigmaDisplayReplay(bool ModeOnly)
   yTitleDecoTop = yTitleBottom + TitleDecoGap;
   yTitleDecoBottom = yTitleDecoTop + TitleDecoHeight;
   xLogoLeft = xTitleLeft;
-  xLogoRight = xLogoLeft + LogoWidth;
+  xLogoRight = xLogoLeft + logoWidth;
   yLogoTop = yTitleDecoBottom + TitleDecoGap2;
   yLogoBottom = yLogoTop + LogoHeight;
   xTimeLeft = xLogoRight + LogoDecoGap2;
@@ -1891,7 +1902,7 @@ cSkinEnigmaDisplayReplay::cSkinEnigmaDisplayReplay(bool ModeOnly)
   // create osd
   osd = cOsdProvider::NewOsd(Setup.OSDLeft, Setup.OSDTop + Setup.OSDHeight - yBottomBottom);
   tArea Areas[] = { {xTitleLeft, yTitleTop, xBottomRight - 1, yBottomBottom - 1, 8} };
-  if (osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea)) == oeOk) {
+  if (EnigmaConfig.singleArea && osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea)) == oeOk) {
     osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
   } else {
     tArea Areas[] = { {xTitleLeft, yTitleTop, xTitleRight - 1, yTitleDecoBottom - 1, 2},
@@ -1902,8 +1913,10 @@ cSkinEnigmaDisplayReplay::cSkinEnigmaDisplayReplay(bool ModeOnly)
     int rc = osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea));
     if (rc == oeOk)
       osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
-    else
+    else {
       error("cSkinEnigmaDisplayReplay: CanHandleAreas() returned %d\n", rc);
+      return;
+    }
   }
   // clear all
   osd->DrawRectangle(0, 0, osd->Width(), osd->Height(), clrTransparent);
@@ -2159,7 +2172,7 @@ cSkinEnigmaDisplayVolume::cSkinEnigmaDisplayVolume()
   // create osd
   osd = cOsdProvider::NewOsd(Setup.OSDLeft, Setup.OSDTop + Setup.OSDHeight - yBottomBottom);
   tArea Areas[] = { {xLogoLeft, yLogoTop, xTitleRight - 1, yBottomBottom - 1, 8} };
-  if (osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea)) == oeOk) {
+  if (EnigmaConfig.singleArea && osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea)) == oeOk) {
     osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
   } else {
     tArea Areas[] = { {xLogoLeft, yLogoTop, xLogoRight + LogoDecoGap + LogoDecoWidth - 1, yLogoBottom - 1, 4},
@@ -2168,8 +2181,10 @@ cSkinEnigmaDisplayVolume::cSkinEnigmaDisplayVolume()
     int rc = osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea));
     if (rc == oeOk)
       osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
-    else
+    else {
       error("cSkinEnigmaDisplayVolume: CanHandleAreas() returned %d (%d, %d)\n", rc, oeWrongAlignment, oeOutOfMemory);
+      return;
+    }
     // set colors
     osd->GetBitmap(1)->Reset();
     osd->GetBitmap(1)->SetColor(0, Theme.Color(clrTransparent));
@@ -2319,7 +2334,7 @@ cSkinEnigmaDisplayTracks::cSkinEnigmaDisplayTracks(const char *Title, int NumTra
   // create osd
   osd = cOsdProvider::NewOsd(Setup.OSDLeft, Setup.OSDTop + Setup.OSDHeight - yBottomBottom);
   tArea Areas[] = { {xTitleLeft, yTitleTop, xBottomRight - 1, yBottomBottom - 1, 8} };
-  if (osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea)) == oeOk) {
+  if (EnigmaConfig.singleArea && osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea)) == oeOk) {
     osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
   } else {
     tArea Areas[] = { {xTitleLeft, yTitleTop, xTitleRight - 1, yTitleDecoBottom- 1, 2},
@@ -2330,8 +2345,10 @@ cSkinEnigmaDisplayTracks::cSkinEnigmaDisplayTracks(const char *Title, int NumTra
     int rc = osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea));
     if (rc == oeOk)
       osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
-    else
+    else {
       error("cSkinEnigmaDisplayTracks: CanHandleAreas() returned %d\n", rc);
+      return;
+    }
   }
   // clear all
   osd->DrawRectangle(0, 0, osd->Width(), osd->Height(), clrTransparent);
@@ -2476,7 +2493,7 @@ cSkinEnigmaDisplayMessage::cSkinEnigmaDisplayMessage()
   // create osd
   osd = cOsdProvider::NewOsd(Setup.OSDLeft, Setup.OSDTop + Setup.OSDHeight - yBottomBottom);
   tArea Areas[] = { {xLogoLeft, yLogoTop, xBottomRight - 1, yBottomBottom - 1, 8} };
-  if (osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea)) == oeOk) {
+  if (EnigmaConfig.singleArea && osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea)) == oeOk) {
     osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
   } else {
     tArea Areas[] = { {xLogoLeft, yLogoTop, xLogoRight + LogoDecoGap + LogoDecoWidth - 1, yLogoBottom - 1, 4},
@@ -2484,8 +2501,10 @@ cSkinEnigmaDisplayMessage::cSkinEnigmaDisplayMessage()
     int rc = osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea));
     if (rc == oeOk)
       osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
-    else
+    else {
       error("cSkinEnigmaDisplayMessage: CanHandleAreas() returned %d\n", rc);
+      return;
+    }
   }
   // clear all
   osd->DrawRectangle(0, 0, osd->Width(), osd->Height(), clrTransparent);

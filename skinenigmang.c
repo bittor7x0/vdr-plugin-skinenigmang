@@ -18,7 +18,7 @@
 #error "VDR-1.4.0 API version or greater is required!"
 #endif
 
-static const char VERSION[] = "0.0.1";
+static const char VERSION[] = "0.0.2";
 static const char DESCRIPTION[] = "EnigmaNG skin";
 
 class cPluginSkinEnigma : public cPlugin {
@@ -139,6 +139,8 @@ bool cPluginSkinEnigma::SetupParse(const char *Name, const char *Value)
 {
   // parse your own setup parameters and store their values.
   debug("cPluginSkinEnigma::SetupParse()\n");
+  if (!strcasecmp(Name, "TrySingleArea"))
+    EnigmaConfig.singleArea = atoi(Value);
   if (!strcasecmp(Name, "ShowAuxInfo"))
     EnigmaConfig.showAuxInfo = atoi(Value);
   else if (!strcasecmp(Name, "ShowProgressBar"))
@@ -201,6 +203,8 @@ void cPluginSkinEnigmaSetup::Setup(void)
 
   Clear();
 
+  Add(new cMenuEditBoolItem(tr("One area (if possible)"), &data.singleArea,
+                            tr("no"), tr("yes")));
   Add(new cMenuEditBoolItem(tr("Show auxiliary information"), &data.showAuxInfo,
                             tr("top"), tr("bottom")));
   Add(new cMenuEditBoolItem(tr("Show remaining/elapsed time"), &data.showRemaining,
@@ -237,6 +241,7 @@ void cPluginSkinEnigmaSetup::Store(void)
   // store setup data
   debug("cPluginSkinEnigmaSetup::Store()\n");
   EnigmaConfig = data;
+  SetupStore("TrySingleArea", EnigmaConfig.singleArea);
   SetupStore("ShowAuxInfo", EnigmaConfig.showAuxInfo);
   SetupStore("ShowRemaining", EnigmaConfig.showRemaining);
   SetupStore("ShowProgressBar", EnigmaConfig.showProgressbar);
