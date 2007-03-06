@@ -37,6 +37,10 @@ SKINENIGMA_NO_MENULOGO = 1
 This turns usage of logos in the main menu complete. This might also
 improve the performance of the menus. EXPERIMENTAL!!!
 
+SKINENIGMA_FULL_CHANNELINFO_TITLE = 1
+If set the top and bottom borders are drawn around the channel logo
+in the channel info. TEMPORARY OPTION?!?
+
 
 Patches
 -------
@@ -78,6 +82,14 @@ some things before:
 > cd /path/to/vdrconf/themes/
 > rm -f EnigmaNG-*.theme
 
+
+Options
+-------
+
+	-l path, --logodir=path
+			Path to the logos.
+
+
 Usage
 -----
 
@@ -87,45 +99,75 @@ In VDR go to the OSD settings menu and select the skin "EnigmaNG"
 Setup Options
 -------------
 
-- Show auxiliary information top/bottom
+- One area (if possible)
+  If you don't want to use a single 8bpp area for the OSD you can disable
+	it here. If this option is enabled this will not ensure that a single
+	area is used, but EnigmaNG will try to use it. If your output deviice
+	can handle that area (e.g. softdevice) it will be used. Otherwise multiple
+	areas are used.
+	This option might be useful for 4MB modded DVB cards because they say they
+	can handle the 8bpp single area but the OSD will be slower. If you own such
+	a card you may want to play with that option and see if you can increase
+	OSD speed.
+	NOTE: after commit the settings you have to fully close and re-open the OSD
+	to make the change affect.
+
+- Bpp in single area (4/8)
+  The number of bpp (bit per pixel) to use for the single area.
+	4bpp means upto 16 colors, 8bpp means upto 256 colors.
+	NOTE: if this is set to 4bpp you should also disable "Show symbols" because
+	otherwise a palette overflow is very likely.
+
+- Show info area in main menu
+  This info area is shown in the main menu and it will show the current/next
+	timers and the number of timer conflicts (if SKINENIGMA_HAVE_EPGSEARCH has been defined).
+
+- Show auxiliary information (top/bottom)
   Here you can set where you want to have the auxiliary information
 	when you open an event's or recording's info screen. This information
 	includes for a recording its channel, size, priority, lifetime, audio
 	languages and some values that selected plugins (epgsearch, VDRAdmin-AM,
 	pin) have set. For an event the audio languages are shown.
 
-- Show remaining/elapsed time
+- Show remaining/elapsed time (elapsed/remaining/percent)
   Here you can set if you want to read the number of minutes an event is
 	already running (preceded by "+") or the number of minutes an event will
-	run (preceded by "-") in the channel info.
-
-- Show symbols in lists
-  This replaces "T", "t", "V"... in the EPG views symbols.
-
-- Show progressbar
-  This replaces progressbars shown with pipes (e.g. [||  ]) by a graphical
-	progressbar.
-
-- Show symbols
-  Here you can enable or disable the large symbols shown in top right corner
-	of the main menu, the recordings info and the event info and the "background"
-	symbol of the mode symbol when replaying recordings.
-
-- Show info area in main menu
-  This info area is shown in the main menu and it will show the current/next
-	timers and the number of timer conflicts (if SKINENIGMA_HAVE_EPGSEARCH has been defined).
-
-- Show marker in lists
-  If enabled a small circle is drawn in front of the selected item in lists.
+	run (preceded by "-") or the percent the event has been running in the
+  channel info.
 
 - Show VPS
   Hide or show VPS information in channel info and event info.
   
+- Show progressbar
+  This replaces progressbars shown with pipes (e.g. [||  ]) by a graphical
+	progressbar.
 
+* Logos & Symbols
+
+- Show symbols (never/always/not in menu/only in menu)
+  Here you can enable or disable the large symbols shown in top right corner
+	of the main menu, the recordings info and the event info and the "background"
+	symbol of the mode symbol when replaying recordings.
+  Possible options:
+    never        - don't show them anywhere
+    always       - show them everywhere
+    not in menu  - don't show them in the main menu or recording/even info
+    only in menu - only show them in the main menu or recording/even info
+
+- Show symbols in lists
+  This replaces "T", "t", "V"... in the EPG views symbols.
+
+- Show marker in lists
+  If enabled a small circle is drawn in front of the selected item in lists.
+
+- Show flags
+  If enabled graphical flags are drawn for the audio channel languages if the
+  requested flag file exists. Else language's abbreviation is drawn.
+  
 - Show channel logos
   Hide or show channel logos in channel info.
 
-- Identify channel by name/data
+- Identify channel by (name/data)
   Here you can choose if the channel logo should be searched by the channel's
 	name (e.g. "YLETV2" -> "YLETV2.xpm") or by the channel's unique id (e.g.
 	"T-8438-4097-33.xpm").
@@ -134,6 +176,30 @@ Setup Options
 - Channel logo cache size
   The number of logos/symbols to keep in the cache.
 
+* EPGSearch
+
+- Number of Reruns (0 - 10)
+  The number of reruns to show in an event's info.
+
+- Use Subtitle for reruns (never/if exists/always)
+  If set to "never" all events will match that _contain_ the current event's
+	title in their title, e.g. if title is "Brisant" it will also find
+	"Brisant Classix".
+	If set to "if exists" it will use the subtitle to find reruns if the
+	current event contains a subtitle. This will also require a full title match,
+	e.g. if title is "Brisant" and subtitle is "Boulevard Magazin" it will find
+	only events with title and subtitle beeing exactly "Brisant" and "Boulevard
+	Magazin". It won't find events named "Brisant Classix" or "Brisant" without
+	subtitle.
+	If set to "always" it will always use the subtitle even if it's empty. As a
+	sideeffect also the event titles must match exactly, e.g. if title is
+	"Tagesschau" it will only find events named "Tagesschau" and not "Tagesschau
+	vor 30 Jahren".
+
+- Show timer conflicts
+  Enable or disable showing the number of timer conflicts in the main menu's
+  info area.
+  
 
 Notes
 -----
@@ -174,6 +240,8 @@ Credits
 	WomensLike: http://www.vdr-portal.de/board/thread.php?threadid=59651
 	WineRed:    http://www.vdr-portal.de/board/thread.php?threadid=59416
 	AppleGreen: http://www.vdr-portal.de/board/thread.php?threadid=59427
+	YellowSun:  http://www.vdr-portal.de/board/thread.php?postid=581117
 
 - skiller2k1 @vdr-portal.de for Comedy Central logo.
   http://www.vdr-portal.de/board/thread.php?postid=567887#post567887
+

@@ -110,8 +110,7 @@ bool cEnigmaLogoCache::LoadXpm(const char *fileNameP)
     return true;
   }
   // no xpm logo found - delete bitmap
-  printf("NOT FOUND: %s\n", filename);
-  debug("cPluginSkinEnigma::LoadXpm() LOGO NOT FOUND\n");
+  error("cPluginSkinEnigma::LoadXpm(%s) LOGO NOT FOUND\n", filename);
   delete bmp;
   bitmapM = NULL;
   free(filename);

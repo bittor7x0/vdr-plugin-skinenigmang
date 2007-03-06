@@ -1,6 +1,33 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
+2007-03-06: Version 0.0.3
+- New command line option "-l" to set the logo path.
+- Added support for epgsearch's timer check auxiliary info in a recording's info.
+- Reorganized setup menu.
+- Don't use small font in a recording's replay info.
+- Show channel name and number in recording's info.
+- Don't use small font for description in event and recording info.
+- Added setup options for epgsearch features.
+- Use location set at "Channel info position" to display channel info.
+- Fixed transparent group titles in menus. (Reported by several users)
+- New (temporary) compile time option SKINENIGMA_FULL_CHANNELINFO_TITLE.
+- Fixed duration and elapsed/remaining time displaying in channel info.
+- Enhanced setup option "Show remaining/elapsed time".
+- Enhanced setup option "Show Symbols".
+- Changed alignment in bottom line of channel info.
+- New setup option to hide language flags; shows language name in channel info. (Suggested by balta @vdr-portal.de)
+- Redraw date in main menu and channel info only if time changed. (Based on suggestion by Hanspeter)
+- Changed detection for main menu; it now must start with "VDR  -  ". (Based on patch by triple955 @vdr-portal.de)
+- Fixed problems with floating text. (Patch by triple955 @vdr-portal.de)
+- Localized full weekday name.
+- Added new setup option for 8bpp or 4bpp single area.
+- Added Russian translation (Submitted by SergArb @vdr-portal.de).
+- Log "LOGO NOT FOUND" errors to syslog (Requested by Der_Pit).
+- Changed a false 4bpp area to 2bpp.
+- Corrected brackets (Reported by Sebastian Werner).
+- Many other fixes and graphical changes.
+
 2007-02-19: Version 0.0.2
 - Fixed problems in replay OSD when not using small font (Reported by several people).
 - Only display reruns of current event in EPG info if there are more than two reruns.

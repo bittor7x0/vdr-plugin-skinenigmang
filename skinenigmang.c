@@ -18,10 +18,13 @@
 #error "VDR-1.4.0 API version or greater is required!"
 #endif
 
-static const char VERSION[] = "0.0.2";
+static const char VERSION[] = "0.0.3";
 static const char DESCRIPTION[] = "EnigmaNG skin";
 
 class cPluginSkinEnigma : public cPlugin {
+private:
+	bool fLogodirSet;
+
 public:
   cPluginSkinEnigma(void);
   virtual ~cPluginSkinEnigma();
@@ -55,7 +58,12 @@ public:
 class cPluginSkinEnigmaSetup : public cMenuSetupPage {
 private:
   cEnigmaConfig data;
+  const char *showSymbolsTexts[4];
+  const char *showRemainingTexts[3];
+  const char *useSubtitleRerunTexts[3];
+
   virtual void Setup(void);
+  void AddCategory(const char *Title);
 protected:
   virtual eOSState ProcessKey(eKeys Key);
   virtual void Store(void);
@@ -68,7 +76,7 @@ cPluginSkinEnigma::cPluginSkinEnigma(void)
   // initialize any member variables here.
   // DON'T DO ANYTHING ELSE THAT MAY HAVE SIDE EFFECTS, REQUIRE GLOBAL
   // VDR OBJECTS TO EXIST OR PRODUCE ANY OUTPUT!
-  debug("cPluginSkinEnigma()\n");
+	fLogodirSet = false;
 }
 
 cPluginSkinEnigma::~cPluginSkinEnigma()
@@ -79,12 +87,28 @@ cPluginSkinEnigma::~cPluginSkinEnigma()
 const char *cPluginSkinEnigma::CommandLineHelp(void)
 { 
   // return a string that describes all known command line options.
-  return NULL;
+  return "  -l <LOGODIR>, --logodir=<LOGODIR>  Define a directory for channel logos.\n";
 }
 
 bool cPluginSkinEnigma::ProcessArgs(int argc, char *argv[])
 {
   // implement command line argument processing here if applicable.
+	static const struct option long_options[] = {
+		{ "logodir", required_argument, NULL, 'l' },
+		{ NULL }
+	};
+
+	int c;
+	while ((c = getopt_long(argc, argv, "l:", long_options, NULL)) != -1) {
+		switch (c) {
+			case 'l':
+				EnigmaConfig.SetLogoDir(optarg);
+				fLogodirSet = true;
+				break;
+			default:
+				return false;
+		}
+	}
   return true;
 }
 
@@ -100,12 +124,13 @@ bool cPluginSkinEnigma::Start(void)
   // start any background activities the plugin shall perform.
   debug("cPluginSkinEnigma::Start()\n");
   RegisterI18n(Phrases);
-  // set logo directory
-  EnigmaConfig.SetLogoDir(cPlugin::ConfigDirectory(PLUGIN_NAME_I18N));
+	if (!fLogodirSet) {
+	  // set logo directory
+  	EnigmaConfig.SetLogoDir(cPlugin::ConfigDirectory(PLUGIN_NAME_I18N));
+		fLogodirSet = true;
+	}
   // resize logo cache
   EnigmaLogoCache.Resize(EnigmaConfig.cacheSize);
-  // create status catcher
-  //new cEnigmaStatus;
   // create skin
   new cSkinEnigma;
   return true;
@@ -141,7 +166,9 @@ bool cPluginSkinEnigma::SetupParse(const char *Name, const char *Value)
   debug("cPluginSkinEnigma::SetupParse()\n");
   if (!strcasecmp(Name, "TrySingleArea"))
     EnigmaConfig.singleArea = atoi(Value);
-  if (!strcasecmp(Name, "ShowAuxInfo"))
+  else if (!strcasecmp(Name, "SingleArea8Bpp")) {
+    EnigmaConfig.singleArea8Bpp = atoi(Value);
+  } else if (!strcasecmp(Name, "ShowAuxInfo"))
     EnigmaConfig.showAuxInfo = atoi(Value);
   else if (!strcasecmp(Name, "ShowProgressBar"))
     EnigmaConfig.showProgressbar = atoi(Value);
@@ -159,10 +186,18 @@ bool cPluginSkinEnigma::SetupParse(const char *Name, const char *Value)
     EnigmaConfig.showMarker = atoi(Value);
   else if (!strcasecmp(Name, "ShowVPS"))
     EnigmaConfig.showVps = atoi(Value);
+  else if (!strcasecmp(Name, "ShowFlags"))
+    EnigmaConfig.showFlags = atoi(Value);
   else if (!strcasecmp(Name, "CacheSize"))
     EnigmaConfig.cacheSize = atoi(Value);
   else if (!strcasecmp(Name, "UseChannelId"))
     EnigmaConfig.useChannelId = atoi(Value);
+  else if (!strcasecmp(Name, "NumReruns"))
+    EnigmaConfig.numReruns = atoi(Value);
+  else if (!strcasecmp(Name, "UseSubtitleRerun"))
+    EnigmaConfig.useSubtitleRerun = atoi(Value);
+  else if (!strcasecmp(Name, "ShowTimerConflicts"))
+    EnigmaConfig.showTimerConflicts = atoi(Value);
   else
     return false;
 
@@ -196,6 +231,18 @@ cPluginSkinEnigmaSetup::cPluginSkinEnigmaSetup(void)
   SetHelp(tr("Button$Flush cache"), NULL, NULL, NULL);
 }
 
+void cPluginSkinEnigmaSetup::AddCategory(const char *Title) {
+  char *buffer = NULL;
+
+  asprintf(&buffer, "--- %s ----------------------------------------------------------------", Title );
+
+  cOsdItem *item = new cOsdItem(buffer);
+  free(buffer);
+
+  item->SetSelectable(false);
+  Add(item);
+}
+
 void cPluginSkinEnigmaSetup::Setup(void)
 {
   // update setup display
@@ -203,26 +250,48 @@ void cPluginSkinEnigmaSetup::Setup(void)
 
   Clear();
 
+  showSymbolsTexts[0] = tr("never");
+  showSymbolsTexts[1] = tr("always");
+  showSymbolsTexts[2] = tr("not in menu");
+  showSymbolsTexts[3] = tr("only in menu");
+
+  showRemainingTexts[0] = tr("elapsed");
+  showRemainingTexts[1] = tr("remaining");
+  showRemainingTexts[2] = tr("percent");
+
+  useSubtitleRerunTexts[0] = tr("never");
+  useSubtitleRerunTexts[1] = tr("if exists");
+  useSubtitleRerunTexts[2] = tr("always");
+
   Add(new cMenuEditBoolItem(tr("One area (if possible)"), &data.singleArea,
+                            tr("no"), tr("yes")));
+	if (data.singleArea) {
+  	Add(new cMenuEditBoolItem(tr("Bpp in single area"), &data.singleArea8Bpp,
+                              "4", "8"));
+	}
+  Add(new cMenuEditBoolItem(tr("Show info area in main menu"), &data.showInfo,
                             tr("no"), tr("yes")));
   Add(new cMenuEditBoolItem(tr("Show auxiliary information"), &data.showAuxInfo,
                             tr("top"), tr("bottom")));
-  Add(new cMenuEditBoolItem(tr("Show remaining/elapsed time"), &data.showRemaining,
-                            tr("elapsed"), tr("remaining")));
-  Add(new cMenuEditBoolItem(tr("Show symbols in lists"), &data.showListSymbols,
+  Add(new cMenuEditStraItem(tr("Show remaining/elapsed time"), &data.showRemaining,
+                            3, showRemainingTexts));
+  Add(new cMenuEditBoolItem(tr("Show VPS"), &data.showVps,
                             tr("no"), tr("yes")));
   Add(new cMenuEditBoolItem(tr("Show progressbar"), &data.showProgressbar,
                             tr("no"), tr("yes")));
-  Add(new cMenuEditBoolItem(tr("Show symbols"), &data.showSymbols,
-                            tr("no"), tr("yes")));
-  Add(new cMenuEditBoolItem(tr("Show info area in main menu"), &data.showInfo,
+
+  AddCategory(tr("Logos & Symbols"));
+  Add(new cMenuEditStraItem(tr("Show symbols"), &data.showSymbols,
+                            4, showSymbolsTexts));
+  Add(new cMenuEditBoolItem(tr("Show symbols in lists"), &data.showListSymbols,
                             tr("no"), tr("yes")));
   Add(new cMenuEditBoolItem(tr("Show marker in lists"), &data.showMarker,
                             tr("no"), tr("yes")));
-  Add(new cMenuEditBoolItem(tr("Show VPS"), &data.showVps,
+  Add(new cMenuEditBoolItem(tr("Show flags"), &data.showFlags,
                             tr("no"), tr("yes")));
   Add(new cMenuEditBoolItem(tr("Show channel logos"), &data.showLogo,
                             tr("no"), tr("yes")));
+
   if (data.showLogo) {
     Add(new cMenuEditBoolItem(tr("Identify channel by"), &data.useChannelId,
                               tr("name"), tr("data")));
@@ -231,6 +300,18 @@ void cPluginSkinEnigmaSetup::Setup(void)
     Add(new cMenuEditIntItem(tr("Channel logo cache size"), &data.cacheSize,
                              0, 1000));
   }
+
+#ifdef SKINENIGMA_HAVE_EPGSEARCH
+  AddCategory(tr("EPGSearch"));
+  Add(new cMenuEditIntItem(tr("Number of Reruns"), &data.numReruns,
+                            0, 10));
+  Add(new cMenuEditStraItem(tr("Use Subtitle for reruns"), &data.useSubtitleRerun,
+                            3, useSubtitleRerunTexts));
+  if (data.showInfo) {
+    Add(new cMenuEditBoolItem(tr("Show timer conflicts"), &data.showTimerConflicts,
+                              tr("no"), tr("yes")));
+  }
+#endif
 
   SetCurrent(Get(current));
   Display();
@@ -242,6 +323,7 @@ void cPluginSkinEnigmaSetup::Store(void)
   debug("cPluginSkinEnigmaSetup::Store()\n");
   EnigmaConfig = data;
   SetupStore("TrySingleArea", EnigmaConfig.singleArea);
+  SetupStore("SingleArea8Bpp", EnigmaConfig.singleArea8Bpp);
   SetupStore("ShowAuxInfo", EnigmaConfig.showAuxInfo);
   SetupStore("ShowRemaining", EnigmaConfig.showRemaining);
   SetupStore("ShowProgressBar", EnigmaConfig.showProgressbar);
@@ -250,9 +332,13 @@ void cPluginSkinEnigmaSetup::Store(void)
   SetupStore("ShowLogo", EnigmaConfig.showLogo);
   SetupStore("ShowInfo", EnigmaConfig.showInfo);
   SetupStore("ShowVPS", EnigmaConfig.showVps);
+  SetupStore("ShowFlags", EnigmaConfig.showFlags);
   SetupStore("ShowMarker", EnigmaConfig.showMarker);
   SetupStore("CacheSize", EnigmaConfig.cacheSize);
   SetupStore("UseChannelId", EnigmaConfig.useChannelId);
+  SetupStore("NumReruns", EnigmaConfig.numReruns);
+  SetupStore("UseSubtitleRerun", EnigmaConfig.useSubtitleRerun);
+  SetupStore("ShowTimerConflicts", EnigmaConfig.showTimerConflicts);
   // resize logo cache
   EnigmaLogoCache.Resize(EnigmaConfig.cacheSize);
 }
@@ -262,6 +348,8 @@ eOSState cPluginSkinEnigmaSetup::ProcessKey(eKeys Key)
   // process key presses
   int oldShowLogo = data.showLogo;
   int oldShowSymbols = data.showSymbols;
+	int oldSingleArea = data.singleArea;
+  int oldShowInfo = data.showInfo;
 
   eOSState state = cMenuSetupPage::ProcessKey(Key);
   if ((state == osUnknown) && (Key == kRed)) {
@@ -270,7 +358,7 @@ eOSState cPluginSkinEnigmaSetup::ProcessKey(eKeys Key)
     Skins.Message(mtInfo, NULL);
     state = osContinue;
   }
-  if (Key != kNone && ((data.showLogo != oldShowLogo) || (data.showSymbols != oldShowSymbols))) {
+  if (Key != kNone && ((data.singleArea != oldSingleArea) || (data.showLogo != oldShowLogo) || (data.showSymbols != oldShowSymbols) || (oldShowInfo != data.showInfo))) {
     Setup();
   }
 

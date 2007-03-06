@@ -14,17 +14,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include "common.h"
+#include "i18n.h"
 #include "tools.h"
 
 using namespace std;
 
-#define AUX_HEADER_EPGSEARCH           "EPGSearch: "
-#define AUX_TAGS_EPGSEARCH_START       "<epgsearch>"
-#define AUX_TAGS_EPGSEARCH_ITEM1_START "<Channel>"
-#define AUX_TAGS_EPGSEARCH_ITEM1_END   "</Channel>"
-#define AUX_TAGS_EPGSEARCH_ITEM2_START "<Search timer>"
-#define AUX_TAGS_EPGSEARCH_ITEM2_END   "</Search timer>"
-#define AUX_TAGS_EPGSEARCH_END         "</epgsearch>"
+#define AUX_HEADER_EPGSEARCH             "EPGSearch: "
+#define AUX_TAGS_EPGSEARCH_START         "<epgsearch>"
+#define AUX_TAGS_EPGSEARCH_ITEM_1A_START "<Channel>"
+#define AUX_TAGS_EPGSEARCH_ITEM_1A_END   "</Channel>"
+#define AUX_TAGS_EPGSEARCH_ITEM_2A_START "<Search timer>"
+#define AUX_TAGS_EPGSEARCH_ITEM_2A_END   "</Search timer>"
+#define AUX_TAGS_EPGSEARCH_ITEM_1B_START "<update>"
+#define AUX_TAGS_EPGSEARCH_ITEM_1B_END   "</update>"
+#define AUX_TAGS_EPGSEARCH_ITEM_2B_START "<eventid>"
+#define AUX_TAGS_EPGSEARCH_ITEM_2B_END   "</eventid>"
+#define AUX_TAGS_EPGSEARCH_END           "</epgsearch>"
 
 #define AUX_HEADER_VDRADMIN            "VDRAdmin-AM: "
 #define AUX_TAGS_VDRADMIN_START        "<vdradmin-am>"
@@ -51,11 +56,11 @@ const char *parseaux(const char *aux)
     sstrReturn << AUX_HEADER_EPGSEARCH;
     // parse first item
     char *tmp;
-    if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM1_START)) != NULL) {
+    if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_1A_START)) != NULL) {
       if (tmp < end) {
-				tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM1_START);
+				tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_1A_START);
         char *tmp2;
-        if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM1_END)) != NULL) {
+        if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_1A_END)) != NULL) {
           // add channel
           sstrReturn << string(tmp, tmp2 - tmp);
           founditem = true;
@@ -65,11 +70,11 @@ const char *parseaux(const char *aux)
       }
     }
     // parse second item
-    if ((tmp = strcasestr(start, "<Search timer>")) != NULL) {
+    if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_2A_START)) != NULL) {
       if (tmp < end) {
-    		tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM2_START);
+    		tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_2A_START);
         char *tmp2;
-        if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM2_END)) != NULL) {
+        if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_2A_END)) != NULL) {
           // add separator
           if (founditem) {
             sstrReturn << ", ";
@@ -82,6 +87,45 @@ const char *parseaux(const char *aux)
         }
       }
     }
+    // timer check?
+    if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_1B_START)) != NULL) {
+      if (tmp < end) {
+    		tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_1B_START);
+        char *tmp2;
+        if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_1B_END)) != NULL) {
+          if (string(tmp, tmp2 - tmp) != "0") {
+            // add separator
+            if (founditem) {
+              sstrReturn << ", ";
+            }
+            founditem = true;
+            // add search item
+            sstrReturn << tr("Timer check");
+
+            // parse second item
+            if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_2B_START)) != NULL) {
+              if (tmp < end) {
+                tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_2B_START);
+                char *tmp2;
+                if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_2B_END)) != NULL) {
+                  // add separator
+                  if (founditem) {
+                    sstrReturn << ", ";
+                  }
+                  // add search item
+                  sstrReturn << "eventid=" << string(tmp, tmp2 - tmp);
+                }
+              }
+            }
+          } else {
+            founditem = false;
+          }
+        } else {
+          founditem = false;
+        }
+      }
+    }
+
     // use old syntax
     if (!founditem) {
       start += strlen(AUX_HEADER_EPGSEARCH);

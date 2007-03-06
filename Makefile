@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.2 2007/02/15 13:37:17 amair Exp $
+# $Id: Makefile,v 1.4 2007/03/06 07:02:27 amair Exp $
 
 # If you are using the epgsearch plugin and want to see the number of
 # timer conflicts in the main menu's info area.
@@ -13,6 +13,10 @@
 
 # Debugging on/off 
 #SKINENIGMA_DEBUG = 1
+
+# If set the top and bottom borders are drawn around the channel logo
+# in the channel info. TEMPORARY OPTION?!?
+#SKINENIGMA_FULL_CHANNELINFO_TITLE = 1
 
 # Strip debug symbols?  Set eg. to /bin/true if not
 #STRIP = strip
@@ -68,6 +72,10 @@ endif
 
 ifdef SKINENIGMA_NO_MENULOGO
 DEFINES += -DSKINENIGMA_NO_MENULOGO
+endif
+
+ifdef SKINENIGMA_FULL_CHANNELINFO_TITLE
+DEFINES += -DSKINENIGMA_FULL_CHANNELINFO_TITLE
 endif
 
 ### The object files (add further files here):

@@ -29,6 +29,11 @@ public:
   int showRemaining;
   int showMarker;
   int singleArea;
+  int singleArea8Bpp;
+  int showFlags;
+  int numReruns;
+  int useSubtitleRerun;
+  int showTimerConflicts;
 };
 
 extern cEnigmaConfig EnigmaConfig;
