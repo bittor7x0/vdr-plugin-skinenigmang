@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.4 2007/03/06 07:02:27 amair Exp $
+# $Id: Makefile,v 1.8 2007/03/28 10:01:33 amair Exp $
 
 # If you are using the epgsearch plugin and want to see the number of
 # timer conflicts in the main menu's info area.
@@ -14,9 +14,14 @@
 # Debugging on/off 
 #SKINENIGMA_DEBUG = 1
 
-# If set the top and bottom borders are drawn around the channel logo
-# in the channel info. TEMPORARY OPTION?!?
-#SKINENIGMA_FULL_CHANNELINFO_TITLE = 1
+# If you have installed ImageMagick and want to use
+# images in event's and recording's details.
+#HAVE_IMAGEMAGICK = 1
+
+# If you use the mailbox plugin this will include support for it.
+# NOTE: this can also be defined if you don't know if the mailbox
+# plugin will be used because it has no compile time requirements.
+SKINENIGMA_USE_PLUGIN_MAILBOX = 1
 
 # Strip debug symbols?  Set eg. to /bin/true if not
 #STRIP = strip
@@ -74,13 +79,23 @@ ifdef SKINENIGMA_NO_MENULOGO
 DEFINES += -DSKINENIGMA_NO_MENULOGO
 endif
 
-ifdef SKINENIGMA_FULL_CHANNELINFO_TITLE
-DEFINES += -DSKINENIGMA_FULL_CHANNELINFO_TITLE
+ifdef SKINENIGMA_USE_PLUGIN_MAILBOX
+DEFINES += -DUSE_PLUGIN_MAILBOX
 endif
+
+ifdef HAVE_IMAGEMAGICK
+DEFINES += -DHAVE_IMAGEMAGICK
+endif
+DEFINES += -DRECORDING_COVER='"Cover-Enigma"'
 
 ### The object files (add further files here):
 
 OBJS = $(PLUGIN).o enigma.o config.o logo.o i18n.o tools.o status.o
+
+ifdef HAVE_IMAGEMAGICK
+OBJS += bitmap.o
+LIBS += -lMagick++
+endif
 
 ### Implicit rules:
 
@@ -101,7 +116,7 @@ $(DEPFILE): Makefile
 all: libvdr-$(PLUGIN).so
 
 libvdr-$(PLUGIN).so: $(OBJS)
-	$(CXX) $(CXXFLAGS) -shared $(OBJS) -o $@
+	$(CXX) $(CXXFLAGS) -shared $(OBJS) $(LIBS) -o $@
 ifndef SKINENIGMA_DEBUG
 	@$(STRIP) $@
 endif

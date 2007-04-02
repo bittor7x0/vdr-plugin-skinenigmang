@@ -10,6 +10,9 @@
 #include <vdr/skinclassic.h>
 
 class cSkinEnigma : public cSkin {
+private:
+	cSkin *skinFallback;
+
 public:
   cSkinEnigma();
   virtual const char *Description(void);

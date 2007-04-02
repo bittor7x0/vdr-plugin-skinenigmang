@@ -1,6 +1,30 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
+2007-04-02: Version 0.0.4
+- Changed text color in themes for green and yellow buttons.
+- Fixed false colors problem after theme changes.
+- Updated Finnish translation. (Submitted by Rolf Ahrenberg)
+- Updated French translation. (Submitted by pat @vdr-portal.de)
+- Do not overwrite status messages in mainmenu with list items.
+- New setup option that replaces SKINENIGMA_FULL_CHANNELINFO_TITLE define.
+- Disable logos/symbols/flags if 4bpp single area is configured in setup. (Will eventually replace SKINENIGMA_NO_MENULOGO define)
+- Added support for mailbox plugin; shows mail symbol in channel info (Based on patch by triple955 @vdr-portal.de).
+- Introduced new HAVE_IMAGEMAGICK define to enable non-xpm images in event's and recording's details.
+- Fixed "blinking" date in channel info (Reported by several people).
+- Changed background for recording symbol in channel info to white (Suggested by gromit @vdr-portal.de).
+- Long channel group names are no longer drawn at the right side of the date (Reported by several people).
+- New setup option for displaying a recording's size and use size.vdr (Suggested by vejoun @vdr-portal.de).
+- Show stop time of running timers in info area in main menu. (Suggested by viking @vdr-portal.de)
+- Updated Russian translation. (Submitted by neptunvasja @vdr-portal.de)
+- New defines "ListProgressBarGap" & "ListProgressBarBorder" to customize the progressbar in lists:
+   * "ListProgressBarGap" sets the gap above/below the progressbar (relative to the font's height).
+   * "ListProgressBarBorder" sets the border's width.
+- Added fallback to "classic" skin if any of the OSD menus fails to open.
+- Fix possible NULL pointer accesses.
+- Fixed compiler error with certain gcc versions.
+- Minor bugfixes and graphical changes.
+
 2007-03-06: Version 0.0.3
 - New command line option "-l" to set the logo path.
 - Added support for epgsearch's timer check auxiliary info in a recording's info.
