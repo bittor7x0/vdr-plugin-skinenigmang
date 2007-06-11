@@ -1,17 +1,15 @@
 /*
- * logo.c: The 'EnigmaNG' VDR skin
+ * logo.c: 'EnigmaNG' skin for the Video Disk Recorder
  *
  * See the README file for copyright information and how to reach the author.
  *
  */
 
-#include <strings.h>
-
-#include "bitmap.h"
 #include "common.h"
+#include "bitmap.h"
 #include "config.h"
 #include "logo.h"
-#include <vdr/tools.h>
+
 #include <vdr/plugin.h>
 
 cEnigmaLogoCache EnigmaLogoCache(0);
@@ -45,32 +43,35 @@ bool cEnigmaLogoCache::Resize(unsigned int cacheSizeP)
   return true;
 }
 
-bool cEnigmaLogoCache::LoadEventImage(const cEvent *Event, int w, int h, int c)
+bool cEnigmaLogoCache::DrawEventImage(const cEvent *Event, int x, int y, int w, int h, int c, cBitmap *bmp)
 {
-  if (Event == NULL)
+  if (Event == NULL || bmp == NULL)
     return false;
 
   char *strFilename = NULL;
   asprintf(&strFilename, "%s/%d.%s", EnigmaConfig.GetImagesDir(), Event->EventID(), EnigmaConfig.GetImageExtension());
-  int rc = LoadImage(strFilename, w, h, c);
+  int rc = DrawImage(strFilename, x, y, w, h, c, bmp);
   free (strFilename);
   return rc;
 }
 
-bool cEnigmaLogoCache::LoadRecordingImage(const cRecording *Recording, int w, int h, int c)
+bool cEnigmaLogoCache::DrawRecordingImage(const cRecording *Recording, int x, int y, int w, int h, int c, cBitmap *bmp)
 {
-  if (Recording == NULL)
+  if (Recording == NULL || bmp == NULL)
     return false;
 
   char *strFilename = NULL;
   asprintf(&strFilename, "%s/%s.%s", Recording->FileName(), RECORDING_COVER, EnigmaConfig.GetImageExtension());
-  int rc = LoadImage(strFilename, w, h, c);
+  int rc = DrawImage(strFilename, x, y, w, h, c, bmp);
   free (strFilename);
   return rc;
 }
 
-bool cEnigmaLogoCache::LoadImage(const char *fileNameP, int w, int h, int c)
+bool cEnigmaLogoCache::DrawImage(const char *fileNameP, int x, int y, int w, int h, int c, cBitmap *bmp)
 {
+  if (fileNameP== NULL || bmp == NULL)
+    return false;
+
   struct stat stbuf;
   if (lstat(fileNameP, &stbuf) != 0) {
     error("cPluginSkinEnigma::LoadImage(%s) FILE NOT FOUND\n", fileNameP);
@@ -79,11 +80,13 @@ bool cEnigmaLogoCache::LoadImage(const char *fileNameP, int w, int h, int c)
   }
 
 #ifdef HAVE_IMAGEMAGICK
-  int rc = image.LoadImage(fileNameP, w, h, c, *bmpImage);
-  bitmapM = rc ? bmpImage : NULL;
-  return rc;
+  bitmapM = NULL;
+  return image.DrawImage(fileNameP, x, y, w, h, c, bmp);
 #else
-  return LoadXpm(fileNameP, w, h);
+  int rc = LoadXpm(fileNameP, w, h);
+  if (rc)
+    bmp->DrawBitmap(x, y, *bitmapM); //TODO?
+  return rc;
 #endif
 }
 
@@ -226,13 +229,10 @@ bool cEnigmaLogoCache::Flush(void)
   if (!cacheMapM.empty()) {
     debug("cPluginSkinEnigma::Flush() NON-EMPTY\n");
     // delete bitmaps and clear map
-    for (std::map < std::string, cBitmap * >::iterator i = cacheMapM.begin();
-         i != cacheMapM.end(); ++i) {
-      cBitmap *bmp = i->second;
-      if (bmp)
-        DELETENULL(bmp);
-      cacheMapM.erase(i);
+    for (std::map<std::string, cBitmap *>::iterator i = cacheMapM.begin(); i != cacheMapM.end(); i++) {
+      delete((*i).second);
     }
+    cacheMapM.clear();
     // nullify bitmap pointer
     bitmapM = NULL;
   }

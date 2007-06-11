@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.8 2007/03/28 10:01:33 amair Exp $
+# $Id: Makefile,v 1.14 2007/06/11 06:57:47 amair Exp $
 
 # If you are using the epgsearch plugin and want to see the number of
 # timer conflicts in the main menu's info area.
@@ -22,6 +22,23 @@
 # NOTE: this can also be defined if you don't know if the mailbox
 # plugin will be used because it has no compile time requirements.
 SKINENIGMA_USE_PLUGIN_MAILBOX = 1
+
+# EXPERIMENTAL!!! NOT YET OFFICIALY SUPPORTED!!!
+#
+# USE AT OWN RISC!!!
+#SKINENIGMA_USE_PLUGIN_AVARDS = 1
+
+# Disable any code that is used for scrolling or blinking text.
+# NOTE: this is only useful if you want to save some bytes because you
+# can disable them in the setup too.
+#DISABLE_ANIMATED_TEXT = 1
+
+# Set the descriptions for fonts you've patched in VDR. These fonts then
+# can be selected in EnigmaNG setup.
+#SKINENIGMA_FONTS = "\"Test Font\", \"Test2 Font\""
+
+# If you have installed FreeType2 and want to use TrueTypeFonts.
+#HAVE_FREETYPE = 1
 
 # Strip debug symbols?  Set eg. to /bin/true if not
 #STRIP = strip
@@ -83,18 +100,40 @@ ifdef SKINENIGMA_USE_PLUGIN_MAILBOX
 DEFINES += -DUSE_PLUGIN_MAILBOX
 endif
 
+ifdef SKINENIGMA_USE_PLUGIN_AVARDS
+DEFINES += -DUSE_PLUGIN_AVARDS
+endif
+
 ifdef HAVE_IMAGEMAGICK
 DEFINES += -DHAVE_IMAGEMAGICK
 endif
 DEFINES += -DRECORDING_COVER='"Cover-Enigma"'
 
+ifdef SKINENIGMA_DISABLE_ANIMATED_TEXT
+DEFINES += -DDISABLE_ANIMATED_TEXT
+endif
+
+DEFINES += -DSKINENIGMA_FONTS=$(SKINENIGMA_FONTS)
+
 ### The object files (add further files here):
 
-OBJS = $(PLUGIN).o enigma.o config.o logo.o i18n.o tools.o status.o
+OBJS = $(PLUGIN).o enigma.o config.o logo.o i18n.o tools.o status.o texteffects.o setup.o
 
 ifdef HAVE_IMAGEMAGICK
 OBJS += bitmap.o
 LIBS += -lMagick++
+endif
+
+ifdef HAVE_FREETYPE
+	ifneq ($(shell which freetype-config),)
+		INCLUDES += $(shell freetype-config --cflags)
+		LIBS += $(shell freetype-config --libs)
+	else
+		INCLUDES += -I/usr/include/freetype -I/usr/local/include/freetype
+		LIBS += -lfreetype
+	endif
+	DEFINES += -DHAVE_FREETYPE
+	OBJS += font.o
 endif
 
 ### Implicit rules:

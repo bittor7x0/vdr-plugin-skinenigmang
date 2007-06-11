@@ -1,15 +1,20 @@
 #ifdef HAVE_IMAGEMAGICK
+
+#include "common.h"
 #include "bitmap.h"
 #include "config.h"
 
-#include <vdr/themes.h>
-
+#ifndef X_DISPLAY_MISSING
 #define X_DISPLAY_MISSING
+#endif
+
+#undef debug
 #include <Magick++.h>
 using namespace Magick;
 
 #include <vector>
-using namespace std;
+
+#include <vdr/themes.h>
  
 cOSDImageBitmap::cOSDImageBitmap()
 {}
@@ -18,12 +23,12 @@ cOSDImageBitmap::cOSDImageBitmap()
 cOSDImageBitmap::~cOSDImageBitmap()
 {}
 
-bool cOSDImageBitmap::LoadImage(const char *fileNameP, int w, int h, int colors, cBitmap &bmp)
+bool cOSDImageBitmap::DrawImage(const char *fileNameP, int x, int y, int w, int h, int colors, cBitmap *bmp)
 {
-  return LoadMagick(fileNameP, w, h, colors, bmp);
+  return DrawMagick(fileNameP, x, y, w, h, colors, bmp);
 }
 
-bool cOSDImageBitmap::LoadMagick(const char *Filename, int width, int height, int colors, cBitmap &bmp)
+bool cOSDImageBitmap::DrawMagick(const char *Filename, int x, int y, int width, int height, int colors, cBitmap *bmp)
 {
   Image image;
   try {
@@ -52,8 +57,10 @@ bool cOSDImageBitmap::LoadMagick(const char *Filename, int width, int height, in
       image.quantizeColors(colors);
       image.quantize();
     }
-    bmp.SetSize(w, h);
-    bmp.SetBpp(colors <= 16 ? 4 : 8);
+
+    // center image
+    x += ((width - w) / 2);
+    y += ((height - h) / 2);
 
     const PixelPacket *pix = image.getConstPixels(0, 0, w, h);
     for (int iy = 0; iy < h; ++iy) {
@@ -62,7 +69,7 @@ bool cOSDImageBitmap::LoadMagick(const char *Filename, int width, int height, in
                      | ((pix->red * 255 / MaxRGB) << 16)
                      | ((pix->green * 255 / MaxRGB) << 8)
                      | (pix->blue * 255 / MaxRGB);
-        bmp.DrawPixel(ix, iy, col);
+        bmp->DrawPixel(x + ix, y + iy, col);
         ++pix;
       }
     }

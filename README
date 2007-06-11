@@ -46,6 +46,18 @@ If you use the mailbox plugin this will include support for it.
 NOTE: this can also be defined if you don't know if the mailbox
 plugin will be used because it has no compile time requirements.
 
+SKINENIGMA_DISABLE_ANIMATED_TEXT = 1
+Disable any code that is used for scrolling or blinking text.
+NOTE: this is only useful if you want to save some bytes because you
+can disable them in the setup too.
+
+SKINENIGMA_FONTS =
+Set the descriptions for fonts you've patched in VDR. These fonts then
+can be selected in EnigmaNG setup.
+
+HAVE_FREETYPE = 1
+If you have installed FreeType2 and want to use TrueTypeFonts.
+
 
 Patches
 -------
@@ -91,11 +103,14 @@ some things before:
 Options
 -------
 
-  -l path, --logodir=path
-      Path to the logos (Default: <vdrconfdir>/skinenigmang).
+  -f path, --fonts=path
+      Path to the TrueTypeFonts (*.ttf) (Default: <logodir>/fonts).
 
   -i path, --epgimages=path
       Path to the epgimages (Default: <logodir>/epgimages).
+
+  -l path, --logodir=path
+      Path to the logos (Default: <vdrconfdir>/plugins/skinenigmang).
 
 
 Usage
@@ -107,7 +122,8 @@ In VDR go to the OSD settings menu and select the skin "EnigmaNG"
 Setup Options
 -------------
 
-- One area (if possible)
+* General
+- Try 8bpp single area
   If you don't want to use a single 8bpp area for the OSD you can disable
   it here. If this option is enabled this will not ensure that a single
   area is used, but EnigmaNG will try to use it. If your output deviice
@@ -119,11 +135,6 @@ Setup Options
   OSD speed.
   NOTE: after commit the settings you have to fully close and re-open the OSD
   to make the change affect.
-
-- Bpp in single area (4/8)
-  The number of bpp (bit per pixel) to use for the single area.
-  4bpp means upto 16 colors, 8bpp means upto 256 colors.
-  NOTE: if this is set to 4bpp this will disable all symbols/logos/images/flags.
 
 - Show info area in main menu
   This info area is shown in the main menu and it will show the current/next
@@ -170,15 +181,16 @@ Setup Options
 
 * Logos & Symbols
 
-- Show symbols (never/always/not in menu/only in menu)
+- Show symbols
   Here you can enable or disable the large symbols shown in top right corner
   of the main menu, the recordings info and the event info and the "background"
   symbol of the mode symbol when replaying recordings.
-  Possible options:
-    never        - don't show them anywhere
-    always       - show them everywhere
-    not in menu  - don't show them in the main menu or recording/even info
-    only in menu - only show them in the main menu or recording/even info
+
+- Show symbols in menu
+- Show symbols in replay
+- Show symbols in messages
+- Show symbols in audio
+  If "Show Symbols" is set to "yes" you can enable or disable symbols for each OSD.
 
 - Show symbols in lists
   This replaces "T", "t", "V"... in the EPG views symbols.
@@ -230,7 +242,70 @@ Setup Options
 - Channel logo cache size
   The number of logos/symbols to keep in the cache.
 
-* EPGSearch (NOTE: only visible if epgsearch support is compiled in)
+* Animated Text
+  NOTE: only visible if SKINENIGMA_DISABLE_ANIMATED_TEXT is not set
+
+- Enable
+  This option enables scrolling of long lines and blinking of some text.
+
+- Scroll OSD title
+  Scroll title of OSDs?
+
+- Scroll info area
+  Scroll a timer's title in the main menu's info area?
+
+- Scroll active list items
+  Scroll long columns of the active line in the menu?
+
+- Scroll other items
+  Scroll items in other areas?
+  At the moment these areas cover the title and subtitle in the EPGs and
+  recordings details and the message in the message OSD.
+
+- Scoll behaviour (to the left/left and right)
+  Text can either scroll from the left to right and then start again at the
+  left or it can scroll from the left to the right and then back from the
+  right to the left (ping pong).
+
+- Scroll delay (ms) (50 - 1000)
+  The number of milliseconds to wait before the scrolling text is moved.
+
+- Scroll pause (ms) (500 - 2000)
+  The number of milliseconds to wait at the left or right side of the text
+  before scrolling again.
+
+- Blink pause (ms) (500 - 2000)
+  The number of milliseconds to wait for blinking text.
+
+* Fonts
+  If you've set the VDR OSD option "Use small font" to "skin dependent" then
+  you can set your prefered fonts for various areas. If you've patched additional
+  fonts into VDR you need to set the SKINENIGMA_FONTS define (see above) to see
+  them in the list of available fonts.
+
+- OSD title
+- Messages
+- Date
+- Help keys
+- Channelinfo: title
+- Channelinfo: subtitle
+- Channelinfo: language
+- List items
+- Info area: timers title
+- Info area: timers text
+- Info area: warning title
+- Info area: warning text
+- Details: title
+- Details: subtitle
+- Details: date
+- Details: text
+- Replay: times
+  Set the font for the named area.
+  If you have set HAVE_FREETYPE you can set the TrueTypeFont to use by pressing
+  the blue key.
+
+* EPGSearch 
+  NOTE: only visible if epgsearch support is compiled in
 
 - Number of Reruns (0 - 10)
   The number of reruns to show in an event's info.
@@ -300,4 +375,6 @@ Credits
 - skiller2k1 @vdr-portal.de for Comedy Central logo.
   http://www.vdr-portal.de/board/thread.php?postid=567887#post567887
 
+- uwe @vdr-portal.de for themes (Blue, Blue2, Blue3 and CoolBlue).
+  http://www.vdr-portal.de/board/thread.php?postid=615540#post615540
 // vim:et:sw=2:ts=2:

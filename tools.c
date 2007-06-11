@@ -5,26 +5,22 @@
  *
  */
 
-#include <sstream>
-
-#ifndef __STL_CONFIG_H
-#define __STL_CONFIG_H
-#endif
-
-#include <stdlib.h>
-#include <string.h>
 #include "common.h"
 #include "i18n.h"
-#include "tools.h"
 
-using namespace std;
+#include <sstream>
+#include <string.h>
+
+#include "tools.h"
 
 #define AUX_HEADER_EPGSEARCH             "EPGSearch: "
 #define AUX_TAGS_EPGSEARCH_START         "<epgsearch>"
-#define AUX_TAGS_EPGSEARCH_ITEM_1A_START "<Channel>"
-#define AUX_TAGS_EPGSEARCH_ITEM_1A_END   "</Channel>"
-#define AUX_TAGS_EPGSEARCH_ITEM_2A_START "<Search timer>"
-#define AUX_TAGS_EPGSEARCH_ITEM_2A_END   "</Search timer>"
+#define AUX_TAGS_EPGSEARCH_ITEM_1A_START "<channel>"
+#define AUX_TAGS_EPGSEARCH_ITEM_1A_END   "</channel>"
+#define AUX_TAGS_EPGSEARCH_ITEM_2A_START "<searchtimer>"
+#define AUX_TAGS_EPGSEARCH_ITEM_2A_END   "</searchtimer>"
+#define AUX_TAGS_EPGSEARCH_ITEM_3A_START "<Search timer>"
+#define AUX_TAGS_EPGSEARCH_ITEM_3A_END   "</Search timer>"
 #define AUX_TAGS_EPGSEARCH_ITEM_1B_START "<update>"
 #define AUX_TAGS_EPGSEARCH_ITEM_1B_END   "</update>"
 #define AUX_TAGS_EPGSEARCH_ITEM_2B_START "<eventid>"
@@ -43,10 +39,10 @@ using namespace std;
 #define AUX_TAGS_PIN_ITEM1_END         "</protected>"
 #define AUX_TAGS_PIN_END               "</pin-plugin>"
 
-const char *parseaux(const char *aux)
+std::string parseaux(const char *aux)
 {
-	bool founditem = false;
-	stringstream sstrReturn;
+  bool founditem = false;
+  std::stringstream sstrReturn;
   char *start, *end;
   // check if egpsearch
   start = strcasestr(aux, AUX_TAGS_EPGSEARCH_START);
@@ -58,47 +54,67 @@ const char *parseaux(const char *aux)
     char *tmp;
     if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_1A_START)) != NULL) {
       if (tmp < end) {
-				tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_1A_START);
+        tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_1A_START);
         char *tmp2;
         if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_1A_END)) != NULL) {
           // add channel
-          sstrReturn << string(tmp, tmp2 - tmp);
+          sstrReturn << tr("Channel:") << " " << std::string(tmp, tmp2 - tmp);
           founditem = true;
         } else {
           founditem = false;
         }
       }
     }
-    // parse second item
-    if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_2A_START)) != NULL) {
-      if (tmp < end) {
-    		tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_2A_START);
-        char *tmp2;
-        if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_2A_END)) != NULL) {
-          // add separator
-          if (founditem) {
-            sstrReturn << ", ";
+    if (founditem) { // Channel tag found
+      // parse second item
+      if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_2A_START)) != NULL) {
+        if (tmp < end) {
+          tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_2A_START);
+          char *tmp2;
+          if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_2A_END)) != NULL) {
+            // add separator
+            if (founditem) {
+              sstrReturn << ", ";
+            }
+            // add search item
+            sstrReturn << tr("Search pattern:") << " " << std::string(tmp, tmp2 - tmp);
+            founditem = true;
+          } else {
+            founditem = false;
           }
-          // add search item
-          sstrReturn << string(tmp, tmp2 - tmp);
-          founditem = true;
-        } else {
-          founditem = false;
+        }
+      } else {
+        // parse second item
+        if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_3A_START)) != NULL) {
+          if (tmp < end) {
+            tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_3A_START);
+            char *tmp2;
+            if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_3A_END)) != NULL) {
+              // add separator
+              if (founditem) {
+                sstrReturn << ", ";
+              }
+              // add search item
+              sstrReturn << tr("Search pattern:") << " " << std::string(tmp, tmp2 - tmp);
+              founditem = true;
+            } else {
+              founditem = false;
+            }
+          }
         }
       }
     }
     // timer check?
     if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_1B_START)) != NULL) {
       if (tmp < end) {
-    		tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_1B_START);
+        tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_1B_START);
         char *tmp2;
         if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_1B_END)) != NULL) {
-          if (string(tmp, tmp2 - tmp) != "0") {
+          if (std::string(tmp, tmp2 - tmp) != "0") {
             // add separator
             if (founditem) {
               sstrReturn << ", ";
             }
-            founditem = true;
             // add search item
             sstrReturn << tr("Timer check");
 
@@ -113,13 +129,17 @@ const char *parseaux(const char *aux)
                     sstrReturn << ", ";
                   }
                   // add search item
-                  sstrReturn << "eventid=" << string(tmp, tmp2 - tmp);
+                  sstrReturn << "eventid=" << std::string(tmp, tmp2 - tmp);
                 }
               }
             }
           } else {
-            founditem = false;
+            if (founditem) {
+              sstrReturn << ", ";
+            }
+            sstrReturn << tr("No timer check");
           }
+          founditem = true;
         } else {
           founditem = false;
         }
@@ -129,9 +149,9 @@ const char *parseaux(const char *aux)
     // use old syntax
     if (!founditem) {
       start += strlen(AUX_HEADER_EPGSEARCH);
-      sstrReturn << string(start, end - start);
+      sstrReturn << std::string(start, end - start);
     }
-		sstrReturn << endl;
+    sstrReturn << std::endl;
   }
   // check if VDRAdmin-AM
   start = strcasestr(aux, AUX_TAGS_VDRADMIN_START);
@@ -143,11 +163,11 @@ const char *parseaux(const char *aux)
     char *tmp;
     if ((tmp = strcasestr(start, AUX_TAGS_VDRADMIN_ITEM1_START)) != NULL) {
       if (tmp < end) {
-    		tmp += strlen(AUX_TAGS_VDRADMIN_ITEM1_START);
+        tmp += strlen(AUX_TAGS_VDRADMIN_ITEM1_START);
         char *tmp2;
         if ((tmp2 = strcasestr(tmp, AUX_TAGS_VDRADMIN_ITEM1_END)) != NULL) {
           // add search item
-          sstrReturn << string(tmp, tmp2 - tmp) << endl;
+          sstrReturn << std::string(tmp, tmp2 - tmp) << std::endl;
         }
       }
     }
@@ -162,20 +182,20 @@ const char *parseaux(const char *aux)
     char *tmp;
     if ((tmp = strcasestr(start, AUX_TAGS_PIN_ITEM1_START)) != NULL) {
       if (tmp < end) {
-    		tmp += strlen(AUX_TAGS_PIN_ITEM1_START);
+        tmp += strlen(AUX_TAGS_PIN_ITEM1_START);
         char *tmp2;
         if ((tmp2 = strcasestr(tmp, AUX_TAGS_PIN_ITEM1_END)) != NULL) {
           // add search item
-          sstrReturn << string(tmp, tmp2 - tmp) << endl;
+          sstrReturn << std::string(tmp, tmp2 - tmp) << std::endl;
         }
       }
     }
   }
 
-	if (!sstrReturn.str().empty())
-		return sstrReturn.str().c_str();
+  if (!sstrReturn.str().empty())
+    return sstrReturn.str();
 
-  return aux;
+  return std::string(aux);
 }
 
 bool ischaracters(const char *str, const char *mask)
@@ -193,3 +213,5 @@ bool ischaracters(const char *str, const char *mask)
   }
   return match;
 }
+
+// vim:et:sw=2:ts=2:

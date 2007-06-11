@@ -1,5 +1,5 @@
 /*
- * status.h: The 'EnigmaNG' VDR skin.
+ * status.h: 'EnigmaNG' skin for the Video Disk Recorder
  *
  * See the README file for copyright information and how to reach the author.
  *
@@ -9,6 +9,7 @@
 #define __SKINENIGMA_STATUS_H
 
 #include "common.h"
+
 #include <vdr/status.h>
 
 extern const char *ReplayNames[7];
@@ -85,3 +86,4 @@ public:
 extern cEnigmaStatus EnigmaStatus;
 
 #endif // __SKINENIGMA_STATUS_H
+// vim:et:sw=2:ts=2:

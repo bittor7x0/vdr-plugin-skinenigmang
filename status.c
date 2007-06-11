@@ -1,5 +1,5 @@
 /* 
- * status.c: The 'EnigmaNG' VDR skin.
+ * status.c: 'EnigmaNG' skin for the Video Disk Recorder
  *
  * See the README file for copyright information and how to reach the author.
  *
@@ -7,6 +7,7 @@
 
 #include "common.h"
 #include "status.h"
+
 #include <vdr/timers.h>
 #include <vdr/plugin.h>
 #include <vdr/menu.h>
@@ -114,3 +115,4 @@ void cEnigmaStatus::UpdateActiveTimers(void)
   Timers.DecBeingEdited();
   mTimers.Sort();
 }
+// vim:et:sw=2:ts=2:

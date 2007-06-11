@@ -1,6 +1,31 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
+2007-06-11: Version 0.0.5rc
+- Fixed possible crash in recording's details.
+- Added MoBuntu theme (Submitted by Morone @vdr-portal.de).
+- Added Blue, Blue2, Blue3 and Coolblue theme (Submitted by Uwe @vdr-portal.de).
+- Added support for TrueTypeFonts (based on graphtft and text2skin plugins).
+- Added support for new epgsearch tags.
+- Updated French translation. (Submitted by pat @vdr-portal.de)
+- Changed size calculation for scrollbars.
+- Add setup options to individually set the fonts to use. See README for details.
+- Set used colors for every area in menu OSD when using multiple areas.
+- Reworked multiple areas mode in menu OSD.
+- Do not disable logos/symbols/flags if 4bpp single area is configured in setup.
+- Replaced setup options "One area (if possible)" and "Bpp in single area" by option "Try 8bpp single areas".
+- Unified appearance of error/info/status messages in all OSDs.
+- Added setup option to selectively enable scrolling text.
+- Added setup option to selectively enable logos in the different OSDs.
+- Added text effects (e.g. scrolling and blinking) for selected text.
+- Removed clrMenuHighlight, clrMessageBorder, clrMenuItemCurrentFg, clrMenuEventTitle, clrMenuEventShortText, clrMenuScrollbarTotal and clrMenuScrollbarShown in themes.
+- Fixed height of title/subtitle box in EPG & recording details.
+- Recognize mediamanager plugin in mainmenu logos.
+- Don't cut info line in EPG & recording details at logo area's left edge.
+- Updated Russian translation (Submitted by neptunvasja @vdr-portal.de).
+- Added Dutch translation (Submitted by dorpsgek @vdr-portal.de).
+- Various bugfixes and graphical changes.
+
 2007-04-02: Version 0.0.4
 - Changed text color in themes for green and yellow buttons.
 - Fixed false colors problem after theme changes.
