@@ -311,7 +311,7 @@ cSkinEnigmaDisplayChannel::cSkinEnigmaDisplayChannel(bool WithInfo)
   xBottomLeft = xTitleLeft;
   xBottomRight = xTitleRight;
   yBottomTop = yEventNextBottom + SmallGap;
-  yBottomBottom = yBottomTop + pFontDate->Height();
+  yBottomBottom = yBottomTop + pFontLanguage->Height();
   // message area
   xMessageLeft = xEventNowLeft;
   xMessageRight = xTitleRight;
@@ -1852,7 +1852,7 @@ void cSkinEnigmaDisplayMenu::SetItem(const char *Text, int Index, bool Current, 
       break;
   }
   //set editable width
-  SetEditableWidth(xItemRight - Tab(1));
+  SetEditableWidth(xItemRight - Tab(1) - xItemLeft);
 
 #ifndef SKINENIGMA_NO_MENULOGO
 //  debug("SetItem: (%s) %d %d %d\n", Text, Index, Current, Selectable);

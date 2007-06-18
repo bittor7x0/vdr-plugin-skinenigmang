@@ -74,8 +74,11 @@ cEnigmaConfig::cEnigmaConfig() : showAuxInfo(1), showLogo(1), showVps(1), showSy
       case FONT_DETAILSSUBTITLE:
         allFonts[id].VdrId = fontSml + 1;
         break;
+      case FONT_FIXED:
+        allFonts[id].VdrId = fontFix + 1;
+        break;
       default:
-        allFonts[id].VdrId = fontOsd + 2;
+        allFonts[id].VdrId = fontOsd + 1;
     }
     memset(allFonts[id].Name, 0, sizeof(allFonts[id].Name));
     allFonts[id].Width = 100;

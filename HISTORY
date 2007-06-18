@@ -1,6 +1,20 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
+2007-06-18: Version 0.0.5rc2
+- Added Italian translation (Submitted by Gringo).
+- Changed logging to only report missing channel logos once.
+- Use MAXFONTNAME and MAXFONTSIZE as introduced in VDR 1.5.3.
+- Recognize VDR >=1.5.3 and disable HAVE_FREETYPE.
+- Fixed font initialization.
+- Updated MoBuntu theme (Submitted by Morone @vdr-portal.de).
+- Set correct editable width for OSD text inputs (Reported by Brougs78 @vdr-portal.de).
+- Fixed calculation of bottom line in channel info (Reported by CKone @vdr-portal.de).
+- Hide "Set" button in fonts setup if TTF support disabled.
+- Fixed crash in TTF setup if no TrueType fonts were found (Reported by pat @vdr-portal.de).
+- Set correct title in setup submenus (Reported by pat @vdr-portal.de).
+- Minor bugfixes.
+
 2007-06-11: Version 0.0.5rc
 - Fixed possible crash in recording's details.
 - Added MoBuntu theme (Submitted by Morone @vdr-portal.de).

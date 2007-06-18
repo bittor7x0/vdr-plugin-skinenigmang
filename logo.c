@@ -103,10 +103,11 @@ bool cEnigmaLogoCache::LoadChannelLogo(const cChannel *Channel)
     if (filename == NULL) return false;
     strcpy(filename, "hqlogos/");
     strcat(filename, logoname);
-    if (!(fFoundLogo = Load(filename, ChannelLogoWidth, ChannelLogoHeight))) {
+    if (!(fFoundLogo = Load(filename, ChannelLogoWidth, ChannelLogoHeight, false))) {
       strcpy(filename, "logos/");
       strcat(filename, logoname);
-      if (!(fFoundLogo = EnigmaLogoCache.Load(filename, ChannelLogoWidth, ChannelLogoHeight))) {
+      if (!(fFoundLogo = Load(filename, ChannelLogoWidth, ChannelLogoHeight, false))) {
+        error("cPluginSkinEnigma::LoadChannelLogo: LOGO \"%s.xpm\" NOT FOUND in %s/[hq]logos\n", logoname, EnigmaConfig.GetLogoDir());
         fFoundLogo = Load("hqlogos/no_logo", ChannelLogoWidth, ChannelLogoHeight); //TODO? different default logo for channel/group?
       }
     }
@@ -126,7 +127,7 @@ bool cEnigmaLogoCache::LoadIcon(const char *fileNameP)
   return Load(fileNameP, IconWidth, IconHeight);
 }
 
-bool cEnigmaLogoCache::Load(const char *fileNameP, int w, int h)
+bool cEnigmaLogoCache::Load(const char *fileNameP, int w, int h, bool fLogNotFound)
 {
   if (fileNameP == NULL)
     return false;
@@ -154,7 +155,7 @@ bool cEnigmaLogoCache::Load(const char *fileNameP, int w, int h)
     // no - cache miss!
     debug("cPluginSkinEnigma::Load() CACHE MISS!\n");
     // try to load xpm logo
-    if (!LoadXpm(strFilename, w, h))
+    if (!LoadXpm(strFilename, w, h, fLogNotFound))
       return false;
     // check if cache is active
     if (cacheSizeM) {
@@ -191,7 +192,7 @@ cBitmap & cEnigmaLogoCache::Get(void)
   return *bitmapM;
 }
 
-bool cEnigmaLogoCache::LoadXpm(const char *fileNameP, int w, int h)
+bool cEnigmaLogoCache::LoadXpm(const char *fileNameP, int w, int h, bool fLogNotFound)
 {
   if (fileNameP == NULL)
     return false;
@@ -214,7 +215,8 @@ bool cEnigmaLogoCache::LoadXpm(const char *fileNameP, int w, int h)
     }
   } else {
     // no xpm logo found
-    error("cPluginSkinEnigma::LoadXpm(%s) LOGO NOT FOUND\n", fileNameP);
+    if (fLogNotFound)
+      error("cPluginSkinEnigma::LoadXpm(%s) LOGO NOT FOUND\n", fileNameP);
   }
 
   delete bmp;

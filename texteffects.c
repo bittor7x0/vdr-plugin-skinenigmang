@@ -415,10 +415,10 @@ const char **cEnigmaTextEffects::GetAvailTTFs(void)
     while ((e = d.Next()) != NULL) {
       if ((strcmp(e->d_name, ".") != 0) && (strcmp(e->d_name, "..") != 0)) {
         if (strcmp(e->d_name + strlen(e->d_name) - 4, ".ttf") == 0) {
-          printf("Loading %s\n", e->d_name);
+          debug("Loading %s\n", e->d_name);
           vecFonts.push_back(std::string(e->d_name));
         } else {
-          printf("Ignoring non-font file: %s\n", e->d_name);
+          error("Ignoring non-font file: %s\n", e->d_name);
         }
       }
     }

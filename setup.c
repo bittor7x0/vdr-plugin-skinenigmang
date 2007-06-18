@@ -16,7 +16,7 @@
 #include "texteffects.h"
 #endif
 
-static const char *allFonts[] = {
+static const char *allVdrFonts[] = {
 #ifdef HAVE_FREETYPE
   "TrueType Font",
 #else
@@ -341,7 +341,7 @@ void cMenuSetupLogos::Set(void)
 
 #ifndef DISABLE_ANIMATED_TEXT
 // Setup: Animated Text
-cMenuSetupAnimText::cMenuSetupAnimText(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr("General"), Data)
+cMenuSetupAnimText::cMenuSetupAnimText(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr("Animated Text"), Data)
 {
   scrollModeTexts[0] = tr("left and right");
   scrollModeTexts[1] = tr("to the left");
@@ -390,18 +390,20 @@ cMenuSetupTTF::cMenuSetupTTF(FontInfo* Data) : cOsdMenu(tr("TrueType Font"), 10)
 {
   data = Data;
   availTTFs = EnigmaTextEffects.GetAvailTTFs();
-  nMaxTTFs = EnigmaTextEffects.GetNumAvailTTFs();
-  nFont = 0;
-  for (int i = 0; i < nMaxTTFs; i++) {
-    if (availTTFs[i]) {
-      if (strcmp(availTTFs[i], data->Name) == 0) {
-        nFont = i;
-        break;
+  if (availTTFs && data) {
+    nMaxTTFs = EnigmaTextEffects.GetNumAvailTTFs();
+    nFont = 0;
+    for (int i = 0; i < nMaxTTFs; i++) {
+      if (availTTFs[i]) {
+        if (strcmp(availTTFs[i], data->Name) == 0) {
+          nFont = i;
+          break;
+        }
       }
     }
+    nWidth = data->Width;
+    nSize = data->Size;
   }
-  nWidth = data->Width;
-  nSize = data->Size;
   SetHelp(NULL, NULL, NULL, NULL);
   Set();
 }
@@ -411,11 +413,21 @@ void cMenuSetupTTF::Set(void)
   int current = Current();
   Clear();
 
-  Add(new cMenuEditStraItem(tr("Name"), &nFont, nMaxTTFs, availTTFs));
-  Add(new cMenuEditIntItem(tr("Size"), &nSize, 10, 40));
-  Add(new cMenuEditIntItem(tr("Width"), &nWidth, 50, 150));
+  if (availTTFs) {
+    Add(new cMenuEditStraItem(tr("Name"), &nFont, nMaxTTFs, availTTFs));
+    Add(new cMenuEditIntItem(tr("Size"), &nSize, 10, MAXFONTSIZE));
+    Add(new cMenuEditIntItem(tr("Width"), &nWidth, 50, 150));
+  
+    SetCurrent(Get(current));
+  } else {
+    cOsdItem *item = new cOsdItem(tr("No TrueType fonts installed!"));
 
-  SetCurrent(Get(current));
+    if (item) {
+      item->SetSelectable(false);
+      Add(item);
+    }
+  }
+
   Display();
 }
 
@@ -439,19 +451,25 @@ eOSState cMenuSetupTTF::ProcessKey(eKeys Key)
 
 void cMenuSetupTTF::Store(void)
 {
-  strncpy(data->Name, availTTFs[nFont], sizeof(data->Name));
-  data->Width = nWidth;
-  data->Size = nSize;
+  if (data && availTTFs) {
+    strncpy(data->Name, availTTFs[nFont], sizeof(data->Name));
+    data->Width = nWidth;
+    data->Size = nSize;
+  }
 }
 #endif
 
 // Setup: Fonts
-cMenuSetupFonts::cMenuSetupFonts(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr("General"), Data)
+cMenuSetupFonts::cMenuSetupFonts(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr("Fonts"), Data)
 {
-  allFonts[0] = tr(allFonts[0]);
-  allFonts[1] = tr(allFonts[1]);
-  allFonts[2] = tr(allFonts[2]);
-  allFonts[3] = tr(allFonts[3]);
+#ifdef HAVE_FREETYPE
+  allVdrFonts[0] = tr("TrueType Font");
+#else
+  allVdrFonts[0] = tr("No TTF support!");
+#endif
+  allVdrFonts[1] = tr("Default OSD Font");
+  allVdrFonts[2] = tr("Default Fixed Size Font");
+  allVdrFonts[3] = tr("Default Small Font");
 
   Set();
 }
@@ -483,37 +501,39 @@ void cMenuSetupFonts::Set(void)
   int current = Current();
   Clear();
 
-  int numAvailFonts = sizeof(allFonts)/sizeof(char*);
-  Add(new cMenuEditStraItem(tr("OSD title"), &data->allFonts[FONT_OSDTITLE].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Messages"), &data->allFonts[FONT_MESSAGE].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Date"), &data->allFonts[FONT_DATE].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Help keys"), &data->allFonts[FONT_HELPKEYS].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Channelinfo: title"), &data->allFonts[FONT_CITITLE].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Channelinfo: subtitle"), &data->allFonts[FONT_CISUBTITLE].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Channelinfo: language"), &data->allFonts[FONT_CILANGUAGE].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("List items"), &data->allFonts[FONT_LISTITEM].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Info area: timers title"), &data->allFonts[FONT_INFOTIMERHEADLINE].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Info area: timers text"), &data->allFonts[FONT_INFOTIMERTEXT].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Info area: warning title"), &data->allFonts[FONT_INFOWARNHEADLINE].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Info area: warning text"), &data->allFonts[FONT_INFOWARNTEXT].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Details: title"), &data->allFonts[FONT_DETAILSTITLE].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Details: subtitle"), &data->allFonts[FONT_DETAILSSUBTITLE].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Details: date"), &data->allFonts[FONT_DETAILSDATE].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Details: text"), &data->allFonts[FONT_DETAILSTEXT].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Replay: times"), &data->allFonts[FONT_REPLAYTIMES].VdrId, numAvailFonts, allFonts));
-  Add(new cMenuEditStraItem(tr("Fixed Font"), &data->allFonts[FONT_FIXED].VdrId, numAvailFonts, allFonts));
+  int numAvailFonts = sizeof(allVdrFonts)/sizeof(char*);
+  Add(new cMenuEditStraItem(tr("OSD title"), &data->allFonts[FONT_OSDTITLE].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Messages"), &data->allFonts[FONT_MESSAGE].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Date"), &data->allFonts[FONT_DATE].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Help keys"), &data->allFonts[FONT_HELPKEYS].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Channelinfo: title"), &data->allFonts[FONT_CITITLE].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Channelinfo: subtitle"), &data->allFonts[FONT_CISUBTITLE].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Channelinfo: language"), &data->allFonts[FONT_CILANGUAGE].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("List items"), &data->allFonts[FONT_LISTITEM].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Info area: timers title"), &data->allFonts[FONT_INFOTIMERHEADLINE].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Info area: timers text"), &data->allFonts[FONT_INFOTIMERTEXT].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Info area: warning title"), &data->allFonts[FONT_INFOWARNHEADLINE].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Info area: warning text"), &data->allFonts[FONT_INFOWARNTEXT].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Details: title"), &data->allFonts[FONT_DETAILSTITLE].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Details: subtitle"), &data->allFonts[FONT_DETAILSSUBTITLE].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Details: date"), &data->allFonts[FONT_DETAILSDATE].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Details: text"), &data->allFonts[FONT_DETAILSTEXT].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Replay: times"), &data->allFonts[FONT_REPLAYTIMES].VdrId, numAvailFonts, allVdrFonts));
+  Add(new cMenuEditStraItem(tr("Fixed Font"), &data->allFonts[FONT_FIXED].VdrId, numAvailFonts, allVdrFonts));
 
   SetCurrent(Get(current));
   Display();
+#ifdef HAVE_FREETYPE
   if (data->allFonts[Current()].VdrId == FONT_TRUETYPE)
     SetHelp(NULL, NULL, NULL, tr("Button$Set"));
   else
+#endif
     SetHelp(NULL, NULL, NULL, NULL);
 }
 
 #ifdef SKINENIGMA_HAVE_EPGSEARCH
 // Setup: EpgSearch
-cMenuSetupEpgSearch::cMenuSetupEpgSearch(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr("General"), Data)
+cMenuSetupEpgSearch::cMenuSetupEpgSearch(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr("EPGSearch"), Data)
 {
   useSubtitleRerunTexts[0] = tr("never");
   useSubtitleRerunTexts[1] = tr("if exists");

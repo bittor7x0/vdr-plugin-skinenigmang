@@ -7,6 +7,8 @@
  */
 
 #include "common.h"
+
+#ifdef HAVE_FREETYPE
 #include "font.h"
 #include <iconv.h>
 #include <stdio.h>
@@ -218,3 +220,4 @@ void cGraphtftFont::Clear()
 		delete[]((*del_it).second);
 	_del.clear();
 }
+#endif //HAVE_FREETYPE

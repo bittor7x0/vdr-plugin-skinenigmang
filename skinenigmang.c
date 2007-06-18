@@ -20,7 +20,11 @@
 #error "VDR-1.4.0 API version or greater is required!"
 #endif
 
-static const char VERSION[] = "0.0.5rc";
+#if VDRVERSNUM == 10503
+#warning "YOU NEED A PATCHED VDR 1.5.3 OR EnigmaNG WILL CRASH!"
+#endif
+
+static const char VERSION[] = "0.0.5rc2";
 static const char DESCRIPTION[] = "EnigmaNG skin";
 
 class cPluginSkinEnigma : public cPlugin {

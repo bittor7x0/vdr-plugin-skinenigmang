@@ -22,6 +22,14 @@ extern const char *imageExtensionTexts[NUM_IMAGEEXTENSIONTEXTS];
 #endif
 
 #include <vdr/skins.h>
+#include <vdr/font.h>
+
+#ifndef MAXFONTNAME
+#define MAXFONTNAME 64
+#endif
+#ifndef MAXFONTSIZE
+#define MAXFONTSIZE 64
+#endif
 
 struct EnigmaOsdSize
 {
@@ -59,7 +67,7 @@ enum
 struct FontInfo
 {
   int VdrId;
-  char Name[255];
+  char Name[MAXFONTNAME + 1];
   int Width;
   int Size;
 };
