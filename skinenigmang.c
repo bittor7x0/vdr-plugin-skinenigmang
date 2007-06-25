@@ -24,7 +24,7 @@
 #warning "YOU NEED A PATCHED VDR 1.5.3 OR EnigmaNG WILL CRASH!"
 #endif
 
-static const char VERSION[] = "0.0.5rc2";
+static const char VERSION[] = "0.0.5rc3";
 static const char DESCRIPTION[] = "EnigmaNG skin";
 
 class cPluginSkinEnigma : public cPlugin {
@@ -132,14 +132,14 @@ bool cPluginSkinEnigma::ProcessArgs(int argc, char *argv[])
 bool cPluginSkinEnigma::Initialize(void)
 {
   // initialize any background activities the plugin shall perform.
-  debug("cPluginSkinEnigma::Initialize()\n");
+  debug("cPluginSkinEnigma::Initialize()");
   return true;
 }
 
 bool cPluginSkinEnigma::Start(void)
 {
   // start any background activities the plugin shall perform.
-  debug("cPluginSkinEnigma::Start()\n");
+  debug("cPluginSkinEnigma::Start()");
   RegisterI18n(Phrases);
   if (!fLogodirSet) {
     // set logo directory
@@ -179,7 +179,7 @@ bool cPluginSkinEnigma::Start(void)
 void cPluginSkinEnigma::Stop(void)
 {
   // stop any background activities the plugin shall perform.
-  debug("cPluginSkinEnigma::Stop()\n");
+  debug("cPluginSkinEnigma::Stop()");
 }
 
 void cPluginSkinEnigma::Housekeeping(void)
@@ -196,14 +196,14 @@ cOsdObject *cPluginSkinEnigma::MainMenuAction(void)
 cMenuSetupPage *cPluginSkinEnigma::SetupMenu(void)
 {
   // return a setup menu in case the plugin supports one.
-  debug("cPluginSkinEnigma::SetupMenu()\n");
+  debug("cPluginSkinEnigma::SetupMenu()");
   return new cPluginSkinEnigmaSetup();
 }
 
 bool cPluginSkinEnigma::SetupParse(const char *Name, const char *Value)
 {
   // parse your own setup parameters and store their values.
-//  debug("cPluginSkinEnigma::SetupParse()\n");
+//  debug("cPluginSkinEnigma::SetupParse()");
 
        if (!strcasecmp(Name, "SingleArea8Bpp"))            EnigmaConfig.singleArea8Bpp = atoi(Value);
   else if (!strcasecmp(Name, "ShowAuxInfo"))               EnigmaConfig.showAuxInfo = atoi(Value);

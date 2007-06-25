@@ -70,6 +70,7 @@ struct FontInfo
   char Name[MAXFONTNAME + 1];
   int Width;
   int Size;
+  int Default;
 };
 
 struct FontConfig

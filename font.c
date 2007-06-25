@@ -8,13 +8,14 @@
 
 #include "common.h"
 
-#ifdef HAVE_FREETYPE
+#if VDRVERSNUM != 10503
 #include "font.h"
 #include <iconv.h>
 #include <stdio.h>
 
 cGraphtftFont::cGraphtftFont()
 {
+#if VDRVERSNUM < 10503
 	_library = 0;
 	_face = 0;
 
@@ -24,12 +25,14 @@ cGraphtftFont::cGraphtftFont()
 	{
 		error("ERROR: Could not init freetype library");	
 	}
+#endif
 }
 
 cGraphtftFont::~cGraphtftFont()
 {
 	Clear();
 
+#if VDRVERSNUM < 10503
 	if (_face)
 	{
 		FT_Done_Face(_face);
@@ -39,6 +42,7 @@ cGraphtftFont::~cGraphtftFont()
 	{
 		FT_Done_FreeType(_library);
 	}
+#endif
 }
 
 bool cGraphtftFont::Load(string Filename, string CacheName, int Size, int Language, int Width, int format)
@@ -46,6 +50,18 @@ bool cGraphtftFont::Load(string Filename, string CacheName, int Size, int Langua
 	if ( _cache.find(CacheName) != _cache.end() )
 		return true;	
 	
+#if VDRVERSNUM >= 10504
+	//TODO: "Width" not yet in VDR
+# ifdef VDRVERSNUM >= 10505
+	cFont *newFont = cFont::CreateFont(Filename.c_str(), Size, Width > 0 ? (Size * Width / 100) : 0);
+# else
+	cFont *newFont = cFont::CreateFont(Filename.c_str(), Size);
+# endif
+	if (newFont) {
+		_cache[CacheName] = newFont;
+		return true;
+	}
+#elif VDRVERSNUM < 10503
 	int error = FT_New_Face(_library, Filename.c_str(), format, &_face);
 
 	// every thing ok?
@@ -190,6 +206,8 @@ bool cGraphtftFont::Load(string Filename, string CacheName, int Size, int Langua
 		return true;
 	}
 	delete(font_data);
+#endif //VDRVERSNUM >= 10504
+
 	// Something went wrong!
 	return false;
 }
@@ -215,9 +233,11 @@ void cGraphtftFont::Clear()
 		delete((*it).second);
 	_cache.clear();
 
+#if VDRVERSNUM < 10503
 	del_map::iterator del_it = _del.begin();
 	for (; del_it != _del.end(); ++del_it)
 		delete[]((*del_it).second);
 	_del.clear();
+#endif
 }
-#endif //HAVE_FREETYPE
+#endif //VDRVERSNUM < 10503

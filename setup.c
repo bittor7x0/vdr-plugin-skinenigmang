@@ -32,7 +32,7 @@ static const char *allVdrFonts[] = {
 cPluginSkinEnigmaSetup::cPluginSkinEnigmaSetup(void)
 {
   // create setup menu
-  debug("cPluginSkinEnigmaSetup()\n");
+  debug("cPluginSkinEnigmaSetup()");
 
   data = EnigmaConfig;
   Setup();
@@ -41,7 +41,7 @@ cPluginSkinEnigmaSetup::cPluginSkinEnigmaSetup(void)
 void cPluginSkinEnigmaSetup::AddCategory(const char *Title) {
   char *buffer = NULL;
 
-  asprintf(&buffer, "--- %s ----------------------------------------------------------------------------------", Title );
+  asprintf(&buffer, "---\t%s ----------------------------------------------------------------------------------", Title );
 
   cOsdItem *item = new cOsdItem(buffer);
   free(buffer);
@@ -79,7 +79,7 @@ void cPluginSkinEnigmaSetup::Setup(void)
 void cPluginSkinEnigmaSetup::Store(void)
 {
   // store setup data
-  debug("cPluginSkinEnigmaSetup::Store()\n");
+  debug("cPluginSkinEnigmaSetup::Store()");
 
   EnigmaConfig = data;
   SetupStore("SingleArea8Bpp", EnigmaConfig.singleArea8Bpp);
@@ -416,8 +416,10 @@ void cMenuSetupTTF::Set(void)
   if (availTTFs) {
     Add(new cMenuEditStraItem(tr("Name"), &nFont, nMaxTTFs, availTTFs));
     Add(new cMenuEditIntItem(tr("Size"), &nSize, 10, MAXFONTSIZE));
-    Add(new cMenuEditIntItem(tr("Width"), &nWidth, 50, 150));
-  
+#if VDRVERSNUM < 10503 || VDRVERSNUM >= 10505
+    //VDR >1.5.2 cant's set TTF width
+    Add(new cMenuEditIntItem(tr("Width"), &nWidth, 80, 120));
+#endif
     SetCurrent(Get(current));
   } else {
     cOsdItem *item = new cOsdItem(tr("No TrueType fonts installed!"));

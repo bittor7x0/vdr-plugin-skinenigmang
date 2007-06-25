@@ -16,15 +16,15 @@
 #ifdef HAVE_FREETYPE
 // needed for case-insensitive sort of vector (for fonts)
 struct NoCase {
-  bool operator()(const string& x, const string& y) {
-    string lv(x);
-    string rv(y);
+  bool operator()(const std::string& x, const std::string& y) {
+    std::string lv(x);
+    std::string rv(y);
     lcase(lv);
     lcase(rv);
     return lv < rv;
   }
 
-  void lcase(string& s) {
+  void lcase(std::string& s) {
     int n = s.size();
     for(int i = 0; i < n; i++)
       s[i] = tolower(s[i]);
@@ -78,7 +78,7 @@ void cEnigmaTextEffects::Action(void)
   mutexRunning.Lock();
   mutexSleep.Lock();
 
-  debug("cEnigmaTextEffects::Action() %p\n", pthread_self());
+  debug("cEnigmaTextEffects::Action() %lu", pthread_self());
 
   while (EnigmaConfig.useTextEffects && osd) {
     uint64_t nNow = cTimeMs::Now();
@@ -97,7 +97,7 @@ void cEnigmaTextEffects::Action(void)
       }
 
 //      printf("NOW=%llu NEXT=%llu DIFF=%d SLEEP=%d\n", nNow, e->nNextUpdate, (int)(e->nNextUpdate - nNow), nSleepMs);
-      int nDiff = max(3, (int)(e->nNextUpdate - nNow));
+      int nDiff = std::max(3, (int)(e->nNextUpdate - nNow));
       if (nSleepMs == 0 || nDiff < nSleepMs)
         nSleepMs = nDiff;
     }
@@ -107,12 +107,12 @@ void cEnigmaTextEffects::Action(void)
     TE_UNLOCK;
 
     if (osd) {
-//      printf("SLEEP1: %d, %p\n", nSleepMs, pthread_self());
+//      printf("SLEEP1: %d, %lu\n", nSleepMs, pthread_self());
       if (nSleepMs)
         condSleep.TimedWait(mutexSleep, nSleepMs);
       else
         condSleep.TimedWait(mutexSleep, EnigmaConfig.scrollPause); //TODO
-//      printf("SLEEP2: %d, %p\n", nSleepMs, pthread_self());
+//      printf("SLEEP2: %d, %lu\n", nSleepMs, pthread_self());
     }
   }
 
@@ -137,7 +137,7 @@ void cEnigmaTextEffects::DoEffect(tEffect *e, uint64_t nNow)
 
 void cEnigmaTextEffects::DoScroll(tEffect *e, uint64_t nNow, bool fDrawItem)
 {
-//  debug("cEnigmaTextEffects::DoScroll()\n");
+//  debug("cEnigmaTextEffects::DoScroll()");
   if (e->Font->Width(e->strText.c_str()) <= e->Width) {
     if (fDrawItem) {
       if (e->Skin)
@@ -196,7 +196,7 @@ void cEnigmaTextEffects::DoScroll(tEffect *e, uint64_t nNow, bool fDrawItem)
 
 void cEnigmaTextEffects::DoBlink(tEffect *e, uint64_t nNow, bool fDrawItem)
 {
-//  debug("cEnigmaTextEffects::DoBlink()\n");
+//  debug("cEnigmaTextEffects::DoBlink()");
   if (fDrawItem) {
     if (nNow) {
       e->nDirection = (e->nDirection == 0 ? 1 : 0);
@@ -218,13 +218,13 @@ bool cEnigmaTextEffects::Start(cOsd *o)
   if (!EnigmaConfig.useTextEffects)
     return false;
 
-  debug("cEnigmaTextEffects::Start(%p) %p\n", osd, pthread_self());
+  debug("cEnigmaTextEffects::Start(%p) %lu", osd, pthread_self());
 
   if (osd == NULL)
     return false;
 
   if (Running()) {
-    error("cEnigmaTextEffects::Start - already running\n");
+    error("cEnigmaTextEffects::Start - already running");
     return false; //TODO? maybe Cancel()
   }
 
@@ -238,7 +238,7 @@ void cEnigmaTextEffects::Stop(void)
 {
   //Must be TE_LOCKed by caller (calls TE_UNLOCK)
 
-  debug("cEnigmaTextEffects::Stop()\n");
+  debug("cEnigmaTextEffects::Stop()");
   osd = NULL;
   Clear();
   TE_UNLOCK;
@@ -249,7 +249,7 @@ void cEnigmaTextEffects::Stop(void)
 
 void cEnigmaTextEffects::Clear(void)
 {
-  debug("cEnigmaTextEffects::Clear()\n");
+  debug("cEnigmaTextEffects::Clear()");
 
   //Must be TE_LOCKed by caller
 
@@ -262,7 +262,7 @@ void cEnigmaTextEffects::Clear(void)
 
 void cEnigmaTextEffects::PauseEffects(int y)
 {
-  debug("cEnigmaTextEffects::PauseEffects(%d)\n", y);
+  debug("cEnigmaTextEffects::PauseEffects(%d)", y);
 
   //Must be TE_LOCKed by caller
 
@@ -271,7 +271,7 @@ void cEnigmaTextEffects::PauseEffects(int y)
 
 void cEnigmaTextEffects::ResetText(int i, tColor ColorFg, tColor ColorBg, bool fDraw)
 {
-  debug("cEnigmaTextEffects::ResetText(%d)\n", i);
+  debug("cEnigmaTextEffects::ResetText(%d)", i);
 
   //Must be TE_LOCKed by caller
 
@@ -288,11 +288,13 @@ void cEnigmaTextEffects::ResetText(int i, tColor ColorFg, tColor ColorBg, bool f
     delete(e);
     vecEffects[i] = NULL;
   }
+  if (i == (int)vecEffects.size() - 1)
+    vecEffects.resize(vecEffects.size() - 1);
 }
 
 void cEnigmaTextEffects::UpdateTextWidth(int i, int Width)
 {
-  debug("cEnigmaTextEffects::UpdateTextWidth(%d)\n", i);
+  debug("cEnigmaTextEffects::UpdateTextWidth(%d)", i);
 
   //Must be TE_LOCKed by caller
 
@@ -312,7 +314,7 @@ int cEnigmaTextEffects::DrawAnimatedTitle(int o_id, int action, const char *s, c
   if (Font == NULL || osd == NULL || skin == NULL)
     return -1;
 
-  debug("cEnigmaTextEffects::DrawAnimatedTitle(%d, %d, %s)\n", o_id, EnigmaConfig.useTextEffects, s);
+  debug("cEnigmaTextEffects::DrawAnimatedTitle(%d, %d, %s)", o_id, EnigmaConfig.useTextEffects, s);
 
   if (o_id >= 0) {
     // Update animated text
@@ -345,8 +347,7 @@ int cEnigmaTextEffects::DrawAnimatedTitle(int o_id, int action, const char *s, c
       effect->Font = Font;
       effect->Skin = skin;
       vecEffects.push_back(effect);
-      int id = vecEffects.size() - 1;
-      return id;
+      return vecEffects.size() - 1;
     } else {
       return -1;
     }
@@ -360,7 +361,7 @@ int cEnigmaTextEffects::DrawAnimatedText(int o_id, int action, int x, int y, con
   if (Font == NULL || osd == NULL)
     return -1;
 
-  debug("cEnigmaTextEffects::DrawAnimatedText(%d, %d, %s)\n", o_id, EnigmaConfig.useTextEffects, s);
+  debug("cEnigmaTextEffects::DrawAnimatedText(%d, %d, %s)", o_id, EnigmaConfig.useTextEffects, s);
 
   if (o_id >= 0) {
     // Update animated text
@@ -399,8 +400,7 @@ int cEnigmaTextEffects::DrawAnimatedText(int o_id, int action, int x, int y, con
     effect->Font = Font;
     effect->Alignment = Alignment;
     vecEffects.push_back(effect);
-    int id = vecEffects.size() - 1;
-    return id;
+    return vecEffects.size() - 1;
   }
 }
 #endif //DISABLE_ANIMATED_TEXT
@@ -415,10 +415,10 @@ const char **cEnigmaTextEffects::GetAvailTTFs(void)
     while ((e = d.Next()) != NULL) {
       if ((strcmp(e->d_name, ".") != 0) && (strcmp(e->d_name, "..") != 0)) {
         if (strcmp(e->d_name + strlen(e->d_name) - 4, ".ttf") == 0) {
-          debug("Loading %s\n", e->d_name);
+          debug("Loading %s", e->d_name);
           vecFonts.push_back(std::string(e->d_name));
         } else {
-          error("Ignoring non-font file: %s\n", e->d_name);
+          error("Ignoring non-font file: %s", e->d_name);
         }
       }
     }
@@ -428,7 +428,7 @@ const char **cEnigmaTextEffects::GetAvailTTFs(void)
       availTTFs = (char **)calloc(vecFonts.size() + 1, sizeof(char*));
       if (availTTFs) {
         char **ptr = availTTFs;
-        for (vector<std::string>::iterator i = vecFonts.begin(); i != vecFonts.end(); i++) {
+        for (std::vector<std::string>::iterator i = vecFonts.begin(); i != vecFonts.end(); i++) {
           if (!(*i).empty()) {
             *ptr = strdup((*i).c_str());
             ptr++;

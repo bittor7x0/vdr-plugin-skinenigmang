@@ -33,7 +33,7 @@ cEnigmaLogoCache::~cEnigmaLogoCache()
 
 bool cEnigmaLogoCache::Resize(unsigned int cacheSizeP)
 {
-  debug("cPluginSkinEnigma::Resize(%d)\n", cacheSizeP);
+  debug("cPluginSkinEnigma::Resize(%d)", cacheSizeP);
   // flush cache only if it's smaller than before
   if (cacheSizeP < cacheSizeM) {
     Flush();
@@ -74,7 +74,7 @@ bool cEnigmaLogoCache::DrawImage(const char *fileNameP, int x, int y, int w, int
 
   struct stat stbuf;
   if (lstat(fileNameP, &stbuf) != 0) {
-    error("cPluginSkinEnigma::LoadImage(%s) FILE NOT FOUND\n", fileNameP);
+    error("cPluginSkinEnigma::LoadImage(%s) FILE NOT FOUND", fileNameP);
     bitmapM = NULL;
     return false;
   }
@@ -107,7 +107,7 @@ bool cEnigmaLogoCache::LoadChannelLogo(const cChannel *Channel)
       strcpy(filename, "logos/");
       strcat(filename, logoname);
       if (!(fFoundLogo = Load(filename, ChannelLogoWidth, ChannelLogoHeight, false))) {
-        error("cPluginSkinEnigma::LoadChannelLogo: LOGO \"%s.xpm\" NOT FOUND in %s/[hq]logos\n", logoname, EnigmaConfig.GetLogoDir());
+        error("cPluginSkinEnigma::LoadChannelLogo: LOGO \"%s.xpm\" NOT FOUND in %s/[hq]logos", logoname, EnigmaConfig.GetLogoDir());
         fFoundLogo = Load("hqlogos/no_logo", ChannelLogoWidth, ChannelLogoHeight); //TODO? different default logo for channel/group?
       }
     }
@@ -137,15 +137,15 @@ bool cEnigmaLogoCache::Load(const char *fileNameP, int w, int h, bool fLogNotFou
   if (strFilename == NULL)
     return false;
 
-  debug("cPluginSkinEnigma::Load(%s)\n", strFilename);
+  debug("cPluginSkinEnigma::Load(%s)", strFilename);
   // does the logo exist already in map
   std::map < std::string, cBitmap * >::iterator i = cacheMapM.find(strFilename);
   if (i != cacheMapM.end()) {
     // yes - cache hit!
-    debug("cPluginSkinEnigma::Load() CACHE HIT!\n");
+    debug("cPluginSkinEnigma::Load() CACHE HIT!");
     // check if logo really exist
     if (i->second == NULL) {
-      debug("cPluginSkinEnigma::Load() EMPTY\n");
+      debug("cPluginSkinEnigma::Load() EMPTY");
       // empty logo in cache
       free(strFilename);
       return false;
@@ -153,7 +153,7 @@ bool cEnigmaLogoCache::Load(const char *fileNameP, int w, int h, bool fLogNotFou
     bitmapM = i->second;
   } else {
     // no - cache miss!
-    debug("cPluginSkinEnigma::Load() CACHE MISS!\n");
+    debug("cPluginSkinEnigma::Load() CACHE MISS!");
     // try to load xpm logo
     if (!LoadXpm(strFilename, w, h, fLogNotFound))
       return false;
@@ -162,7 +162,7 @@ bool cEnigmaLogoCache::Load(const char *fileNameP, int w, int h, bool fLogNotFou
       // update map
       if (cacheMapM.size() >= cacheSizeM) {
         // cache full - remove first
-        debug("cPluginSkinEnigma::Load() DELETE\n");
+        debug("cPluginSkinEnigma::Load() DELETE");
         if (cacheMapM.begin()->second != NULL) {
           // logo exists - delete it
           cBitmap *bmp = cacheMapM.begin()->second;
@@ -172,12 +172,12 @@ bool cEnigmaLogoCache::Load(const char *fileNameP, int w, int h, bool fLogNotFou
         cacheMapM.erase(cacheMapM.begin());
       }
       // insert logo into map
-      debug("cPluginSkinEnigma::Load() INSERT(%s)\n", strFilename);
+      debug("cPluginSkinEnigma::Load() INSERT(%s)", strFilename);
       cacheMapM.insert(std::make_pair(strFilename, bitmapM));
     }
     // check if logo really exist
     if (bitmapM == NULL) {
-      debug("cPluginSkinEnigma::Load() EMPTY\n");
+      debug("cPluginSkinEnigma::Load() EMPTY");
       // empty logo in cache
       free(strFilename);
       return false;
@@ -201,22 +201,22 @@ bool cEnigmaLogoCache::LoadXpm(const char *fileNameP, int w, int h, bool fLogNot
   cBitmap *bmp = new cBitmap(1, 1, 1);
 
   // create absolute filename
-  debug("cPluginSkinEnigma::LoadXpm(%s)\n", fileNameP);
+  debug("cPluginSkinEnigma::LoadXpm(%s)", fileNameP);
   // check validity
   if ((lstat(fileNameP, &stbuf) == 0) && bmp->LoadXpm(fileNameP)) {
     if ((bmp->Width() <= w) && (bmp->Height() <= h)) {
-      debug("cPluginSkinEnigma::LoadXpm(%s) LOGO FOUND\n", fileNameP);
+      debug("cPluginSkinEnigma::LoadXpm(%s) LOGO FOUND", fileNameP);
       // assign bitmap
       bitmapM = bmp;
       return true;
     } else {
       // wrong size
-      error("cPluginSkinEnigma::LoadXpm(%s) LOGO HAS WRONG SIZE %d/%d (%d/%d)\n", fileNameP, bmp->Width(), bmp->Height(), w, h);
+      error("cPluginSkinEnigma::LoadXpm(%s) LOGO HAS WRONG SIZE %d/%d (%d/%d)", fileNameP, bmp->Width(), bmp->Height(), w, h);
     }
   } else {
     // no xpm logo found
     if (fLogNotFound)
-      error("cPluginSkinEnigma::LoadXpm(%s) LOGO NOT FOUND\n", fileNameP);
+      error("cPluginSkinEnigma::LoadXpm(%s) LOGO NOT FOUND", fileNameP);
   }
 
   delete bmp;
@@ -226,10 +226,10 @@ bool cEnigmaLogoCache::LoadXpm(const char *fileNameP, int w, int h, bool fLogNot
 
 bool cEnigmaLogoCache::Flush(void)
 {
-  debug("cPluginSkinEnigma::Flush()\n");
+  debug("cPluginSkinEnigma::Flush()");
   // check if map is empty
   if (!cacheMapM.empty()) {
-    debug("cPluginSkinEnigma::Flush() NON-EMPTY\n");
+    debug("cPluginSkinEnigma::Flush() NON-EMPTY");
     // delete bitmaps and clear map
     for (std::map<std::string, cBitmap *>::iterator i = cacheMapM.begin(); i != cacheMapM.end(); i++) {
       delete((*i).second);

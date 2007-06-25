@@ -89,11 +89,11 @@ private:
 
   void Wakeup(void)
   {
-//    printf("WAKE1: %p\n", pthread_self());
+//    printf("WAKE1: %lu\n", pthread_self());
     mutexSleep.Lock();
     condSleep.Broadcast();
     mutexSleep.Unlock();
-//    printf("WAKE2: %p\n", pthread_self());
+//    printf("WAKE2: %lu\n", pthread_self());
   }
 #endif //DISABLE_ANIMATED_TEXT
 
@@ -120,16 +120,16 @@ public:
 
   void UpdateLock(void)
   { 
-//    printf("LOCK1: %p\n", pthread_self());
+//    printf("LOCK1: %lu\n", pthread_self());
     Lock();
-//    printf("LOCK2: %p\n", pthread_self());
+//    printf("LOCK2: %lu\n", pthread_self());
   }
 
   void UpdateUnlock(void)
   { 
-//    printf("UNLOCK1: %p\n", pthread_self());
+//    printf("UNLOCK1: %lu\n", pthread_self());
     Unlock();
-//    printf("UNLOCK2: %p\n", pthread_self());
+//    printf("UNLOCK2: %lu\n", pthread_self());
   }
 
   void RefreshEffects(void)

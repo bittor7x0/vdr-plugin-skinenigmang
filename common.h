@@ -13,16 +13,16 @@
 
 #include <vdr/config.h>
 
-// unset HAVE_FREETYPE if VDR version >=1.5.3
+// unset HAVE_FREETYPE if VDR 1.5.3
 #ifdef HAVE_FREETYPE
-#  if VDRVERSNUM > 10502
+#  if VDRVERSNUM == 10503
 #    undef HAVE_FREETYPE
 #  endif
 #endif
 
 #ifdef DEBUG
-#define debug(x...) printf("EnigmaNG: " x);
-#define error(x...) printf("EnigmaNG: " x);
+#define debug(x...) { printf("EnigmaNG: " x); printf("\n"); }
+#define error(x...) { fprintf(stderr, "EnigmaNG: " x); fprintf(stderr, "\n"); }
 #else
 #define debug(x...) ;
 #define error(x...) esyslog("EnigmaNG: " x);

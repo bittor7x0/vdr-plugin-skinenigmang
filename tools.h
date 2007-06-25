@@ -10,16 +10,6 @@
 
 #include "common.h"
 
-#ifdef min
-#undef min
-#endif
-#define min(x, y) (x < y ? x : y)
-
-#ifdef max
-#undef max
-#endif
-#define max(x, y) (x > y ? x : y)
-
 std::string parseaux(const char *str);
 bool ischaracters(const char *aux, const char *mask);
 

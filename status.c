@@ -25,7 +25,7 @@ cEnigmaStatus::cEnigmaStatus(void) : mReplayMode(replayNone),
 void cEnigmaStatus::Replaying(const cControl * /*Control */ , const char *Name,
                               const char *FileName, bool On)
 {
-  debug("cEnigmaStatus::Replaying(%s)\n", Name);
+  debug("cEnigmaStatus::Replaying(%s)", Name);
 
   if (Name != NULL) {
     mReplayMode = replayMPlayer;

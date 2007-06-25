@@ -11,6 +11,8 @@
 
 #include "common.h"
 
+#if VDRVERSNUM != 10503
+
 #include <map>
 #include <vector>
 #include <ft2build.h>
@@ -27,7 +29,9 @@ class cGraphtftFont
 {
 private:
 	typedef map<string,cFont*> cache_map;
+#if VDRVERSNUM < 10503
 	typedef map<string,cFont::tPixelData*> del_map;
+#endif
 	
 public:
 	cGraphtftFont();
@@ -39,12 +43,14 @@ public:
 	void Clear();
 
 private:
+#if VDRVERSNUM < 10503
 	FT_Library		_library;
 	FT_Face			_face;
 	FT_GlyphSlot		_slot;
-	cache_map 		_cache;
 	del_map			_del;
+#endif
+	cache_map 		_cache;
 
 };
-
+#endif // VDRVERSNUM != 10503
 #endif // VDR__GRAPHTFTFONT_H

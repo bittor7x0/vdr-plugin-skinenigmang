@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.14 2007/06/11 06:57:47 amair Exp $
+# $Id: Makefile,v 1.16 2007/06/25 10:44:11 amair Exp $
 
 # If you are using the epgsearch plugin and want to see the number of
 # timer conflicts in the main menu's info area.
@@ -66,7 +66,8 @@ LIBDIR = ../../lib
 TMPDIR = /tmp
 
 ### Allow user defined options to overwrite defaults:
-
+#TODO
+CLEAR_BUG_WORKAROUND = 1
 -include $(VDRDIR)/Make.config
 
 ### The version number of VDR's plugin API (taken from VDR's "config.h"):
@@ -111,6 +112,10 @@ DEFINES += -DRECORDING_COVER='"Cover-Enigma"'
 
 ifdef SKINENIGMA_DISABLE_ANIMATED_TEXT
 DEFINES += -DDISABLE_ANIMATED_TEXT
+endif
+
+ifdef CLEAR_BUG_WORKAROUND
+DEFINES += -DCLEAR_BUG_WORKAROUND
 endif
 
 DEFINES += -DSKINENIGMA_FONTS=$(SKINENIGMA_FONTS)

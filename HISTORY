@@ -1,6 +1,17 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
+2007-06-25: Version 0.0.5rc3
+- Updated Finnish translation (Submitted by Rolf Ahrenberg).
+- Added quickepgsearch, sport and music plugins in main menu logos (Submitted by zulu @vdr-portal.de).
+- Reworked debug() and error().
+- Use required width of date for calculation of logo area with.
+- Don't let vector for text effects grow when moving through lists in menus.
+- Added internal translation of long weeksdays (Requested and translated by Pat @vdr-portal.de).
+- Support TrueTypeFonts again with VDR >=v1.5.4 (TTF width setup disabled).
+- Read OSD size from VDR's cOsd as suggested in VDR and Avards plugin.
+- Minor bugfixes and enhancements.
+
 2007-06-18: Version 0.0.5rc2
 - Added Italian translation (Submitted by Gringo).
 - Changed logging to only report missing channel logos once.

@@ -24,7 +24,9 @@ const char *imageExtensionTexts[NUM_IMAGEEXTENSIONTEXTS] = { "xpm", "jpg", "png"
 cEnigmaConfig EnigmaConfig;
 
 #ifdef HAVE_FREETYPE
+# if VDRVERSNUM != 10503
 cGraphtftFont FontCache;
+# endif
 #endif
 
 FontConfig allFontConfig[FONT_NUMFONTS] =
@@ -73,12 +75,15 @@ cEnigmaConfig::cEnigmaConfig() : showAuxInfo(1), showLogo(1), showVps(1), showSy
       case FONT_CILANGUAGE:
       case FONT_DETAILSSUBTITLE:
         allFonts[id].VdrId = fontSml + 1;
+        allFonts[id].Default = fontSml;
         break;
       case FONT_FIXED:
         allFonts[id].VdrId = fontFix + 1;
+        allFonts[id].Default = fontFix;
         break;
       default:
         allFonts[id].VdrId = fontOsd + 1;
+        allFonts[id].Default = fontOsd;
     }
     memset(allFonts[id].Name, 0, sizeof(allFonts[id].Name));
     allFonts[id].Width = 100;
@@ -93,7 +98,7 @@ cEnigmaConfig::~cEnigmaConfig()
 void cEnigmaConfig::SetLogoDir(const char *logodirP)
 {
   if (logodirP) {
-    debug("cEnigmaConfig::SetLogoDir(%s)\n", logodirP);
+    debug("cEnigmaConfig::SetLogoDir(%s)", logodirP);
     strncpy(logoDir, logodirP, sizeof(logoDir));
   }
 }
@@ -101,7 +106,7 @@ void cEnigmaConfig::SetLogoDir(const char *logodirP)
 void cEnigmaConfig::SetImagesDir(const char *dir)
 {
   if (dir) {
-    debug("cEnigmaConfig::SetImagesDir(%s)\n", dir);
+    debug("cEnigmaConfig::SetImagesDir(%s)", dir);
     strncpy(strImagesDir, dir, sizeof(strImagesDir));
   }
 }
@@ -119,7 +124,7 @@ const char *cEnigmaConfig::GetImageExtension(void)
 void cEnigmaConfig::SetFontsDir(const char *dir)
 {
   if (dir) {
-    debug("cEnigmaConfig::SetFontsDir(%s)\n", dir);
+    debug("cEnigmaConfig::SetFontsDir(%s)", dir);
     strncpy(strFontsDir, dir, sizeof(strFontsDir));
   }
 }
@@ -128,24 +133,32 @@ void cEnigmaConfig::SetFontsDir(const char *dir)
 const cFont *cEnigmaConfig::GetFont(int id)
 {
   const cFont *res = NULL;
-  if (allFonts[id].VdrId == FONT_TRUETYPE) {
+  if (::Setup.UseSmallFont == 1) { // if "Use small font" == "skin dependent"
+    if (allFonts[id].VdrId == FONT_TRUETYPE) {
+      if (!isempty(allFonts[id].Name)) {
 #ifdef HAVE_FREETYPE
-    char *cachename;
-    asprintf(&cachename, "%s_%d_%d_%d", allFonts[id].Name, allFonts[id].Size, allFonts[id].Width, Setup.OSDLanguage);
-    if (FontCache.Load(string(strFontsDir) + "/" + string(allFonts[id].Name), cachename, allFonts[id].Size, Setup.OSDLanguage, allFonts[id].Width)) {
-      res = FontCache.GetFont(cachename);
-    } else {
-      error("ERROR: EnigmaNG: Couldn't load font %s:%d", allFonts[id].Name, allFonts[id].Size);
-    }
-    free(cachename);
+        char *cachename;
+        asprintf(&cachename, "%s_%d_%d_%d", allFonts[id].Name, allFonts[id].Size, allFonts[id].Width, Setup.OSDLanguage);
+        if (FontCache.Load(string(strFontsDir) + "/" + string(allFonts[id].Name), cachename, allFonts[id].Size, Setup.OSDLanguage, allFonts[id].Width)) {
+          res = FontCache.GetFont(cachename);
+        } else {
+          error("ERROR: EnigmaNG: Couldn't load font %s:%d", allFonts[id].Name, allFonts[id].Size);
+        }
+        free(cachename);
 #else
-    error("ERROR: EnigmaNG: Font engine not enabled at compile time!");
+        error("ERROR: EnigmaNG: Font engine not enabled at compile time!");
 #endif
-  } else if (allFonts[id].VdrId > FONT_TRUETYPE) {
-    res = cFont::GetFont((eDvbFont)(allFonts[id].VdrId - 1));
-  } else {
-    res = cFont::GetFont((eDvbFont)allFonts[id].VdrId);
+      }
+    } else if (allFonts[id].VdrId > FONT_TRUETYPE) {
+      res = cFont::GetFont((eDvbFont)(allFonts[id].VdrId - 1));
+    } else {
+      res = cFont::GetFont((eDvbFont)allFonts[id].VdrId);
+    }
   }
+
+  if (res == NULL)
+    res = cFont::GetFont((eDvbFont)allFonts[id].Default);
+
   if (res)
     return res;
   else
@@ -157,7 +170,7 @@ void cEnigmaConfig::SetFont(int id, const char *font)
   if (id >= 0 && id < FONT_NUMFONTS && font) {
     char *tmp = strrchr(font, ':');
     if (tmp) {
-      strncpy(allFonts[id].Name, font, min((int)sizeof(allFonts[id].Name), tmp - font));
+      strncpy(allFonts[id].Name, font, std::min((int)sizeof(allFonts[id].Name), tmp - font));
       allFonts[id].Size = atoi(tmp + 1);
       tmp = strchr(tmp + 1, ',');
       if (tmp) {
@@ -186,7 +199,15 @@ void cEnigmaConfig::GetOsdSize(struct EnigmaOsdSize *size)
   size->w = Setup.OSDWidth;
   size->h = Setup.OSDHeight;
 
-#ifdef USE_PLUGIN_AVARDS
+#if VDRVERSNUM >= 10504
+  if (dynOsd) {
+    size->y = cOsd::OsdTop();
+    size->x = cOsd::OsdLeft();
+    size->w = cOsd::OsdWidth();
+    size->h = cOsd::OsdHeight();
+  }
+#else    
+# ifdef USE_PLUGIN_AVARDS
   if (dynOsd) {
     cPlugin *p = cPluginManager::GetPlugin("avards");
     if (p) {
@@ -199,6 +220,7 @@ void cEnigmaConfig::GetOsdSize(struct EnigmaOsdSize *size)
       }
     }
   }
-#endif
+# endif
+#endif //VDRVERSNUM >= 10504
 }
 // vim:et:sw=2:ts=2:
