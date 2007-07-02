@@ -24,7 +24,7 @@
 #warning "YOU NEED A PATCHED VDR 1.5.3 OR EnigmaNG WILL CRASH!"
 #endif
 
-static const char VERSION[] = "0.0.5rc3";
+static const char VERSION[] = "0.0.5";
 static const char DESCRIPTION[] = "EnigmaNG skin";
 
 class cPluginSkinEnigma : public cPlugin {

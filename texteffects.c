@@ -138,12 +138,13 @@ void cEnigmaTextEffects::DoEffect(tEffect *e, uint64_t nNow)
 void cEnigmaTextEffects::DoScroll(tEffect *e, uint64_t nNow, bool fDrawItem)
 {
 //  debug("cEnigmaTextEffects::DoScroll()");
-  if (e->Font->Width(e->strText.c_str()) <= e->Width) {
+  const cFont *Font = EnigmaConfig.GetFont(e->FontId, e->Font);
+  if (Font->Width(e->strText.c_str()) <= e->Width) {
     if (fDrawItem) {
       if (e->Skin)
         e->Skin->DrawTitle(e->strText.c_str());
       else
-        osd->DrawText(e->x, e->y, e->strText.c_str(), e->ColorFg, e->ColorBg, e->Font, e->Width, e->Height, e->Alignment);
+        osd->DrawText(e->x, e->y, e->strText.c_str(), e->ColorFg, e->ColorBg, Font, e->Width, e->Height, e->Alignment);
     }
 
     if (nNow)
@@ -156,7 +157,7 @@ void cEnigmaTextEffects::DoScroll(tEffect *e, uint64_t nNow, bool fDrawItem)
     if (fDrawItem) {
       switch (e->nDirection) {
         case 0: // Scroll from left to right
-          if (e->Font->Width(e->strText.c_str() + e->nOffset) <= e->Width) {
+          if (Font->Width(e->strText.c_str() + e->nOffset) <= e->Width) {
             if (EnigmaConfig.scrollMode)
               e->nDirection = 2;
             else
@@ -186,26 +187,27 @@ void cEnigmaTextEffects::DoScroll(tEffect *e, uint64_t nNow, bool fDrawItem)
   }
 
   if (fDrawItem) {
-//    printf("SCROLL: %d %d %d/%d (%s) %d %lu %lu\n", e->nOffset, e->nDirection, e->Font->Width(e->strText.c_str() + e->nOffset), e->Width, e->strText.c_str() + e->nOffset, e->strText.length(), nNow, e->nNextUpdate);
+//    printf("SCROLL: %d %d %d/%d (%s) %d %lu %lu\n", e->nOffset, e->nDirection, Font->Width(e->strText.c_str() + e->nOffset), e->Width, e->strText.c_str() + e->nOffset, e->strText.length(), nNow, e->nNextUpdate);
     if (e->Skin)
       e->Skin->DrawTitle(e->strText.c_str() + e->nOffset);
     else
-      osd->DrawText(e->x, e->y, e->strText.c_str() + e->nOffset, e->ColorFg, e->ColorBg, e->Font, e->Width, e->Height);
+      osd->DrawText(e->x, e->y, e->strText.c_str() + e->nOffset, e->ColorFg, e->ColorBg, Font, e->Width, e->Height);
   }
 }
 
 void cEnigmaTextEffects::DoBlink(tEffect *e, uint64_t nNow, bool fDrawItem)
 {
 //  debug("cEnigmaTextEffects::DoBlink()");
+  const cFont *Font = EnigmaConfig.GetFont(e->FontId, e->Font);
   if (fDrawItem) {
     if (nNow) {
       e->nDirection = (e->nDirection == 0 ? 1 : 0);
       e->nNextUpdate = nNow + EnigmaConfig.blinkPause;
     }
     if (e->nDirection == 1)
-      osd->DrawText(e->x, e->y, e->strText.c_str() + e->nOffset, e->ColorFg, e->ColorBg, e->Font, e->Width, e->Height, e->Alignment);
+      osd->DrawText(e->x, e->y, e->strText.c_str() + e->nOffset, e->ColorFg, e->ColorBg, Font, e->Width, e->Height, e->Alignment);
     else
-      osd->DrawText(e->x, e->y, e->strText.c_str() + e->nOffset, e->ColorBg, e->ColorBg, e->Font, e->Width, e->Height, e->Alignment);
+      osd->DrawText(e->x, e->y, e->strText.c_str() + e->nOffset, e->ColorBg, e->ColorBg, Font, e->Width, e->Height, e->Alignment);
   } else {
     e->nNextUpdate = nNow + EnigmaConfig.blinkPause;
   }
@@ -280,11 +282,13 @@ void cEnigmaTextEffects::ResetText(int i, tColor ColorFg, tColor ColorBg, bool f
 
   tEffect *e = vecEffects[i];
   if (e) {
-    if (fDraw && osd)
+    if (fDraw && osd) {
+      const cFont *Font = EnigmaConfig.GetFont(e->FontId, e->Font);
       osd->DrawText(e->x, e->y, e->strText.c_str(),
                     ColorFg ? ColorFg : e->ColorFg,
                     ColorBg ? ColorBg : e->ColorBg,
-                    e->Font, e->Width, e->Height);
+                    Font, e->Width, e->Height);
+    }
     delete(e);
     vecEffects[i] = NULL;
   }
@@ -307,11 +311,11 @@ void cEnigmaTextEffects::UpdateTextWidth(int i, int Width)
   }
 }
 
-int cEnigmaTextEffects::DrawAnimatedTitle(int o_id, int action, const char *s, const cFont *Font, int Width, cSkinEnigmaOsd *skin)
+int cEnigmaTextEffects::DrawAnimatedTitle(int o_id, int action, const char *s, int Width, cSkinEnigmaOsd *skin)
 {
   //Must be TE_LOCKed by caller
 
-  if (Font == NULL || osd == NULL || skin == NULL)
+  if (osd == NULL || skin == NULL)
     return -1;
 
   debug("cEnigmaTextEffects::DrawAnimatedTitle(%d, %d, %s)", o_id, EnigmaConfig.useTextEffects, s);
@@ -334,6 +338,7 @@ int cEnigmaTextEffects::DrawAnimatedTitle(int o_id, int action, const char *s, c
     }
   } else {
     skin->DrawTitle(s);
+    const cFont *Font = EnigmaConfig.GetFont(FONT_OSDTITLE);
     if (EnigmaConfig.useTextEffects && ((Font->Width(s ? s : "") > Width) || (action > 0))) {
       // New scrolling text
       tEffect *effect = new tEffect;
@@ -344,6 +349,7 @@ int cEnigmaTextEffects::DrawAnimatedTitle(int o_id, int action, const char *s, c
       effect->nAction = action;
       effect->strText = std::string(s ? s : "");
       effect->Width = Width;
+      effect->FontId = FONT_OSDTITLE;;
       effect->Font = Font;
       effect->Skin = skin;
       vecEffects.push_back(effect);
@@ -354,11 +360,11 @@ int cEnigmaTextEffects::DrawAnimatedTitle(int o_id, int action, const char *s, c
   }
 }
 
-int cEnigmaTextEffects::DrawAnimatedText(int o_id, int action, int x, int y, const char *s, tColor ColorFg, tColor ColorBg, const cFont *Font, int Width, int Height, int Alignment)
+int cEnigmaTextEffects::DrawAnimatedText(int o_id, int action, int x, int y, const char *s, tColor ColorFg, tColor ColorBg, int FontId, int Width, int Height, int Alignment)
 {
   //Must be TE_LOCKed by caller
 
-  if (Font == NULL || osd == NULL)
+  if (osd == NULL)
     return -1;
 
   debug("cEnigmaTextEffects::DrawAnimatedText(%d, %d, %s)", o_id, EnigmaConfig.useTextEffects, s);
@@ -380,6 +386,7 @@ int cEnigmaTextEffects::DrawAnimatedText(int o_id, int action, int x, int y, con
       return -1;
     }
   } else {
+    const cFont *Font = EnigmaConfig.GetFont(FontId);
     if (Height == 0)
       Height = Font->Height(s);
     osd->DrawText(x, y, s ? s : "", ColorFg, ColorBg, Font, Width, Height, Alignment);
@@ -397,6 +404,7 @@ int cEnigmaTextEffects::DrawAnimatedText(int o_id, int action, int x, int y, con
     effect->Height = Height;
     effect->ColorFg = ColorFg;
     effect->ColorBg = ColorBg;
+    effect->FontId = FontId;
     effect->Font = Font;
     effect->Alignment = Alignment;
     vecEffects.push_back(effect);

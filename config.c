@@ -48,7 +48,7 @@ FontConfig allFontConfig[FONT_NUMFONTS] =
   { FONT_DETAILSDATE,       "FontDetailsDate",       "FontDetailsDateName" },
   { FONT_DETAILSTEXT,       "FontDetailsText",       "FontDetailsTextName" },
   { FONT_REPLAYTIMES,       "FontReplayTimes",       "FontReplayTimesName" },
-  { FONT_FIXED,             "FontFixed",             "FontFixed" }
+  { FONT_FIXED,             "FontFixed",             "FontFixedName" }
 };
 
 cEnigmaConfig::cEnigmaConfig() : showAuxInfo(1), showLogo(1), showVps(1), showSymbols(1),
@@ -130,11 +130,13 @@ void cEnigmaConfig::SetFontsDir(const char *dir)
 }
 #endif
 
-const cFont *cEnigmaConfig::GetFont(int id)
+const cFont *cEnigmaConfig::GetFont(int id, const cFont *pFontCur)
 {
   const cFont *res = NULL;
   if (::Setup.UseSmallFont == 1) { // if "Use small font" == "skin dependent"
     if (allFonts[id].VdrId == FONT_TRUETYPE) {
+      if (pFontCur) // TTFs can't get patched, so it's always save to return the previous pointer
+        return pFontCur;
       if (!isempty(allFonts[id].Name)) {
 #ifdef HAVE_FREETYPE
         char *cachename;
@@ -170,7 +172,7 @@ void cEnigmaConfig::SetFont(int id, const char *font)
   if (id >= 0 && id < FONT_NUMFONTS && font) {
     char *tmp = strrchr(font, ':');
     if (tmp) {
-      strncpy(allFonts[id].Name, font, std::min((int)sizeof(allFonts[id].Name), tmp - font));
+      strncpy(allFonts[id].Name, font, std::min((int)sizeof(allFonts[id].Name), (int)(tmp - font)));
       allFonts[id].Size = atoi(tmp + 1);
       tmp = strchr(tmp + 1, ',');
       if (tmp) {

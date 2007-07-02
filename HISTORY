@@ -1,6 +1,14 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
+2007-07-02: Version 0.0.5
+- Reworked font handling in menu OSD a little bit to (hopefully) fix crashes with plugins that patch fonts.
+- Updated Nederlands translation (Provided by dorpsgek @vdr-portal.de).
+- Don't make info area in mainmenu too small (Requested by vdrchuck @vdr-portal.de).
+- Save and restore TTF FixedFont (Reported by zulu @vdr-portal.de).
+- Updated Italian translation (Provided by Gringo).
+- Updated French translation (Provided by Pat @vdr-portal.de).
+
 2007-06-25: Version 0.0.5rc3
 - Updated Finnish translation (Submitted by Rolf Ahrenberg).
 - Added quickepgsearch, sport and music plugins in main menu logos (Submitted by zulu @vdr-portal.de).

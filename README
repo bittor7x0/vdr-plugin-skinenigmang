@@ -32,6 +32,8 @@ There are some configuration items you need to set before running
 SKINENIGMA_HAVE_EPGSEARCH = 1
 If you are using the epgsearch plugin and want to see the number of
 timer conflicts in the main menu's info area.
+NOTE: This requires the sources of the epgsearch Plugin beside the
+EnigmaNG sources!
 
 SKINENIGMA_NO_MENULOGO = 1
 This turns usage of logos in the main menu complete. This might also
@@ -203,6 +205,7 @@ Setup Options
   requested flag file exists. Else language's abbreviation is drawn.
 
 - Show mail icon (never/only if new mail present/always)
+  (NOTE: only visible if mailbox plugin support is compiled in and plugin is loaded!)
   Enables mail icon in channel info.
 
 - Show event/recording images
@@ -300,9 +303,11 @@ Setup Options
 - Details: date
 - Details: text
 - Replay: times
+- Fixed Font
   Set the font for the named area.
   If you have set HAVE_FREETYPE you can set the TrueTypeFont to use by pressing
-  the blue key.
+  the blue key. Then you can select one of the TrueTypeFonts found in EnigmaNG's
+  font directory (see above) and set it's size and width.
 
 * EPGSearch 
   NOTE: only visible if epgsearch support is compiled in

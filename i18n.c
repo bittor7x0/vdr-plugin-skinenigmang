@@ -8,14 +8,16 @@
  *  - English:    Andreas Mair <andreas _@_ vdr-developer.org>
  *  - Deutsch:    Andreas Mair <andreas _@_ vdr-developer.org>
  *  - Italiano:   Gringo <vdr-italian _@_ tiscali.it>
- *  - Nederlands: ???
+ *  - Nederlands: dorpsgek @vdr-portal.de
  *  - Français:   Patrice Staudt <pat @vdr-portal.de>
  *  - Finnish:    Rolf Ahrenberg <rofafor @vdr-portal.de>
  *  - Polski:     ???
  *  - Español:    ???
  *  - Svenska:    ???
- *  - Russian:    ???
+ *  - Russian:    SergArb @vdr-portal.de / neptunvasja @vdr-portal.de
  *  - Eesti:      ???
+ *  - Dansk:      ???
+ *  - Czech:      ???
  *
  */
 
@@ -381,7 +383,7 @@ const tI18nPhrase Phrases[] = {
    "Mostra loghi canali",       // Italiano
    "Toon kanaallogo's",         // Nederlands
    "",                          // Português
-   "Afficher logo des chaînes", // Français
+   "Afficher logos des chaînes", // Français
    "",                          // Norsk
    "Näytä kanavalogot",         // suomi (Finnish)
    "Pokazuj logo kana³u",       // Polski
@@ -469,7 +471,7 @@ const tI18nPhrase Phrases[] = {
    "Dimensione cache dei loghi",// Italiano
    "Kanaallogo cache",          // Nederlands
    "",                          // Português
-   "Taille du cache des logo",  // Français
+   "Taille du cache des logos",  // Français
    "",                          // Norsk
    "Välimuistin koko kanavalogoille",   // suomi (Finnish)
    "Rozmiar cache dla logo kana³u",     // Polski
@@ -579,7 +581,7 @@ const tI18nPhrase Phrases[] = {
    "Mostra informazione ausiliare",     // Italiano
    "Toon hulp informatie",      // Nederlands
    "",                          // Português
-   "Afficher information auxiliaire",   // Français
+   "Afficher informations auxiliaires",   // Français
    "",                          // Norsk
    "Näytä lisätiedot",          // suomi (Finnish)
    "Pokazuj informacje pomocnicze",     // Polski
@@ -667,7 +669,7 @@ const tI18nPhrase Phrases[] = {
    "Mostra area info nel menu principale",   // Italiano
    "Info in hoofdmenu",         // Nederlands
    "",                          // Português
-   "Surface d'infos dans le menu principale",  // Français
+   "Surface d'infos dans le menu principal",  // Français
    "",                          // Norsk
    "Näytä infoalue päävalikossa", // suomi (Finnish)
    "",                          // Polski
@@ -887,7 +889,7 @@ const tI18nPhrase Phrases[] = {
    "*** Canale non valido ***", // Italiano
    "*** Ongeldig Kanaal ***",   // Nederlands
    "",                          // Português
-   "*** Chaînes non valable ***",  // Français
+   "*** Chaîne non valable ***",  // Français
    "",                          // Norsk
    "*** Virheellinen kanava ***", // suomi (Finnish)
    "",                          // Polski
@@ -995,9 +997,9 @@ const tI18nPhrase Phrases[] = {
    "Einen 8bpp Bereich versuchen", // Deutsch
    "",                          // Slovenski
    "Prova area singola a 8bpp", // Italiano
-   "",                          // Nederlands
+   "Op 8bpp bereik testen",     // Nederlands
    "",                          // Português
-   "",                          // Français
+   "Essayer une surface à 8bpp",// Français
    "",                          // Norsk
    "Suosi yhtä 8bpp kuva-aluetta", // suomi (Finnish)
    "",                          // Polski
@@ -1173,7 +1175,7 @@ const tI18nPhrase Phrases[] = {
    "Usa sottotitolo per ripetizioni",         // Italiano
    "Gebr. ondertitlel voor herh.", // Nederlands
    "",                          // Português
-   "Utilise sous-titre pour les répétitions", // Français
+   "Utilise sous-titres pour les répétitions", // Français
    "",                          // Norsk
    "Käytä lyhyttä kuvausta uusinnoille", // suomi (Finnish)
    "",                          // Polski
@@ -1305,7 +1307,7 @@ const tI18nPhrase Phrases[] = {
    "Mostra dimensione delle registrazioni",      // Italiano
    "Opnamegrootte tonen",       // Nederlands
    "",                          // Português
-   "Afficher la taille des l'enregistrements",   // Français
+   "Afficher la taille des enregistrements",   // Français
    "",                          // Norsk
    "Näytä tallenteen koko",     // suomi (Finnish)
    "",                          // Polski
@@ -1371,7 +1373,7 @@ const tI18nPhrase Phrases[] = {
    "ingrandisci immagine",      // Italiano
    "zoomen",                    // Nederlands
    "",                          // Português
-   "Agrandit image",            // Français
+   "Agrandir image",            // Français
    "",                          // Norsk
    "zoomaus",                   // suomi (Finnish)
    "",                          // Polski
@@ -1415,7 +1417,7 @@ const tI18nPhrase Phrases[] = {
    "  Ridimensiona immagini",   // Italiano
    "  Aanpassen beeldgrootte",  // Nederlands
    "",                          // Português
-   "  Redimension les images",  // Français
+   "  Redimensionne les images",  // Français
    "",                          // Norsk
    "  Muokkaa kuvien kokoa",    // suomi (Finnish)
    "",                          // Polski
@@ -1503,7 +1505,7 @@ const tI18nPhrase Phrases[] = {
    "Lunghezza titolo completo", // Italiano
    "Volle titelbreedte",        // Nederlands
    "",                          // Português
-   "Largeur total pour le titre", // Français
+   "Largeur totale pour le titre", // Français
    "",                          // Norsk
    "Levitä otsikkopalkki",      // suomi (Finnish)
    "",                          // Polski
@@ -1526,7 +1528,7 @@ const tI18nPhrase Phrases[] = {
    "Mostra icona email",        // Italiano
    "Mail-ikoon tonen",          // Nederlands
    "",                          // Português
-   "Affiche l'icone courriel",  // Français
+   "Afficher l'icône courriel",  // Français
    "",                          // Norsk
    "Näytä sähköpostikuvake",    // suomi (Finnish)
    "",                          // Polski
@@ -1570,7 +1572,7 @@ const tI18nPhrase Phrases[] = {
    "Bewegter Text",             // Deutsch
    "",                          // Slovenski
    "Testo animato",             // Italiano
-   "",                          // Nederlands
+   "Geanimeerde tekst",         // Nederlands
    "",                          // Português
    "Texte défilant",            // Français
    "",                          // Norsk
@@ -1592,7 +1594,7 @@ const tI18nPhrase Phrases[] = {
    "Verwenden",                 // Deutsch
    "",                          // Slovenski
    "Abilita",                   // Italiano
-   "",                          // Nederlands
+   "Toelaten",                  // Nederlands
    "",                          // Português
    "Permettre",                 // Français
    "",                          // Norsk
@@ -1614,7 +1616,7 @@ const tI18nPhrase Phrases[] = {
    "  Scroll-Verhalten",        // Deutsch
    "",                          // Slovenski
    "  Comportamento scorrimento",// Italiano
-   "",                          // Nederlands
+   "  Scroll gedrag",            // Nederlands
    "",                          // Português
    "  Comportement de défilement", // Français
    "",                          // Norsk
@@ -1636,7 +1638,7 @@ const tI18nPhrase Phrases[] = {
    "nach links",                // Deutsch
    "",                          // Slovenski
    "verso la sinistra",         // Italiano
-   "",                          // Nederlands
+   "naar links",                // Nederlands
    "",                          // Português
    "vers la gauche",            // Français
    "",                          // Norsk
@@ -1658,7 +1660,7 @@ const tI18nPhrase Phrases[] = {
    "links und rechts",          // Deutsch
    "",                          // Slovenski
    "sinistra e destra",         // Italiano
-   "",                          // Nederlands
+   "links en rechts",           // Nederlands
    "",                          // Português
    "gauche et droite",          // Français
    "",                          // Norsk
@@ -1680,7 +1682,7 @@ const tI18nPhrase Phrases[] = {
    "  Scroll-Verzögerung (ms)", // Deutsch
    "",                          // Slovenski
    "  Ritardo scorrimento (ms)",// Italiano
-   "",                          // Nederlands
+   "  Scrollvertraging (ms)",   // Nederlands
    "",                          // Português
    "  Délai de défilement (ms)",// Français
    "",                          // Norsk
@@ -1702,7 +1704,7 @@ const tI18nPhrase Phrases[] = {
    "  Scroll-Pause (ms)",       // Deutsch
    "",                          // Slovenski
    "  Pausa scorrimento (ms)",  // Italiano
-   "",                          // Nederlands
+   "  Scrollpause (ms)",        // Nederlands
    "",                          // Português
    "  Pause de défilement (ms)",// Français
    "",                          // Norsk
@@ -1724,7 +1726,7 @@ const tI18nPhrase Phrases[] = {
    "  Blink-Pause (ms)",        // Deutsch
    "",                          // Slovenski
    "  Pausa lampeggiante (ms)", // Italiano
-   "",                          // Nederlands
+   "  Blinkpauze (ms)",         // Nederlands
    "",                          // Português
    "  Pause de clignotement (ms)",// Français
    "",                          // Norsk
@@ -1746,9 +1748,9 @@ const tI18nPhrase Phrases[] = {
    "  OSD Titel scrollen",      // Deutsch
    "",                          // Slovenski
    "  Scorri titolo OSD",       // Italiano
-   "",                          // Nederlands
+   "  OSD titel scrollen",      // Nederlands
    "",                          // Português
-   "  Défillement dans le titre du OSD",  // Français
+   "  Défilement dans le titre du OSD",  // Français
    "",                          // Norsk
    "  Vieritä valikon otsikkoa",// suomi (Finnish)
    "",                          // Polski
@@ -1768,7 +1770,7 @@ const tI18nPhrase Phrases[] = {
    "  Infobereich scrollen",    // Deutsch
    "",                          // Slovenski
    "  Scorri informazioni area",// Italiano
-   "",                          // Nederlands
+   "  Infobereik scrollen",     // Nederlands
    "",                          // Português
    "  Barre de défilement dans la surface info",   // Français
    "",                          // Norsk
@@ -1790,7 +1792,7 @@ const tI18nPhrase Phrases[] = {
    "  Aktive Listenzeile scrollen", // Deutsch
    "",                          // Slovenski
    "  Scorri valori lista attivi",// Italiano
-   "",                          // Nederlands
+   "  Lijst aktieve punten scrollen",  // Nederlands
    "",                          // Português
    "  Barre de défilement dans la liste active",  // Français
    "",                          // Norsk
@@ -1812,9 +1814,9 @@ const tI18nPhrase Phrases[] = {
    "  Andere Bereiche scrollen", // Deutsch
    "",                          // Slovenski
    "  Scorri altri valori",     // Italiano
-   "",                          // Nederlands
+   "  Ander bereik scrollen",   // Nederlands
    "",                          // Português
-   "  Barre de défilement dans d'autre partie",  // Français
+   "  Barre de défilement dans d'autres parties",  // Français
    "",                          // Norsk
    "  Vieritä muita alueita",   // suomi (Finnish)
    "",                          // Polski
@@ -1835,7 +1837,7 @@ const tI18nPhrase Phrases[] = {
    "  Symbole im Menü",         // Deutsch
    "",                          // Slovenski
    "  Mostra simboli nel menu", // Italiano
-   "",                          // Nederlands
+   "  Symbolen in menu",   // Nederlands
    "",                          // Português
    "  dans le menu",  		// Français
    "",                          // Norsk
@@ -1857,7 +1859,7 @@ const tI18nPhrase Phrases[] = {
    "  Symbole bei der Wiedergabe", // Deutsch
    "",                          // Slovenski
    "  Mostra simboli in esecuzione",// Italiano
-   "",                          // Nederlands
+   "  Symbolen bij weergave",   // Nederlands
    "",                          // Português
    "  dans lecture",		// Français
    "",                          // Norsk
@@ -1879,7 +1881,7 @@ const tI18nPhrase Phrases[] = {
    "  Symbole bei den Meldungen", // Deutsch
    "",                          // Slovenski
    "  Mostra simboli nei messaggi",// Italiano
-   "",                          // Nederlands
+   "  Symbolen bij berichten",  // Nederlands
    "",                          // Português
    "  dans les messages", 	// Français
    "",                          // Norsk
@@ -1901,7 +1903,7 @@ const tI18nPhrase Phrases[] = {
    "  Symbole bei Audio",       // Deutsch
    "",                          // Slovenski
    "  Mostra simboli in audio", // Italiano
-   "",                          // Nederlands
+   "  Symbolen bij audio",      // Nederlands
    "",                          // Português
    "  dans audio",        	// Français
    "",                          // Norsk
@@ -1923,7 +1925,7 @@ const tI18nPhrase Phrases[] = {
    "Fonts",                     // Deutsch
    "",                          // Slovenski
    "Caratteri",                 // Italiano
-   "",                          // Nederlands
+   "Fonts",                     // Nederlands
    "",                          // Português
    "Les polices",               // Français
    "",                          // Norsk
@@ -1945,9 +1947,9 @@ const tI18nPhrase Phrases[] = {
    "OSD Titel",                 // Deutsch
    "",                          // Slovenski
    "Titolo OSD",                // Italiano
-   "",                          // Nederlands
+   "OSD titel",                 // Nederlands
    "",                          // Português
-   "OSD Titre",                 // Français
+   "Titre OSD",                 // Français
    "",                          // Norsk
    "Valikon otsikko",           // suomi (Finnish)
    "",                          // Polski
@@ -1967,7 +1969,7 @@ const tI18nPhrase Phrases[] = {
    "Datum",                     // Deutsch
    "",                          // Slovenski
    "Data",                      // Italiano
-   "",                          // Nederlands
+   "Datum",                     // Nederlands
    "",                          // Português
    "Date",                      // Français
    "",                          // Norsk
@@ -1989,7 +1991,7 @@ const tI18nPhrase Phrases[] = {
    "Meldungen",                 // Deutsch
    "",                          // Slovenski
    "Messaggi",                  // Italiano
-   "",                          // Nederlands
+   "Meldingen",                 // Nederlands
    "",                          // Português
    "Message",                   // Français
    "",                          // Norsk
@@ -2011,7 +2013,7 @@ const tI18nPhrase Phrases[] = {
    "Farb-Tasten",               // Deutsch
    "",                          // Slovenski
    "Tasti d'aiuto",             // Italiano
-   "",                          // Nederlands
+   "Help toetsen",              // Nederlands
    "",                          // Português
    "Touche couleur",            // Français
    "",                          // Norsk
@@ -2033,9 +2035,9 @@ const tI18nPhrase Phrases[] = {
    "Kanalinfo: Titel",          // Deutsch
    "",                          // Slovenski
    "Info canale: titolo",       // Italiano
-   "",                          // Nederlands
+   "Kanaalinfo: titel",         // Nederlands
    "",                          // Português
-   "Channel info: titre ",      // Français
+   "Chaîne info: titre ",        // Français
    "",                          // Norsk
    "Kanavatieto: ohjelman nimi",// suomi (Finnish)
    "",                          // Polski
@@ -2055,9 +2057,9 @@ const tI18nPhrase Phrases[] = {
    "Kanalinfo: Untertitel",     // Deutsch
    "",                          // Slovenski
    "Info canale: sottotitolo",  // Italiano
-   "",                          // Nederlands
+   "Kanaalinfo: ondertitel",    // Nederlands
    "",                          // Português
-   "Channel info: sous-titre",  // Français
+   "Chaîne info: sous-titres",    // Français
    "",                          // Norsk
    "Kanavatieto: ohjelman kuvaus", // suomi (Finnish)
    "",                          // Polski
@@ -2077,9 +2079,9 @@ const tI18nPhrase Phrases[] = {
    "Kanalinfo: Sprache",        // Deutsch
    "",                          // Slovenski
    "Info canale: lingua",       // Italiano
-   "",                          // Nederlands
+   "Kanaalinfo: taal",          // Nederlands
    "",                          // Português
-   "Channel info: langue",      // Français
+   "Chaîne info: langue",       // Français
    "",                          // Norsk
    "Kanavatieto: kieli",        // suomi (Finnish)
    "",                          // Polski
@@ -2099,7 +2101,7 @@ const tI18nPhrase Phrases[] = {
    "Listen",                    // Deutsch
    "",                          // Slovenski
    "Elenco",                    // Italiano
-   "",                          // Nederlands
+   "Lijsten",                   // Nederlands
    "",                          // Português
    "Liste",                     // Français
    "",                          // Norsk
@@ -2121,7 +2123,7 @@ const tI18nPhrase Phrases[] = {
    "Infobereich: Timer Titel",  // Deutsch
    "",                          // Slovenski
    "Info area: titoli timer",   // Italiano
-   "",                          // Nederlands
+   "Infobereik: Timertitel",    // Nederlands
    "",                          // Português
    "Barre d'information: Titre Progammation",   // Français
    "",                          // Norsk
@@ -2143,7 +2145,7 @@ const tI18nPhrase Phrases[] = {
    "Infobereich: Timer Text",   // Deutsch
    "",                          // Slovenski
    "Info area: testo timer",    // Italiano
-   "",                          // Nederlands
+   "Infobereik: Timertekst",    // Nederlands
    "",                          // Português
    "Barre d'information: Text programmation",   // Français
    "",                          // Norsk
@@ -2165,7 +2167,7 @@ const tI18nPhrase Phrases[] = {
    "Infobereich: Warnung Titel", // Deutsch
    "",                          // Slovenski
    "Info area: titolo avviso",  // Italiano
-   "",                          // Nederlands
+   "Infobereik: waarschuwing titel", // Nederlands
    "",                          // Português
    "Barre d'information: avertissement titre",   // Français
    "",                          // Norsk
@@ -2187,7 +2189,7 @@ const tI18nPhrase Phrases[] = {
    "Infobereich: Warnung Text", // Deutsch
    "",                          // Slovenski
    "Info area: testo avviso",   // Italiano
-   "",                          // Nederlands
+   "Infobereik: waarschuwing tekst",  // Nederlands
    "",                          // Português
    "Barre d'information: texte d'avertissement",      // Français
    "",                          // Norsk
@@ -2209,7 +2211,7 @@ const tI18nPhrase Phrases[] = {
    "Details: Titel",            // Deutsch
    "",                          // Slovenski
    "Dettagli: titolo",          // Italiano
-   "",                          // Nederlands
+   "Details: titel",            // Nederlands
    "",                          // Português
    "Détails: Titre",            // Français
    "",                          // Norsk
@@ -2231,7 +2233,7 @@ const tI18nPhrase Phrases[] = {
    "Details: Untertitel",       // Deutsch
    "",                          // Slovenski
    "Dettagli: sottotitolo",     // Italiano
-   "",                          // Nederlands
+   "Details: ondertitel",       // Nederlands
    "",                          // Português
    "Détails: Sous-titre",       // Français
    "",                          // Norsk
@@ -2253,7 +2255,7 @@ const tI18nPhrase Phrases[] = {
    "Details: Datumszeile",      // Deutsch
    "",                          // Slovenski
    "Dettagli: data",            // Italiano
-   "",                          // Nederlands
+   "Details: datum",            // Nederlands
    "",                          // Português
    "Détails: date",             // Français
    "",                          // Norsk
@@ -2275,9 +2277,9 @@ const tI18nPhrase Phrases[] = {
    "Details: Text",             // Deutsch
    "",                          // Slovenski
    "Dettagli: testo",           // Italiano
-   "",                          // Nederlands
+   "Details: tekst",            // Nederlands
    "",                          // Português
-   "Détails: Text",             // Français
+   "Détails: Texte",             // Français
    "",                          // Norsk
    "Lisätiedot: leipäteksti",   // suomi (Finnish)
    "",                          // Polski
@@ -2297,7 +2299,7 @@ const tI18nPhrase Phrases[] = {
    "Wiedergabe: Zeiten",        // Deutsch
    "",                          // Slovenski
    "Esecuzione: volte",         // Italiano
-   "",                          // Nederlands
+   "Weergave: tijden",          // Nederlands
    "",                          // Português
    "Rejouer : périodes",        // Français
    "",                          // Norsk
@@ -2319,9 +2321,9 @@ const tI18nPhrase Phrases[] = {
    "Std. OSD Font",             // Deutsch
    "",                          // Slovenski
    "Carattere OSD predefinito", // Italiano
-   "",                          // Nederlands
+   "Standaard OSDfont",         // Nederlands
    "",                          // Português
-   "OSD standart",              // Français
+   "OSD standard",              // Français
    "",                          // Norsk
    "oletuskirjasintyyppi",      // suomi (Finnish)
    "",                          // Polski
@@ -2341,9 +2343,9 @@ const tI18nPhrase Phrases[] = {
    "Std. Schrift mit fester Breite", // Deutsch
    "",                          // Slovenski
    "Carattere dimensione fissa pred.",// Italiano
-   "",                          // Nederlands
+   "Standaardwaarde font",     // Nederlands
    "",                          // Português
-   "Largeur fixe standart",     // Français
+   "Largeur fixe standard",     // Français
    "",                          // Norsk
    "tasavälinen kirjasintyyppi", // suomi (Finnish)
    "",                          // Polski
@@ -2363,9 +2365,9 @@ const tI18nPhrase Phrases[] = {
    "Std. kleine Schrift",       // Deutsch
    "",                          // Slovenski
    "Carattere piccolo pred.",   // Italiano
-   "",                          // Nederlands
+   "Standaard klein font",      // Nederlands
    "",                          // Português
-   "Petite standart",           // Français
+   "Petite police standard",           // Français
    "",                          // Norsk
    "pieni kirjasintyyppi",      // suomi (Finnish)
    "",                          // Polski
@@ -2385,7 +2387,7 @@ const tI18nPhrase Phrases[] = {
    "Kanal:",                    // Deutsch
    "",                          // Slovenski
    "Canale:",                   // Italiano
-   "",                          // Nederlands
+   "Kanaal:",                   // Nederlands
    "",                          // Português
    "Chaîne:",                   // Français
    "",                          // Norsk
@@ -2407,7 +2409,7 @@ const tI18nPhrase Phrases[] = {
    "Suchmuster:",               // Deutsch
    "",                          // Slovenski
    "Modello di ricerca:",       // Italiano
-   "",                          // Nederlands
+   "Zoekpatroon:",              // Nederlands
    "",                          // Português
    "Modèle de recherche",       // Français
    "",                          // Norsk
@@ -2429,7 +2431,7 @@ const tI18nPhrase Phrases[] = {
    "Ohne Überwachung",          // Deutsch
    "",                          // Slovenski
    "Nessun timer verifica",     // Italiano
-   "",                          // Nederlands
+   "Geen controle",             // Nederlands
    "",                          // Português
    "Sans surveillance",         // Français
    "",                          // Norsk
@@ -2451,7 +2453,7 @@ const tI18nPhrase Phrases[] = {
    "Allgemein",                 // Deutsch
    "",                          // Slovenski
    "Generale",                  // Italiano
-   "",                          // Nederlands
+   "Algemeen",                  // Nederlands
    "",                          // Português
    "Généralité",                // Français
    "",                          // Norsk
@@ -2473,7 +2475,7 @@ const tI18nPhrase Phrases[] = {
    "Name",                      // Deutsch
    "",                          // Slovenski
    "Nome",                      // Italiano
-   "",                          // Nederlands
+   "Naam",                      // Nederlands
    "",                          // Português
    "Nom",                       // Français
    "",                          // Norsk
@@ -2495,7 +2497,7 @@ const tI18nPhrase Phrases[] = {
    "Weite",                     // Deutsch
    "",                          // Slovenski
    "Larghezza",                 // Italiano
-   "",                          // Nederlands
+   "Breedte",                   // Nederlands
    "",                          // Português
    "Largeur",                   // Français
    "",                          // Norsk
@@ -2517,7 +2519,7 @@ const tI18nPhrase Phrases[] = {
    "Ändern",                    // Deutsch
    "",                          // Slovenski
    "Imposta",                   // Italiano
-   "",                          // Nederlands
+   "Veranderen",                // Nederlands
    "",                          // Português
    "Changer",                   // Français
    "",                          // Norsk
@@ -2539,7 +2541,7 @@ const tI18nPhrase Phrases[] = {
    "TrueType Schrift",          // Deutsch
    "",                          // Slovenski
    "Carattere TrueType",        // Italiano
-   "",                          // Nederlands
+   "TrueType Font",             // Nederlands
    "",                          // Português
    "TrueType",                  // Français
    "",                          // Norsk
@@ -2561,7 +2563,7 @@ const tI18nPhrase Phrases[] = {
    "TTF nicht unterstützt!",    // Deutsch
    "",                          // Slovenski
    "Nessun supporto TTF!",      // Italiano
-   "",                          // Nederlands
+   "TTF niet ondersteund!",   // Nederlands
    "",                          // Português
    "Les polices TrueType ne sont pas supportées!", // Français
    "",                          // Norsk
@@ -2583,9 +2585,9 @@ const tI18nPhrase Phrases[] = {
    "Schrift mit fester Breite", // Deutsch
    "",                          // Slovenski
    "Carattere fisso",           // Italiano
-   "",                          // Nederlands
+   "Vaste waarde font",         // Nederlands
    "",                          // Português
-   "",                          // Français
+   "Police avec une largeur fixe", // Français
    "",                          // Norsk
    "Tasavälinen kirjasintyyppi", // suomi (Finnish)
    "",                          // Polski
@@ -2606,9 +2608,9 @@ const tI18nPhrase Phrases[] = {
    "Dynamische OSD-Größe",      // Deutsch
    "",                          // Slovenski
    "Dimensione OSD dinamica",   // Italiano
-   "",                          // Nederlands
+   "Dynamisch OSDgrootte",      // Nederlands
    "",                          // Português
-   "",                          // Français
+   "Taille OSD dynamique",      // Français
    "",                          // Norsk
    "Vaihtuva kuvaruutunäytön koko", // suomi (Finnish)
    "",                          // Polski
@@ -2628,10 +2630,10 @@ const tI18nPhrase Phrases[] = {
   {"No TrueType fonts installed!",          // English
    "Keine TrueType Schriften installiert!", // Deutsch
    "",                                      // Slovenski
-   "",                                      // Italiano
-   "",                                      // Nederlands
+   "Nessun carattere TrueType installato!", // Italiano
+   "Geen TrueType fonten geinstalleerd!",   // Nederlands
    "",                                      // Português
-   "",                                      // Français
+   "Il n'y a pas de police TrueType d'installé!",  // Français
    "",                                      // Norsk
    "TrueType-kirjasintyyppejä ei löydy!",   // suomi (Finnish)
    "",                                      // Polski

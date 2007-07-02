@@ -102,7 +102,7 @@ public:
   char *GetFontsDir(void) { return strFontsDir; }
 #endif
   const char *GetImageExtension(void);
-  const cFont *GetFont(int id);
+  const cFont *GetFont(int id, const cFont *pFontCur = NULL);
   void SetFont(int id, const char *font);
   void SetFont(int id, int vdrId);
   void GetOsdSize(struct EnigmaOsdSize *size);
