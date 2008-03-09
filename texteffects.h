@@ -65,15 +65,14 @@ private:
     std::string strText;
     int x, y, Width, Height;
     tColor ColorFg, ColorBg;
-    int FontId;
     const cFont *Font;
     int Alignment;
-    cSkinEnigmaOsd *Skin;
+    cSkinEnigmaThreadedOsd *Skin;
 
   public:
     tEffect(void) : nAction(0), nOffset(0), nDirection(0),
                     nNextUpdate(0), x(0), y(0), Width(0), Height(0),
-                    ColorFg(0), ColorBg(0), FontId(fontOsd + 1), Font(NULL),
+                    ColorFg(0), ColorBg(0), Font(NULL),
                     Alignment(taDefault), Skin(NULL)
     {};
   };
@@ -116,8 +115,8 @@ public:
   void ResetText(int i, tColor ColorFg = 0, tColor ColorBg = 0, bool fDraw = true);
   void PauseEffects(int y = 0);
   void UpdateTextWidth(int i, int Width);
-  int DrawAnimatedTitle(int o_id, int action, const char *s, int Width, cSkinEnigmaOsd *skin);
-  int DrawAnimatedText(int o_id, int action, int x, int y, const char *s, tColor ColorFg, tColor ColorBg, int FontId, int Width = 0, int Height = 0, int Alignment = taDefault);
+  int DrawAnimatedTitle(int o_id, int action, const char *s, int Width, cSkinEnigmaThreadedOsd *skin);
+  int DrawAnimatedText(int o_id, int action, int x, int y, const char *s, tColor ColorFg, tColor ColorBg, const cFont *Font, int Width = 0, int Height = 0, int Alignment = taDefault);
 
   void UpdateLock(void)
   { 

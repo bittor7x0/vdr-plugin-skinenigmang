@@ -31,6 +31,12 @@ extern const char *imageExtensionTexts[NUM_IMAGEEXTENSIONTEXTS];
 #define MAXFONTSIZE 64
 #endif
 
+#ifdef DISABLE_ANIMATED_TEXT
+# define INIT_FONTS
+#else
+# define INIT_FONTS EnigmaConfig.InitFonts()
+#endif
+
 struct EnigmaOsdSize
 {
   int x;
@@ -102,7 +108,11 @@ public:
   char *GetFontsDir(void) { return strFontsDir; }
 #endif
   const char *GetImageExtension(void);
-  const cFont *GetFont(int id, const cFont *pFontCur = NULL);
+  const cFont *GetFont(int id);
+#ifndef DISABLE_ANIMATED_TEXT
+  void InitFonts(void);
+  const cFont *CopyFont(eDvbFont vdrId);
+#endif
   void SetFont(int id, const char *font);
   void SetFont(int id, int vdrId);
   void GetOsdSize(struct EnigmaOsdSize *size);
@@ -145,6 +155,9 @@ public:
   int scrollOther;
   int scrollTitle;
   int dynOsd;
+  int statusLineMode;
+  int showWssSymbols;
+  int showStatusSymbols;
   FontInfo allFonts[FONT_NUMFONTS];
 };
 

@@ -35,6 +35,7 @@ class cMenuSetupGeneral : public cMenuSetupSubMenu {
 private:
   const char *showRemainingTexts[3];
   const char *showRecSizeTexts[3];
+  const char *statusLineModeTexts[3];
 protected:
   virtual eOSState ProcessKey(eKeys Key);
   void Set(void);
@@ -75,19 +76,35 @@ private:
   int nFont;
   int nWidth;
   int nSize;
+#if VDRVERSNUM < 10504
   const char **availTTFs;
   int nMaxTTFs;
+#else // VDRVERSNUM >= 10504
+  cStringList *fontList;
+#endif // VDRVERSNUM < 10504
 protected:
   virtual eOSState ProcessKey(eKeys Key);
   void Set(void);
   void Store(void);
 public:
+#if VDRVERSNUM < 10504
   cMenuSetupTTF(FontInfo *fontinfo);
+#else // VDRVERSNUM >= 10504
+  cMenuSetupTTF(FontInfo *fontinfo, cStringList* fontList);
+#endif // VDRVERSNUM < 10504
 };
 
 #endif
 
 class cMenuSetupFonts : public cMenuSetupSubMenu {
+private:
+#ifdef HAVE_FREETYPE
+#if VDRVERSNUM >= 10504
+  cStringList fontNames;
+  cStringList fontMonoNames;
+#endif
+#endif
+
 protected:
   virtual eOSState ProcessKey(eKeys Key);
   void Set(void);
@@ -96,7 +113,7 @@ public:
   virtual ~cMenuSetupFonts(void);
 };
 
-#ifdef SKINENIGMA_HAVE_EPGSEARCH
+#ifdef USE_PLUGIN_EPGSEARCH
 class cMenuSetupEpgSearch : public cMenuSetupSubMenu {
 private:
   const char *useSubtitleRerunTexts[3];

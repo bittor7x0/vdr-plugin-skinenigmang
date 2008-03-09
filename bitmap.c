@@ -32,9 +32,11 @@ bool cOSDImageBitmap::DrawMagick(const char *Filename, int x, int y, int width, 
 {
   Image image;
   try {
+    Geometry geo;
     image.read(Filename);
-    int w = image.columns();
-    int h = image.rows();
+    geo = image.size();
+    int w = geo.width();
+    int h = geo.height();
     if (height != h || width != w) {
       switch (EnigmaConfig.resizeImages) {
         case 0:
@@ -48,8 +50,9 @@ bool cOSDImageBitmap::DrawMagick(const char *Filename, int x, int y, int width, 
           break;
       }
     }
-    w = image.columns();
-    h = image.rows();
+    geo = image.size();
+    w = geo.width();
+    h = geo.height();
     if (colors != 0){
       image.opacity(OpaqueOpacity);
       image.backgroundColor(Color(0, 0, 0, 0));

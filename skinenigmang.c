@@ -24,8 +24,8 @@
 #warning "YOU NEED A PATCHED VDR 1.5.3 OR EnigmaNG WILL CRASH!"
 #endif
 
-static const char VERSION[] = "0.0.5";
-static const char DESCRIPTION[] = "EnigmaNG skin";
+static const char VERSION[] = "0.0.6";
+static const char DESCRIPTION[] = trNOOP("EnigmaNG skin");
 
 class cPluginSkinEnigma : public cPlugin {
 private:
@@ -140,7 +140,11 @@ bool cPluginSkinEnigma::Start(void)
 {
   // start any background activities the plugin shall perform.
   debug("cPluginSkinEnigma::Start()");
+
+#if VDRVERSNUM < 10507
   RegisterI18n(Phrases);
+#endif
+
   if (!fLogodirSet) {
     // set logo directory
     EnigmaConfig.SetLogoDir(cPlugin::ConfigDirectory(PLUGIN_NAME_I18N));
@@ -279,6 +283,9 @@ bool cPluginSkinEnigma::SetupParse(const char *Name, const char *Value)
   else if (!strcasecmp(Name, "FontFixed"))                 EnigmaConfig.SetFont(FONT_FIXED, atoi(Value));
   else if (!strcasecmp(Name, "FontFixedName"))             EnigmaConfig.SetFont(FONT_FIXED, Value);
   else if (!strcasecmp(Name, "DynOSD"))                    EnigmaConfig.dynOsd = atoi(Value);
+  else if (!strcasecmp(Name, "StatusLineMode"))            EnigmaConfig.statusLineMode = atoi(Value);
+  else if (!strcasecmp(Name, "ShowWssSymbols"))            EnigmaConfig.showWssSymbols = atoi(Value);
+  else if (!strcasecmp(Name, "ShowStatusSymbols"))         EnigmaConfig.showStatusSymbols = atoi(Value);
   else return false;
 
   return true;

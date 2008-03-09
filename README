@@ -29,11 +29,17 @@ Compile time configuration
 There are some configuration items you need to set before running
 "make plugins" in "Make.config":
 
-SKINENIGMA_HAVE_EPGSEARCH = 1
+SKINENIGMA_USE_PLUGIN_EPGSEARCH = 1
 If you are using the epgsearch plugin and want to see the number of
 timer conflicts in the main menu's info area.
-NOTE: This requires the sources of the epgsearch Plugin beside the
-EnigmaNG sources!
+
+SKINENIGMA_USE_PLUGIN_AVARDS = 1
+Include code to support the Avards plugin:
+ - Dynamic OSD size depending on current WSS mode.
+ - Display current WSS mode in channel info and replay OSDs.
+
+SKINENIGMA_USE_PLUGIN_MAILBOX = 1
+If you use the mailbox plugin this will include support for it.
 
 SKINENIGMA_NO_MENULOGO = 1
 This turns usage of logos in the main menu complete. This might also
@@ -43,11 +49,6 @@ HAVE_IMAGEMAGICK = 1
 If you have installed ImageMagick and want to use images in event's
 and recording's details.
 
-SKINENIGMA_USE_PLUGIN_MAILBOX = 1
-If you use the mailbox plugin this will include support for it.
-NOTE: this can also be defined if you don't know if the mailbox
-plugin will be used because it has no compile time requirements.
-
 SKINENIGMA_DISABLE_ANIMATED_TEXT = 1
 Disable any code that is used for scrolling or blinking text.
 NOTE: this is only useful if you want to save some bytes because you
@@ -56,6 +57,7 @@ can disable them in the setup too.
 SKINENIGMA_FONTS =
 Set the descriptions for fonts you've patched in VDR. These fonts then
 can be selected in EnigmaNG setup.
+NOTE: This is NOT the path to your TrueType fonts!!!
 
 HAVE_FREETYPE = 1
 If you have installed FreeType2 and want to use TrueTypeFonts.
@@ -140,7 +142,7 @@ Setup Options
 
 - Show info area in main menu
   This info area is shown in the main menu and it will show the current/next
-  timers and the number of timer conflicts (if SKINENIGMA_HAVE_EPGSEARCH has
+  timers and the number of timer conflicts (if SKINENIGMA_USE_PLUGIN_EPGSEACH has
   been defined).
 
 - Show auxiliary information (top/bottom)
@@ -181,6 +183,18 @@ Setup Options
   This replaces progressbars shown with pipes (e.g. [||  ]) by a graphical
   progressbar.
 
+- Dynamic OSD size
+  Get OSD size from Avards or VDR >= v1.5.4.
+  NOTE: This requires EnigmaNG compiled with SKINENIGMA_USE_PLUGIN_AVARDS = 1
+        and a running Avards plugin.
+  
+- Show messages in menu on (Last line/Help buttons/Free last line)
+    Last line      - Messages will hide the last line in the menu OSD.
+    Help buttons   - Messages will hide the help buttons in menu OSD.
+    Free last line - The same as "Last line" but now the available list items
+                     is reduced by one.
+
+
 * Logos & Symbols
 
 - Show symbols
@@ -200,9 +214,17 @@ Setup Options
 - Show marker in lists
   If enabled a small circle is drawn in front of the selected item in lists.
 
+- Show status symbols
+  Display the status symbols in channel info and recording's progress info.
+
 - Show flags
   If enabled graphical flags are drawn for the audio channel languages if the
   requested flag file exists. Else language's abbreviation is drawn.
+
+- Show WSS mode symbols
+  Show symbols instead of text for the current WSS mode.
+  NOTE: This requires EnigmaNG compiled with SKINENIGMA_USE_PLUGIN_AVARDS = 1
+        and a running Avards plugin.
 
 - Show mail icon (never/only if new mail present/always)
   (NOTE: only visible if mailbox plugin support is compiled in and plugin is loaded!)
@@ -385,4 +407,10 @@ Credits
 
 - Morone @vdr-portal.de for MoBuntu theme.
   http://www.vdr-portal.de/board/thread.php?postid=619867#post619867
+
+- The translation team:
+  See i18n-template.c.
+
+- Udo Richter (udo_richter @gmx.de) for po2i18n.pl.
+  http://www.udo-richter.de/vdr/scripts.en.html#po2i18n
 // vim:et:sw=2:ts=2:

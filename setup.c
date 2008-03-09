@@ -12,19 +12,31 @@
 #include "setup.h"
 #include "tools.h"
 
+#ifdef USE_PLUGIN_EPGSEARCH
+#include "services/epgsearch.h"
+#endif
+
+#ifdef USE_PLUGIN_AVARDS
+#include "services/avards.h"
+#endif
+
+#ifdef USE_PLUGIN_MAILBOX
+#include "services/mailbox.h"
+#endif
+
 #ifdef HAVE_FREETYPE
 #include "texteffects.h"
 #endif
 
 static const char *allVdrFonts[] = {
 #ifdef HAVE_FREETYPE
-  "TrueType Font",
+  trNOOP("TrueType Font"),
 #else
-  "No TTF support!",
+  trNOOP("No TTF support!"),
 #endif
-  "Default OSD Font",
-  "Default Fixed Size Font",
-  "Default Small Font",
+  trNOOP("Default OSD Font"),
+  trNOOP("Default Fixed Size Font"),
+  trNOOP("Default Small Font"),
   SKINENIGMA_FONTS
 };
 
@@ -67,13 +79,15 @@ void cPluginSkinEnigmaSetup::Setup(void)
   if (::Setup.UseSmallFont == 1) { // only if "Use small font" = "skin dependent"
     Add(new cOsdItem(tr("Fonts")));
   }
-#ifdef SKINENIGMA_HAVE_EPGSEARCH
-  Add(new cOsdItem(tr("EPGSearch")));
+#ifdef USE_PLUGIN_EPGSEARCH
+  if (cPluginManager::GetPlugin("epgsearch") != NULL) {
+    Add(new cOsdItem(tr("EPGSearch")));
+  } //TODO? else display "EPGsearch plugin not found"
 #endif
 
   SetCurrent(Get(current));
   Display();
-  SetHelp(NULL, NULL, NULL, tr("Button$Open"));
+  SetHelp(NULL, NULL, NULL, trVDR("Button$Open"));
 }
 
 void cPluginSkinEnigmaSetup::Store(void)
@@ -120,12 +134,15 @@ void cPluginSkinEnigmaSetup::Store(void)
   SetupStore("ScrollOther", EnigmaConfig.scrollOther);
   SetupStore("ScrollTitle", EnigmaConfig.scrollTitle);
   SetupStore("DynOSD", EnigmaConfig.dynOsd);
+  SetupStore("StatusLineMode", EnigmaConfig.statusLineMode);
+  SetupStore("ShowWssSymbols", EnigmaConfig.showWssSymbols);
+  SetupStore("ShowStatusSymbols", EnigmaConfig.showStatusSymbols);
 
   char tmp[sizeof(EnigmaConfig.allFonts[0].Name) + 8];
   for (int id = 0; id < FONT_NUMFONTS; id++) {
     SetupStore(allFontConfig[id].KeyId, EnigmaConfig.allFonts[id].VdrId);
     if (EnigmaConfig.allFonts[id].Name[0] != 0) {
-      sprintf(tmp, "%s:%d,%d", EnigmaConfig.allFonts[id].Name, EnigmaConfig.allFonts[id].Size, EnigmaConfig.allFonts[id].Width);
+      snprintf(tmp, sizeof(tmp), "%s:%d,%d", EnigmaConfig.allFonts[id].Name, EnigmaConfig.allFonts[id].Size, EnigmaConfig.allFonts[id].Width);
       SetupStore(allFontConfig[id].KeyName, tmp);
     }
   }
@@ -155,7 +172,7 @@ eOSState cPluginSkinEnigmaSetup::ProcessKey(eKeys Key)
 #endif
       else if (strcmp(ItemText, tr("Fonts")) == 0)
         state = AddSubMenu(new cMenuSetupFonts(&data));
-#ifdef SKINENIGMA_HAVE_EPGSEARCH
+#ifdef USE_PLUGIN_EPGSEARCH
       else if (strcmp(ItemText, tr("EPGSearch")) == 0)
         state = AddSubMenu(new cMenuSetupEpgSearch(&data));
 #endif
@@ -198,6 +215,10 @@ cMenuSetupGeneral::cMenuSetupGeneral(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr
   showRecSizeTexts[1] = tr("use size.vdr only");
   showRecSizeTexts[2] = tr("always");
 
+  statusLineModeTexts[0] = tr("Last line");
+  statusLineModeTexts[1] = tr("Help buttons");
+  statusLineModeTexts[2] = tr("Free last line");
+
   Set();
 }
 
@@ -213,15 +234,28 @@ void cMenuSetupGeneral::Set(void)
 
   Add(new cMenuEditBoolItem(tr("Try 8bpp single area"), &data->singleArea8Bpp));
   Add(new cMenuEditBoolItem(tr("Show info area in main menu"), &data->showInfo));
-  Add(new cMenuEditBoolItem(tr("Show auxiliary information"), &data->showAuxInfo, tr("top"), tr("bottom")));
+  Add(new cMenuEditBoolItem(tr("Show auxiliary information"), &data->showAuxInfo, trVDR("top"), trVDR("bottom")));
   Add(new cMenuEditStraItem(tr("Show recording's size"), &data->showRecSize, 3, showRecSizeTexts));
   Add(new cMenuEditBoolItem(tr("Full title width"), &data->fullTitleWidth));
   Add(new cMenuEditStraItem(tr("Show remaining/elapsed time"), &data->showRemaining, 3, showRemainingTexts));
   Add(new cMenuEditBoolItem(tr("Show VPS"), &data->showVps));
   Add(new cMenuEditBoolItem(tr("Show progressbar"), &data->showProgressbar));
 #ifdef USE_PLUGIN_AVARDS
-  Add(new cMenuEditBoolItem(tr("Dynamic OSD size"), &data->dynOsd));
+  //TODO: USE_PLUGIN_AVARDS only if APIVERSNUM < 10504
+  cPlugin *pAvardsPlugin = cPluginManager::GetPlugin("avards");
+  if (pAvardsPlugin != NULL) {
+#if APIVERSNUM < 10504
+      if (pAvardsPlugin->Service(AVARDS_MAXOSDSIZE_SERVICE_STRING_ID)) {
 #endif
+        Add(new cMenuEditBoolItem(tr("Dynamic OSD size"), &data->dynOsd));
+#if APIVERSNUM < 10504
+      } else {
+        Add(new cOsdItem(AVARDS_MAXOSDSIZE_SERVICE_STRING_ID " service not found!", osUnknown, false));
+      }
+#endif
+  } //TODO? else display "Avards not found"
+#endif
+  Add(new cMenuEditStraItem(tr("Show messages in menu on"), &data->statusLineMode, 3, statusLineModeTexts));
 
   SetCurrent(Get(current));
   Display();
@@ -250,6 +284,7 @@ eOSState cMenuSetupLogos::ProcessKey(eKeys Key)
 {
   int oldShowLogo = data->showLogo;
   int oldShowSymbols = data->showSymbols;
+  int oldShowStatusSymbols = data->showStatusSymbols;
   int oldShowSymbolsMenu = data->showSymbolsMenu;
   int oldShowImages = data->showImages;
 
@@ -265,6 +300,7 @@ eOSState cMenuSetupLogos::ProcessKey(eKeys Key)
   if (Key != kNone &&
       ((data->showLogo != oldShowLogo) 
        || (data->showSymbols != oldShowSymbols) 
+       || (data->showStatusSymbols != oldShowStatusSymbols) 
        || (data->showSymbolsMenu != oldShowSymbolsMenu) 
        || (data->showImages != oldShowImages)
       )) {
@@ -301,14 +337,31 @@ void cMenuSetupLogos::Set(void)
 
   Add(new cMenuEditBoolItem(tr("Show symbols in lists"), &data->showListSymbols));
   Add(new cMenuEditBoolItem(tr("Show marker in lists"), &data->showMarker));
-  Add(new cMenuEditBoolItem(tr("Show flags"), &data->showFlags));
+  Add(new cMenuEditBoolItem(tr("Show status symbols"), &data->showStatusSymbols));
+  if (data->showStatusSymbols) {
+    Add(new cMenuEditBoolItem(tr("  Show flags"), &data->showFlags));
+#ifdef USE_PLUGIN_AVARDS
+    cPlugin *pAvardsPlugin = cPluginManager::GetPlugin("avards");
+    if (pAvardsPlugin != NULL) {
+      if (pAvardsPlugin->Service(AVARDS_CURRENT_VIDEO_FORMAT_SERVICE_STRING_ID)) {
+        Add(new cMenuEditBoolItem(tr("  Show WSS mode symbols"), &data->showWssSymbols));
+      } else {
+        Add(new cOsdItem(AVARDS_CURRENT_VIDEO_FORMAT_SERVICE_STRING_ID " service not found!", osUnknown, false));
+      }
+    }
+#endif
 
 #ifdef USE_PLUGIN_MAILBOX
-  cPlugin *MailBoxPlugin = cPluginManager::GetPlugin("mailbox");
-  if (MailBoxPlugin && MailBoxPlugin->Service("MailBox-HasNewMail-1.0", 0)) {
-    Add(new cMenuEditStraItem(tr("Show mail icon"), &data->showMailIcon, 3, showMailIconTexts));
-  }
+    cPlugin *MailBoxPlugin = cPluginManager::GetPlugin("mailbox");
+    if (MailBoxPlugin) {
+      if (MailBoxPlugin->Service(MailBox_HasNewMail_v1_0_NAME, 0)) {
+        Add(new cMenuEditStraItem(tr("  Show mail icon"), &data->showMailIcon, 3, showMailIconTexts));
+      } else {
+        Add(new cOsdItem(MailBox_HasNewMail_v1_0_NAME " service not found!", osUnknown, false));
+      }
+    } //TODO? else display "Plugin not found"
 #endif
+  }
 
 #ifndef SKINENIGMA_NO_MENULOGO
   if (data->showSymbols && data->showSymbolsMenu) {
@@ -386,9 +439,14 @@ void cMenuSetupAnimText::Set(void)
 
 #ifdef HAVE_FREETYPE
 // Setup: TTF
+#if VDRVERSNUM < 10504
 cMenuSetupTTF::cMenuSetupTTF(FontInfo* Data) : cOsdMenu(tr("TrueType Font"), 10)
+#else // VDRVERSNUM >= 10504
+cMenuSetupTTF::cMenuSetupTTF(FontInfo* Data, cStringList* fonts) : cOsdMenu(tr("TrueType Font"), 10)
+#endif // VDRVERSNUM < 10504
 {
   data = Data;
+#if VDRVERSNUM < 10504
   availTTFs = EnigmaTextEffects.GetAvailTTFs();
   if (availTTFs && data) {
     nMaxTTFs = EnigmaTextEffects.GetNumAvailTTFs();
@@ -404,6 +462,15 @@ cMenuSetupTTF::cMenuSetupTTF(FontInfo* Data) : cOsdMenu(tr("TrueType Font"), 10)
     nWidth = data->Width;
     nSize = data->Size;
   }
+#else // VDRVERSNUM >= 10504
+  if (data && fonts) {
+    fontList = fonts;
+    nFont = std::max(0, fontList->Find(data->Name));
+    nWidth = data->Width;
+    nSize = data->Size;
+  }
+#endif // VDRVERSNUM < 10504
+
   SetHelp(NULL, NULL, NULL, NULL);
   Set();
 }
@@ -413,12 +480,17 @@ void cMenuSetupTTF::Set(void)
   int current = Current();
   Clear();
 
+#if VDRVERSNUM < 10504
   if (availTTFs) {
     Add(new cMenuEditStraItem(tr("Name"), &nFont, nMaxTTFs, availTTFs));
+#else // VDRVERSNUM >= 10504
+  if (fontList->Size() > 0) {
+    Add(new cMenuEditStraItem(tr("Name"), &nFont, fontList->Size(), &(*fontList)[0]));
+#endif // VDRVERSNUM < 10504
     Add(new cMenuEditIntItem(tr("Size"), &nSize, 10, MAXFONTSIZE));
 #if VDRVERSNUM < 10503 || VDRVERSNUM >= 10505
-    //VDR >1.5.2 cant's set TTF width
-    Add(new cMenuEditIntItem(tr("Width"), &nWidth, 80, 120));
+    //VDR 1.5.2 - 1.5.4 can't set TTF width
+    Add(new cMenuEditIntItem(tr("Width"), &nWidth, 50, 150));
 #endif
     SetCurrent(Get(current));
   } else {
@@ -453,11 +525,19 @@ eOSState cMenuSetupTTF::ProcessKey(eKeys Key)
 
 void cMenuSetupTTF::Store(void)
 {
+#if VDRVERSNUM < 10504
   if (data && availTTFs) {
     strncpy(data->Name, availTTFs[nFont], sizeof(data->Name));
     data->Width = nWidth;
     data->Size = nSize;
   }
+#else // VDRVERSNUM >= 10504
+  if (data) {
+    Utf8Strn0Cpy(data->Name, (*fontList)[nFont], sizeof(data->Name));
+    data->Width = nWidth;
+    data->Size = nSize;
+  }
+#endif // VDRVERSNUM < 10504
 }
 #endif
 
@@ -473,6 +553,13 @@ cMenuSetupFonts::cMenuSetupFonts(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr("Fo
   allVdrFonts[2] = tr("Default Fixed Size Font");
   allVdrFonts[3] = tr("Default Small Font");
 
+#ifdef HAVE_FREETYPE
+#if VDRVERSNUM >= 10504
+  cFont::GetAvailableFontNames(&fontMonoNames, true);
+  cFont::GetAvailableFontNames(&fontNames);
+#endif
+#endif
+
   Set();
 }
 
@@ -486,7 +573,11 @@ eOSState cMenuSetupFonts::ProcessKey(eKeys Key)
 
 #ifdef HAVE_FREETYPE
   if (state == osUnknown && Key == kBlue && data->allFonts[Current()].VdrId == FONT_TRUETYPE) {
+#if VDRVERSNUM < 10504
     state = AddSubMenu(new cMenuSetupTTF(&data->allFonts[Current()]));
+#else // VDRVERSNUM >= 10504
+    state = AddSubMenu(new cMenuSetupTTF(&data->allFonts[Current()], strncmp(Get(Current())->Text(), tr("Fixed Font"), strlen(tr("Fixed Font"))) == 0 ? &fontMonoNames : &fontNames));
+#endif
   } else {
     if (!HasSubMenu() && data->allFonts[Current()].VdrId == FONT_TRUETYPE)
       SetHelp(NULL, NULL, NULL, tr("Button$Set"));
@@ -533,7 +624,7 @@ void cMenuSetupFonts::Set(void)
     SetHelp(NULL, NULL, NULL, NULL);
 }
 
-#ifdef SKINENIGMA_HAVE_EPGSEARCH
+#ifdef USE_PLUGIN_EPGSEARCH
 // Setup: EpgSearch
 cMenuSetupEpgSearch::cMenuSetupEpgSearch(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr("EPGSearch"), Data)
 {
@@ -554,10 +645,21 @@ void cMenuSetupEpgSearch::Set(void)
   int current = Current();
   Clear();
 
-  Add(new cMenuEditIntItem(tr("Number of Reruns"), &data->numReruns, 0, 10));
-  Add(new cMenuEditStraItem(tr("Use Subtitle for reruns"), &data->useSubtitleRerun, 3, useSubtitleRerunTexts));
-  if (data->showInfo) {
-    Add(new cMenuEditBoolItem(tr("Show timer conflicts"), &data->showTimerConflicts));
+  cPlugin *pEPGsearchPlugin = cPluginManager::GetPlugin("epgsearch");
+  if (pEPGsearchPlugin != NULL) {
+    if (pEPGsearchPlugin->Service(EPGSEARCH_SEARCHRESULTS_SERVICE_STRING_ID)) {
+      Add(new cMenuEditIntItem(tr("Number of Reruns"), &data->numReruns, 0, 10));
+      Add(new cMenuEditStraItem(tr("Use Subtitle for reruns"), &data->useSubtitleRerun, 3, useSubtitleRerunTexts));
+    } else {
+      Add(new cOsdItem(EPGSEARCH_SEARCHRESULTS_SERVICE_STRING_ID " service not found!", osUnknown, false));
+    }
+    if (data->showInfo) {
+      if (pEPGsearchPlugin->Service(EPGSEARCH_LASTCONFLICTINFO_SERVICE_STRING_ID)) {
+        Add(new cMenuEditBoolItem(tr("Show timer conflicts"), &data->showTimerConflicts));
+      } else {
+        Add(new cOsdItem(EPGSEARCH_LASTCONFLICTINFO_SERVICE_STRING_ID " service not found!", osUnknown, false));
+      }
+    }
   }
 
   SetCurrent(Get(current));

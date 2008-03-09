@@ -27,14 +27,24 @@ public:
 };
 
 
-// common interface
-class cSkinEnigmaOsd {
+// interface for use texteffects (=threads)
+class cSkinEnigmaThreadedOsd {
 friend class cEnigmaTextEffects;
 
 public:
-  virtual ~cSkinEnigmaOsd(void)
+  virtual ~cSkinEnigmaThreadedOsd(void)
   {};
   virtual void DrawTitle(const char *Title) = 0;
+};
+
+// interface for common functions
+class cSkinEnigmaBaseOsd {
+
+protected:
+  cOsd *osd;
+  bool HasChannelTimerRecording(const cChannel *Channel);
+  int DrawStatusSymbols(int x0, int xs, int top, int bottom, const cChannel *Channel = NULL);
+  int FixWidth(int w, int bpp, bool enlarge = true);
 };
 
 #endif //__ENIGMA_H

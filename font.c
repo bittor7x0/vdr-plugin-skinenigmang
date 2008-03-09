@@ -52,7 +52,7 @@ bool cGraphtftFont::Load(string Filename, string CacheName, int Size, int Langua
 	
 #if VDRVERSNUM >= 10504
 	//TODO: "Width" not yet in VDR
-# ifdef VDRVERSNUM >= 10505
+# if VDRVERSNUM >= 10505
 	cFont *newFont = cFont::CreateFont(Filename.c_str(), Size, Width > 0 ? (Size * Width / 100) : 0);
 # else
 	cFont *newFont = cFont::CreateFont(Filename.c_str(), Size);

@@ -1,11 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.16 2007/06/25 10:44:11 amair Exp $
-
-# If you are using the epgsearch plugin and want to see the number of
-# timer conflicts in the main menu's info area.
-#SKINENIGMA_HAVE_EPGSEARCH = 1
+# $Id: Makefile,v 1.24 2008/03/09 08:31:30 amair Exp $
 
 # This turns usage of logos in the main menu complete. This might also
 # improve the performance of the menus. EXPERIMENTAL!!!
@@ -18,23 +14,26 @@
 # images in event's and recording's details.
 #HAVE_IMAGEMAGICK = 1
 
+# If you are using the epgsearch plugin and want to see the number of
+# timer conflicts in the main menu's info area.
+SKINENIGMA_USE_PLUGIN_EPGSEARCH = 1
+
 # If you use the mailbox plugin this will include support for it.
-# NOTE: this can also be defined if you don't know if the mailbox
-# plugin will be used because it has no compile time requirements.
 SKINENIGMA_USE_PLUGIN_MAILBOX = 1
 
-# EXPERIMENTAL!!! NOT YET OFFICIALY SUPPORTED!!!
-#
-# USE AT OWN RISC!!!
-#SKINENIGMA_USE_PLUGIN_AVARDS = 1
+# Include code to support the Avards plugin:
+#  - Dynamic OSD size depending on current WSS mode.
+#  - Display current WSS mode in channel info and replay OSDs.
+SKINENIGMA_USE_PLUGIN_AVARDS = 1
 
 # Disable any code that is used for scrolling or blinking text.
 # NOTE: this is only useful if you want to save some bytes because you
 # can disable them in the setup too.
-#DISABLE_ANIMATED_TEXT = 1
+#SKINENIGMA_DISABLE_ANIMATED_TEXT = 1
 
 # Set the descriptions for fonts you've patched in VDR. These fonts then
 # can be selected in EnigmaNG setup.
+# This is NOT the path to TrueType fonts!
 #SKINENIGMA_FONTS = "\"Test Font\", \"Test2 Font\""
 
 # If you have installed FreeType2 and want to use TrueTypeFonts.
@@ -68,11 +67,15 @@ TMPDIR = /tmp
 ### Allow user defined options to overwrite defaults:
 #TODO
 CLEAR_BUG_WORKAROUND = 1
+ENABLE_COPYFONT = 1
 -include $(VDRDIR)/Make.config
 
 ### The version number of VDR's plugin API (taken from VDR's "config.h"):
 
 APIVERSION = $(shell sed -ne '/define APIVERSION/s/^.*"\(.*\)".*$$/\1/p' $(VDRDIR)/config.h)
+
+### Test whether VDR has locale support
+VDRLOCALE = $(shell grep '^LOCALEDIR' $(VDRDIR)/Makefile)
 
 ### The name of the distribution archive:
 
@@ -85,8 +88,13 @@ INCLUDES += -I$(VDRDIR)/include
 
 DEFINES += -D_GNU_SOURCE -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
 
+ifdef SKINENIGMA_USE_PLUGIN_EPGSEARCH 
+DEFINES += -DUSE_PLUGIN_EPGSEARCH
+else
+# for backwards compatibility only
 ifdef SKINENIGMA_HAVE_EPGSEARCH
-DEFINES += -DSKINENIGMA_HAVE_EPGSEARCH
+DEFINES += -DUSE_PLUGIN_EPGSEARCH
+endif
 endif
 
 ifdef SKINENIGMA_DEBUG
@@ -118,6 +126,10 @@ ifdef CLEAR_BUG_WORKAROUND
 DEFINES += -DCLEAR_BUG_WORKAROUND
 endif
 
+ifdef ENABLE_COPYFONT
+DEFINES += -DENABLE_COPYFONT
+endif
+
 DEFINES += -DSKINENIGMA_FONTS=$(SKINENIGMA_FONTS)
 
 ### The object files (add further files here):
@@ -141,6 +153,10 @@ ifdef HAVE_FREETYPE
 	OBJS += font.o
 endif
 
+### The main target:
+
+all: libvdr-$(PLUGIN).so i18n
+
 ### Implicit rules:
 
 %.o: %.c
@@ -151,13 +167,58 @@ endif
 MAKEDEP = $(CXX) -MM -MG
 DEPFILE = .dependencies
 $(DEPFILE): Makefile
-	@$(MAKEDEP) $(DEFINES) $(INCLUDES) $(OBJS:%.o=%.c) > $@
+	@$(MAKEDEP) $(DEFINES) $(INCLUDES) $(subst i18n.c,,$(OBJS:%.o=%.c)) > $@
 
 -include $(DEPFILE)
 
-### Targets:
+### Internationalization (I18N):
 
-all: libvdr-$(PLUGIN).so
+PODIR     = po
+LOCALEDIR = $(VDRDIR)/locale
+I18Npo    = $(wildcard $(PODIR)/*.po)
+I18Nmo    = $(addsuffix .mo, $(foreach file, $(I18Npo), $(basename $(file))))
+I18Ndirs  = $(notdir $(foreach file, $(I18Npo), $(basename $(file))))
+I18Npot   = $(PODIR)/$(PLUGIN).pot
+I18Nvdrmo = vdr-$(PLUGIN).mo
+ifeq ($(strip $(APIVERSION)),1.5.7)
+  I18Nvdrmo = $(PLUGIN).mo
+endif
+
+%.mo: %.po
+	msgfmt -c -o $@ $<
+
+$(I18Npot): $(subst i18n.c,,$(wildcard *.c))
+	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --msgid-bugs-address='<andreas@vdr-developer.org>' -o $@ $(subst i18n.c,,$(wildcard *.c))
+
+$(I18Npo): $(I18Npot)
+	msgmerge -U --no-wrap --no-location --backup=none -q $@ $<
+
+ifneq ($(strip $(VDRLOCALE)),)
+### do gettext based i18n stuff
+
+i18n: $(I18Nmo)
+	@mkdir -p $(LOCALEDIR)
+	for i in $(I18Ndirs); do\
+	    mkdir -p $(LOCALEDIR)/$$i/LC_MESSAGES;\
+	    cp $(PODIR)/$$i.mo $(LOCALEDIR)/$$i/LC_MESSAGES/$(I18Nvdrmo);\
+	    done
+
+i18n.c: i18n-template.c
+	@cp i18n-template.c i18n.c
+
+else ### do i18n.c based i18n stuff
+
+i18n:
+	@### nothing to do
+
+#i18n compatibility generator:
+i18n.c: i18n-template.c buildtools/po2i18n.pl $(I18Npo)
+	buildtools/po2i18n.pl < i18n-template.c > i18n.c
+
+endif
+
+
+### Targets:
 
 libvdr-$(PLUGIN).so: $(OBJS)
 	$(CXX) $(CXXFLAGS) -shared $(OBJS) $(LIBS) -o $@
@@ -166,13 +227,13 @@ ifndef SKINENIGMA_DEBUG
 endif
 	@cp --remove-destination $@ $(LIBDIR)/$@.$(APIVERSION)
 
-dist: clean
+dist: clean i18n.c
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)
 	@mkdir $(TMPDIR)/$(ARCHIVE)
 	@cp -a * $(TMPDIR)/$(ARCHIVE)
-	@tar czf $(PACKAGE).tgz --exclude CVS -C $(TMPDIR) $(ARCHIVE)
+	@tar czf $(PACKAGE).tgz --exclude CVS --exclude '.#*' --exclude '*.bak' -C $(TMPDIR) $(ARCHIVE)
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)
 	@echo Distribution package created as $(PACKAGE).tgz
 
 clean:
-	@-rm -f $(OBJS) $(DEPFILE) *.so *.tgz core* *~
+	@-rm -f $(OBJS) $(DEPFILE) i18n.c *.so *.tgz core* *~ $(PODIR)/*.mo $(PODIR)/*.pot

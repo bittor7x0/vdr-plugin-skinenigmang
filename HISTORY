@@ -1,9 +1,42 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
+2008-03-09: Version 0.0.6
+- Added scrollbar in menu lists when compiled with VDR >= v1.5.15.
+- Fixed: VDR didn't responde anymore if the font used for lists was too small (<11px) and the marker in front of the active list item has been turned on.
+- Added workaround to fix chrashes (hopefully) for VDR 1.4.x and patched fonts.
+- Updated French translation (Submitted by Patrice Staudt).
+- Updated Dutch translation (Submitted by Johan Schuring).
+- Updated Spanish translation (Submitted by Bittor Corl).
+- Updated Finnish translation (Submitted by Rolf Ahrenberg).
+- Fixed crash in EPG details when using epgsearch if channel isn't found.
+- Updated Italian translation (Provided by Gringo).
+- Fix TrueTypeFonts support when compiled with VDR >= v1.5.4.
+- Use WeekDayNameFull() in VDR >= v1.5.5.
+- Use "Full Title Width" setting also for Tracks and Replay OSD.
+- Optionally scroll current event's title and subtitle in channel info.
+- New setup option "Show status symbols" (Suggested by chrisz @vdr-portal.de).
+- Moved to the new i18n system introduced in VDR 1.5.7; fully backwards compatible due to Udo Richter's po2i18n.pl.
+- Optionally show current WSS mode as symbol (if Avards is running).
+- Draw "Dolby Digital" and "MONO" indicator in language flags.
+- Hide inactive status symbols.
+- Removed date from OSDs: tracks, volume
+- Added status symbols in replay OSD.
+- Draw line right to logos in Tracks and Replay OSD as it's done in other OSDs too.
+- Added channel info OSD for "Info on channel switch = no" VDR option (Reported by Pat @vdr-portal.de).
+- Removed compile time dependencies to plugin services.
+- Renamed SKINENIGMA_HAVE_EPGSEARCH define to SKINENIGMA_USE_PLUGIN_EPGSEARCH.
+- Disable i18n support for VDR >= v1.5.7.
+- Added Turkish to translation array (for VDR >= v1.5.2).
+- Use group name for logos even if channel logos are searched for by channel id.
+- Fixed problems when compiling with VDR v1.5.7+ (Reported by Matthias Fechner).
+- Fixed problems with certain images (Submitted by pinky666 @vdr-portal.de).
+- Fixed crash if using display of repeatings in EPG details and reelchannelscan plugin is loaded.
+- New setup option for location of messages in menu OSD.
+
 2007-07-02: Version 0.0.5
 - Reworked font handling in menu OSD a little bit to (hopefully) fix crashes with plugins that patch fonts.
-- Updated Nederlands translation (Provided by dorpsgek @vdr-portal.de).
+- Updated Dutch translation (Provided by dorpsgek @vdr-portal.de).
 - Don't make info area in mainmenu too small (Requested by vdrchuck @vdr-portal.de).
 - Save and restore TTF FixedFont (Reported by zulu @vdr-portal.de).
 - Updated Italian translation (Provided by Gringo).

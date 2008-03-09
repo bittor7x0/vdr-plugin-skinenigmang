@@ -96,8 +96,8 @@ bool cEnigmaLogoCache::LoadChannelLogo(const cChannel *Channel)
     return false;
 
   bool fFoundLogo = false;
-  char *strChannelID = EnigmaConfig.useChannelId ? strdup(*Channel->GetChannelID().ToString()) : NULL;
-  const char *logoname = EnigmaConfig.useChannelId ? strChannelID : Channel->Name();
+  char *strChannelID = EnigmaConfig.useChannelId && !Channel->GroupSep() ? strdup(*Channel->GetChannelID().ToString()) : NULL;
+  const char *logoname = EnigmaConfig.useChannelId && !Channel->GroupSep() ? strChannelID : Channel->Name();
   if (logoname) {
     char *filename = (char *)malloc(strlen(logoname) + 20 /* should be enough for folder */);
     if (filename == NULL) return false;
