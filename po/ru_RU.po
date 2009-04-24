@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2008-01-09 08:21+0100\n"
+"POT-Creation-Date: 2009-03-30 12:30+0200\n"
 "PO-Revision-Date: 2007-12-18 08:11+0100\n"
 "Last-Translator: SergArb @vdr-portal.de / neptunvasja @vdr-portal.de\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -15,32 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-5\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Sunday"
-msgstr "Воскресенье"
+msgid "Free-To-Air"
+msgstr ""
 
-msgid "Monday"
-msgstr "Понедельник"
-
-msgid "Tuesday"
-msgstr "Вторник"
-
-msgid "Wednesday"
-msgstr "Среда"
-
-msgid "Thursday"
-msgstr "Четверг"
-
-msgid "Friday"
-msgstr "Пятница"
-
-msgid "Saturday"
-msgstr "Суббота"
+msgid "encrypted"
+msgstr ""
 
 msgid "*** Invalid Channel ***"
 msgstr "*** Неправильный канал ***"
-
-msgid "en_US"
-msgstr "ru_RU"
 
 msgid "WARNING"
 msgstr "ПРЕДУПРЕЖДЕНИЕ"
@@ -79,9 +61,6 @@ msgid "EnigmaNG"
 msgstr "EnigmaNG"
 
 msgid "TrueType Font"
-msgstr ""
-
-msgid "No TTF support!"
 msgstr ""
 
 msgid "Default OSD Font"
@@ -135,6 +114,9 @@ msgstr ""
 msgid "Free last line"
 msgstr ""
 
+msgid "if required"
+msgstr ""
+
 msgid "Try 8bpp single area"
 msgstr ""
 
@@ -156,6 +138,13 @@ msgstr "Показывать остав./прошед. время"
 msgid "Show VPS"
 msgstr "Показывать VPS"
 
+#, fuzzy
+msgid "Show signal info"
+msgstr "  Показать значок элект. почты"
+
+msgid "Show CA system as text"
+msgstr ""
+
 msgid "Show progressbar"
 msgstr "Показывать индикатор продвижения"
 
@@ -164,6 +153,10 @@ msgstr ""
 
 msgid "Show messages in menu on"
 msgstr ""
+
+#, fuzzy
+msgid "Show scrollbar in menu"
+msgstr "  Показать символы в меню"
 
 msgid "pixel algo"
 msgstr "алгоритм пикселя"
@@ -268,7 +261,7 @@ msgstr ""
 msgid "  Scroll other items"
 msgstr ""
 
-msgid "  Scoll behaviour"
+msgid "  Scroll behaviour"
 msgstr ""
 
 msgid "  Scroll delay (ms)"
@@ -372,3 +365,6 @@ msgstr "Проверка таймеров"
 
 msgid "No timer check"
 msgstr ""
+
+#~ msgid "en_US"
+#~ msgstr "ru_RU"

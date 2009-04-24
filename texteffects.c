@@ -5,74 +5,281 @@
 
 #include <algorithm>
 
-#ifndef DISABLE_ANIMATED_TEXT
 //Redefine macros
 #undef  TE_LOCK
 #define TE_LOCK   UpdateLock()
 #undef  TE_UNLOCK
 #define TE_UNLOCK UpdateUnlock()
-#endif
 
-#ifdef HAVE_FREETYPE
-// needed for case-insensitive sort of vector (for fonts)
-struct NoCase {
-  bool operator()(const std::string& x, const std::string& y) {
-    std::string lv(x);
-    std::string rv(y);
-    lcase(lv);
-    lcase(rv);
-    return lv < rv;
+
+// --- cEffect -----------------------------------------------
+
+cEffect::cEffect(cOsd * osd, int x, int y, int width, int height, int depth /* = 1 */, bool active /* = true */)
+{
+  debug("cEffect::cEffect(x=%d,y=%d,w=%d,h=%d)", x, y, width, height)
+  Active = active;
+  xOff = x;
+  yOff = y;
+  Osd = osd;
+  bmp = NULL;
+  Width = width;
+  Height = height;
+  ColorDepth = depth;
+  Text = NULL;
+  changed = false;
+}
+
+cEffect::~cEffect()
+{
+  delete(Text);
+  delete(bmp);
+}
+
+
+// --- cEffectScroll -----------------------------------------------
+
+cEffectScroll::cEffectScroll(cOsd *osd, int x, int y, int width, int height /* = 0 */, tColor fg /* = 0xFFFFFFFF */, tColor bg /* = 0xFF000000 */, int alignment /* = taDefault */, int depth /* = 1 */, bool active /* = true */) : cEffect(osd, x, y, width, height, depth, active)
+{
+  Fg = fg;
+  Bg = bg;
+  Alignment = alignment;
+  DestWidth = width;
+  pos = 0;
+  dir = 0;
+  Delay = EnigmaConfig.scrollPause;
+  delay = Delay;
+  xOffset = 0;
+}
+
+bool cEffectScroll::SetText(const char *text, const cFont *font, int offset /* = 0 */)
+{
+  debug("cEffectScroll::SetText(%s, %d)", text ? text : "NULL", offset)
+
+  if (!font)
+    return false;
+
+  changed = true;
+  if (!text) { // || isempty(text)) { // clear area if no text is given
+    Osd->DrawRectangle(xOff + xOffset, yOff, xOff + DestWidth, yOff - 1 + Height, Bg);
+    return false;
   }
 
-  void lcase(std::string& s) {
-    int n = s.size();
-    for(int i = 0; i < n; i++)
-      s[i] = tolower(s[i]);
+  if (Text && strcmp(Text, text) == 0)
+    return true;
+
+  if (Text)
+    delete(Text);
+  Text = strdup(text);
+
+  int textwidth = font->Width(text);
+  int textheight = font->Height(text);
+  xOffset = offset;
+  dir = 0;
+  DestWidth = Width - xOffset;
+
+  // text is given, draw it
+  Osd->DrawText(xOff + xOffset, yOff, text, Fg, Bg, font, DestWidth, textheight, Alignment);
+
+  if (!DestWidth || !Active)
+    return false;
+
+  if (textwidth > DestWidth) {
+    pos = 0;
+    dir = -1;
+    Time.Set();
+
+    if (bmp)
+      bmp->SetSize(textwidth, textheight);
+    else
+      bmp = new cBitmap(textwidth, textheight, ColorDepth);
+    bmp->DrawText(0, 0, text, Fg, Bg, font);
+
+    delay = Delay;
+    return true;
   }
-};
-#endif
+
+  return false;
+}
+
+bool cEffectScroll::IsDrawNeeded(void)
+{
+  if (bmp) {
+    int elapsed = ((int)Time.Elapsed());
+    if (elapsed >= Delay) {
+      Delay = EnigmaConfig.scrollDelay;
+
+      if (dir == -2) {
+        pos = 0;
+        dir = -1;
+        Delay = EnigmaConfig.scrollPause;
+
+      } else {
+        pos -= dir;
+
+        if (pos < 0) {
+          pos = 0;
+          dir = -1;
+          Delay = EnigmaConfig.scrollPause;
+
+        } else {
+          int x = bmp->Width() - DestWidth;
+          if (pos > x) {
+            if (EnigmaConfig.scrollMode) { // Restart scrolling from the left
+              dir = -2;
+
+            } else { // ping-pong scroll
+              pos = x;
+              dir = 1;
+            }
+
+            Delay = EnigmaConfig.scrollPause;
+          }
+        }
+      }
+
+      Time.Set();
+      delay = Delay;
+      return true;
+    } else {
+      delay = Delay - elapsed;
+    }
+
+  } else {
+    delay = 0;
+  }
+
+  return false;
+}
+
+int cEffectScroll::DrawIfNeeded(int yMax)
+{
+  bool needed=IsDrawNeeded();
+//  printf("cEffectScroll::DrawIfNeeded(%d) bmp=%p dir=%d yOff=%d needed=%d, DestWidth=%d, h=%d\n", yMax, bmp, dir, yOff, needed, DestWidth, yOff + Height > yMax ? yMax - yOff : bmp->Height());
+
+  changed = false;
+  if (bmp && dir && (yMax == 0 || yOff < yMax) && needed) { //TODO
+    changed = true;
+    for (int i = 0; i < DestWidth; i++) {
+      int nHeight = (yMax > 0 && yOff + Height > yMax) ? yMax - yOff : bmp->Height();
+      for (int j = 0; j < nHeight; j++) {
+        Osd->DrawPixel(xOff + xOffset + i, yOff + j, bmp->Color(*(bmp->Data(i + pos, j))));
+      }
+    }
+  }
+
+  return delay;
+}
 
 
-#ifdef DISABLE_ANIMATED_TEXT
-cEnigmaTextEffects EnigmaTextEffects;
-#else
+// --- cEffectBlink -----------------------------------------------
+
+cEffectBlink::cEffectBlink(cOsd *osd, int x, int y, int width, int height /* = 0 */, tColor fg /* = 0xFFFFFFFF */, tColor bg /* = 0xFF000000 */, int alignment /* = taDefault */, int depth /* = 1 */, bool active /* = true */) : cEffect(osd, x, y, width, height, depth, active)
+{
+  Fg = fg;
+  Bg = bg;
+  Alignment = alignment;
+  Delay = EnigmaConfig.blinkPause;
+  delay = Delay;
+  shown = false;
+  changed = false;
+}
+
+bool cEffectBlink::SetText(const char *text, const cFont *font, int offset /* = 0 */)
+{
+  debug("cEffectBlink::SetText(%s, %d)", text ? text : "NULL", offset)
+
+  if (!font)
+    return false;
+
+  changed = true;
+  if (!text || isempty(text)) { // clear area if no text is given
+    Osd->DrawRectangle(xOff + xOffset, yOff, xOff + DestWidth, yOff - 1 + Height, Bg);
+    return false;
+  }
+
+  xOffset = offset;
+  shown = true;
+  DestWidth = Width - xOffset;
+
+  int textwidth = font->Width(text);
+  int textheight = font->Height(text);
+  if (textwidth < DestWidth)
+    textwidth = DestWidth;
+  if (textheight < Height)
+    textheight = Height;
+
+  // text is given, draw it
+  Osd->DrawText(xOff + xOffset, yOff, text, Fg, Bg, font, DestWidth, textheight, Alignment);
+
+  if (!DestWidth || !Active)
+    return false;
+
+  if (bmp)
+    bmp->SetSize(textwidth, textheight);
+  else
+    bmp = new cBitmap(textwidth, textheight, ColorDepth);
+  bmp->DrawText(0, 0, text, Fg, Bg, font, textwidth, textheight, Alignment);
+
+  Time.Set();
+  delay = Delay;
+  return true;
+}
+
+int cEffectBlink::DrawIfNeeded(int yMax)
+{
+  //debug("cEffectBlink::DrawIfNeeded")
+
+  changed = false;
+  if (yMax != 0 && yMax < yOff) //TODO
+    return delay;
+
+  if (bmp) {
+    int elapsed = ((int)Time.Elapsed());
+    if (elapsed >= Delay) {
+      if (shown) { //hide
+        Osd->DrawRectangle(xOff, yOff, xOff + Width - 1, yOff + Height - 1, Bg);
+        shown = false;
+
+      } else { //show
+        for (int i = 0; i < Width; i++) {
+          for (int j = 0; j < bmp->Height(); j++) {
+            Osd->DrawPixel(xOff + xOffset + i, yOff + j, bmp->Color(*(bmp->Data(i, j))));
+          }
+        }
+        shown = true;
+      }
+
+      Time.Set();
+      delay = Delay;
+      changed = true;
+
+    } else {
+      delay = Delay - elapsed;
+    }
+
+  } else {
+    delay = 0;
+  }
+
+  return delay;
+}
+
+
+// --- cEnigmaTextEffects -----------------------------------------------
+
 cEnigmaTextEffects EnigmaTextEffects("EnigmaNG effects");
-#endif
 
-#ifdef DISABLE_ANIMATED_TEXT
-cEnigmaTextEffects::cEnigmaTextEffects(void) : osd(NULL)
-#else
 cEnigmaTextEffects::cEnigmaTextEffects(const char *Description) : cThread(Description), osd(NULL), condSleep(), mutexSleep(), mutexRunning()
-#endif
 {
 //  SetPriority(19);
-
-#ifdef HAVE_FREETYPE
-  availTTFs = NULL;
-  nMaxTTFs = 0;
-#endif
+  sem_init(&sem_update, 0, 1);
 }
 
 cEnigmaTextEffects::~cEnigmaTextEffects(void)
 {
-#ifndef DISABLE_ANIMATED_TEXT
 //TODO?  Stop();
-#endif
-
-#ifdef HAVE_FREETYPE
-  if (availTTFs) {
-    char **ptr = availTTFs;
-    while (*ptr) {
-      delete(*ptr);
-      ptr++;
-    }
-    free(availTTFs);
-    availTTFs = NULL;
-  }
-#endif
 }
 
-#ifndef DISABLE_ANIMATED_TEXT
 void cEnigmaTextEffects::Action(void)
 {
   mutexRunning.Lock();
@@ -81,28 +288,23 @@ void cEnigmaTextEffects::Action(void)
   debug("cEnigmaTextEffects::Action() %lu", pthread_self());
 
   while (EnigmaConfig.useTextEffects && osd) {
-    uint64_t nNow = cTimeMs::Now();
-    int nSleepMs = 0;
+    int nSleepMs = 5000;
+    int tempSleep = 0;
 
-    TE_LOCK; //This causes an initial wait until thet first Flush() is called (which TE_UNKOCKs)
-    for (tEffects::iterator effect = vecEffects.begin(); (effect != vecEffects.end()) && osd; effect++) {
-      tEffect *e = (*effect);
+    TE_LOCK; //This causes an initial wait until the first Flush() is called (which TE_UNKOCKs)
+    bool changed = false;
+    for (Effects_t::iterator effect = vecEffects.begin(); (effect != vecEffects.end()) && osd; effect++) {
+      cEffect *e = (*effect);
       if (e == NULL)
         continue;
 
-      if (e->nNextUpdate == 0) {
-        e->nNextUpdate = nNow + (e->nAction == 0 ? EnigmaConfig.scrollPause : EnigmaConfig.blinkPause);
-      } else if(nNow >= e->nNextUpdate) {
-        DoEffect(e, nNow);
-      }
-
-//      printf("NOW=%llu NEXT=%llu DIFF=%d SLEEP=%d\n", nNow, e->nNextUpdate, (int)(e->nNextUpdate - nNow), nSleepMs);
-      int nDiff = std::max(3, (int)(e->nNextUpdate - nNow));
-      if (nSleepMs == 0 || nDiff < nSleepMs)
-        nSleepMs = nDiff;
+      tempSleep = e->DrawIfNeeded(yMessageTop);
+      changed = (changed || e->changed);
+      //printf("TEMPSLEEP %d\n", tempSleep);
+      nSleepMs = nSleepMs < tempSleep ? nSleepMs : (tempSleep <= 0 ? nSleepMs : tempSleep);
     }
 
-    if (osd)
+    if (osd && changed)
       osd->Flush();
     TE_UNLOCK;
 
@@ -118,97 +320,6 @@ void cEnigmaTextEffects::Action(void)
 
   mutexSleep.Unlock();
   mutexRunning.Unlock();
-}
-
-void cEnigmaTextEffects::DoEffect(tEffect *e, uint64_t nNow)
-{
-  bool fDrawItem = ((yMessageTop == 0) || (e->y + e->Height < yMessageTop));
-
-  switch (e->nAction) {
-    case 0:  // Scroll
-      DoScroll(e, nNow, fDrawItem);
-      break;
-
-    case 1: // Blink
-      DoBlink(e, nNow, fDrawItem);
-      break;
-  }
-}
-
-void cEnigmaTextEffects::DoScroll(tEffect *e, uint64_t nNow, bool fDrawItem)
-{
-//  debug("cEnigmaTextEffects::DoScroll()");
-  if (e->Font->Width(e->strText.c_str()) <= e->Width) {
-    if (fDrawItem) {
-      if (e->Skin)
-        e->Skin->DrawTitle(e->strText.c_str());
-      else
-        osd->DrawText(e->x, e->y, e->strText.c_str(), e->ColorFg, e->ColorBg, e->Font, e->Width, e->Height, e->Alignment);
-    }
-
-    if (nNow)
-      e->nNextUpdate = nNow + EnigmaConfig.scrollPause;
-    return;
-  }
-
-  if (nNow) {
-    int nDelay = EnigmaConfig.scrollDelay;
-    if (fDrawItem) {
-      switch (e->nDirection) {
-        case 0: // Scroll from left to right
-          if (e->Font->Width(e->strText.c_str() + e->nOffset) <= e->Width) {
-            if (EnigmaConfig.scrollMode)
-              e->nDirection = 2;
-            else
-              e->nDirection = 1;
-            nDelay = EnigmaConfig.scrollPause;
-          } else if (e->nOffset < e->strText.length())
-            e->nOffset++;
-          break;
-
-        case 1: // Scroll from right to left
-          if (e->nOffset > 0)
-            e->nOffset--;
-          if (e->nOffset <= 0) {
-            e->nDirection = false;
-            nDelay = EnigmaConfig.scrollPause;
-          }
-          break;
-  
-        case 2: // Restart scrolling from the left
-          nDelay = EnigmaConfig.scrollPause;
-          e->nOffset = 0;
-          e->nDirection = 0;
-          break;
-      }
-    }
-    e->nNextUpdate = nNow + nDelay;
-  }
-
-  if (fDrawItem) {
-//    printf("SCROLL: %d %d %d/%d (%s) %d %lu %lu\n", e->nOffset, e->nDirection, e->Font->Width(e->strText.c_str() + e->nOffset), e->Width, e->strText.c_str() + e->nOffset, e->strText.length(), nNow, e->nNextUpdate);
-    if (e->Skin)
-      e->Skin->DrawTitle(e->strText.c_str() + e->nOffset);
-    else
-      osd->DrawText(e->x, e->y, e->strText.c_str() + e->nOffset, e->ColorFg, e->ColorBg, e->Font, e->Width, e->Height);
-  }
-}
-
-void cEnigmaTextEffects::DoBlink(tEffect *e, uint64_t nNow, bool fDrawItem)
-{
-//  debug("cEnigmaTextEffects::DoBlink()");
-  if (fDrawItem) {
-    if (nNow) {
-      e->nDirection = (e->nDirection == 0 ? 1 : 0);
-      e->nNextUpdate = nNow + EnigmaConfig.blinkPause;
-    }
-    if (e->nDirection == 1)
-      osd->DrawText(e->x, e->y, e->strText.c_str() + e->nOffset, e->ColorFg, e->ColorBg, e->Font, e->Width, e->Height, e->Alignment);
-    else
-      osd->DrawText(e->x, e->y, e->strText.c_str() + e->nOffset, e->ColorBg, e->ColorBg, e->Font, e->Width, e->Height, e->Alignment);
-  } else {
-    e->nNextUpdate = nNow + EnigmaConfig.blinkPause;
-  }
 }
 
 bool cEnigmaTextEffects::Start(cOsd *o)
@@ -253,7 +364,7 @@ void cEnigmaTextEffects::Clear(void)
 
   //Must be TE_LOCKed by caller
 
-  for (tEffects::iterator effect = vecEffects.begin(); effect != vecEffects.end(); effect++) {
+  for (Effects_t::iterator effect = vecEffects.begin(); effect != vecEffects.end(); effect++) {
     delete(*effect);
   }
 
@@ -269,7 +380,7 @@ void cEnigmaTextEffects::PauseEffects(int y)
   yMessageTop = y;
 }
 
-void cEnigmaTextEffects::ResetText(int i, tColor ColorFg, tColor ColorBg, bool fDraw)
+void cEnigmaTextEffects::ResetText(int i, tColor /* ColorFg */, tColor /* ColorBg */, bool /* fDraw */)
 {
   debug("cEnigmaTextEffects::ResetText(%d)", i);
 
@@ -278,14 +389,8 @@ void cEnigmaTextEffects::ResetText(int i, tColor ColorFg, tColor ColorBg, bool f
   if (i < 0 || i >= (int)vecEffects.size())
     return;
 
-  tEffect *e = vecEffects[i];
+  cEffect *e = vecEffects[i];
   if (e) {
-    if (fDraw && osd) {
-      osd->DrawText(e->x, e->y, e->strText.c_str(),
-                    ColorFg ? ColorFg : e->ColorFg,
-                    ColorBg ? ColorBg : e->ColorBg,
-                    e->Font, e->Width, e->Height);
-    }
     delete(e);
     vecEffects[i] = NULL;
   }
@@ -293,157 +398,42 @@ void cEnigmaTextEffects::ResetText(int i, tColor ColorFg, tColor ColorBg, bool f
     vecEffects.resize(vecEffects.size() - 1);
 }
 
-void cEnigmaTextEffects::UpdateTextWidth(int i, int Width)
-{
-  debug("cEnigmaTextEffects::UpdateTextWidth(%d)", i);
-
-  //Must be TE_LOCKed by caller
-
-  if (i < 0 || i >= (int)vecEffects.size())
-    return;
-
-  tEffect *e = vecEffects[i];
-  if (e) {
-    e->Width = Width;
-  }
-}
-
-int cEnigmaTextEffects::DrawAnimatedTitle(int o_id, int action, const char *s, int Width, cSkinEnigmaThreadedOsd *skin)
-{
-  //Must be TE_LOCKed by caller
-
-  if (osd == NULL || skin == NULL)
-    return -1;
-
-  debug("cEnigmaTextEffects::DrawAnimatedTitle(%d, %d, %s)", o_id, EnigmaConfig.useTextEffects, s);
-
-  if (o_id >= 0) {
-    // Update animated text
-    tEffect *effect = vecEffects[o_id];
-    if (effect) {
-      if (s == NULL)
-        effect->strText = "";
-      else if (strcmp(effect->strText.c_str(), s) != 0) {
-        effect->strText = s;
-        effect->nOffset = 0;
-        effect->nDirection = 0;
-      }
-      DoEffect(effect);
-      return o_id;
-    } else {
-      return -1;
-    }
-  } else {
-    skin->DrawTitle(s);
-    const cFont *Font = EnigmaConfig.GetFont(FONT_OSDTITLE);
-    if (EnigmaConfig.useTextEffects && ((Font->Width(s ? s : "") > Width) || (action > 0))) {
-      // New scrolling text
-      tEffect *effect = new tEffect;
-      if (effect == NULL) {
-        return -1;
-      }
-
-      effect->nAction = action;
-      effect->strText = std::string(s ? s : "");
-      effect->Width = Width;
-      effect->Font = Font;
-      effect->Skin = skin;
-      vecEffects.push_back(effect);
-      return vecEffects.size() - 1;
-    } else {
-      return -1;
-    }
-  }
-}
-
-int cEnigmaTextEffects::DrawAnimatedText(int o_id, int action, int x, int y, const char *s, tColor ColorFg, tColor ColorBg, const cFont *Font, int Width, int Height, int Alignment)
+int cEnigmaTextEffects::DrawAnimatedText(int o_id, int action, bool _active, int x, int y, const char *s, tColor ColorFg, tColor ColorBg, const cFont *Font, int ColorDepth /* = 1 */, int Width /* = 0 */, int Height /* = 0 */, int Alignment /* = taDefault */)
 {
   //Must be TE_LOCKed by caller
 
   if (osd == NULL)
     return -1;
 
-  debug("cEnigmaTextEffects::DrawAnimatedText(%d, %d, %s)", o_id, EnigmaConfig.useTextEffects, s);
+  debug("cEnigmaTextEffects::DrawAnimatedText(%d, %d, %d, %d, %d, %s, %d, %d, %p, %d, %d, %d, %d)", o_id, action, _active, x, y, s, ColorFg, ColorBg, Font, ColorDepth, Width, Height, Alignment);
 
   if (o_id >= 0) {
     // Update animated text
-    tEffect *effect = vecEffects[o_id];
+    cEffect *effect = vecEffects[o_id];
     if (effect) {
-      if (s == NULL)
-        effect->strText = "";
-      else if (strcmp(effect->strText.c_str(), s) != 0) {
-        effect->strText = s;
-        effect->nOffset = 0;
-        effect->nDirection = 0;
-      }
-      DoEffect(effect);
+      effect->SetText(s, Font);
       return o_id;
     } else {
       return -1;
     }
   } else {
-    if (Height == 0)
-      Height = Font->Height(s);
-    osd->DrawText(x, y, s ? s : "", ColorFg, ColorBg, Font, Width, Height, Alignment);
     // New animated text
-    tEffect *effect = new tEffect;
+    cEffect *effect = NULL;
+    if (action == 0)
+      effect = new cEffectScroll(osd, x, y, Width, Height, ColorFg, ColorBg, Alignment, ColorDepth, _active);
+    else
+      effect = new cEffectBlink(osd, x, y, Width, Height, ColorFg, ColorBg, Alignment, ColorDepth, _active);
     if (effect == NULL) {
       return -1;
     }
 
-    effect->nAction = action;
-    effect->strText = std::string(s ? s : "");
-    effect->x = x;
-    effect->y = y;
-    effect->Width = Width;
-    effect->Height = Height;
-    effect->ColorFg = ColorFg;
-    effect->ColorBg = ColorBg;
-    effect->Font = Font;
-    effect->Alignment = Alignment;
-    vecEffects.push_back(effect);
-    return vecEffects.size() - 1;
+    if (effect->SetText(s, Font)) {
+      vecEffects.push_back(effect);
+      return vecEffects.size() - 1;
+    } else {
+      delete effect;
+      return -1;
+    }
   }
 }
-#endif //DISABLE_ANIMATED_TEXT
-
-#ifdef HAVE_FREETYPE
-const char **cEnigmaTextEffects::GetAvailTTFs(void)
-{
-  if (availTTFs == NULL) {
-    std::vector<std::string> vecFonts;
-    cReadDir d(EnigmaConfig.GetFontsDir());
-    struct dirent *e;
-    while ((e = d.Next()) != NULL) {
-      if ((strcmp(e->d_name, ".") != 0) && (strcmp(e->d_name, "..") != 0)) {
-        if (strcmp(e->d_name + strlen(e->d_name) - 4, ".ttf") == 0) {
-          debug("Loading %s", e->d_name);
-          vecFonts.push_back(std::string(e->d_name));
-        } else {
-          error("Ignoring non-font file: %s", e->d_name);
-        }
-      }
-    }
-
-    if (vecFonts.size() > 0) {
-      sort(vecFonts.begin(), vecFonts.end(), NoCase());
-      availTTFs = (char **)calloc(vecFonts.size() + 1, sizeof(char*));
-      if (availTTFs) {
-        char **ptr = availTTFs;
-        for (std::vector<std::string>::iterator i = vecFonts.begin(); i != vecFonts.end(); i++) {
-          if (!(*i).empty()) {
-            *ptr = strdup((*i).c_str());
-            ptr++;
-            nMaxTTFs++;
-          }
-        }
-      }
-    }
-
-    vecFonts.clear();
-  }
-
-  return (const char**)availTTFs;
-}
-#endif
 // vim:et:sw=2:ts=2:

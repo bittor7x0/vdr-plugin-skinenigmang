@@ -6,7 +6,6 @@
  */
 
 #include "common.h"
-#include "i18n.h"
 
 #include <sstream>
 #include <string.h>
@@ -43,7 +42,7 @@ std::string parseaux(const char *aux)
 {
   bool founditem = false;
   std::stringstream sstrReturn;
-  char *start, *end;
+  const char *start, *end;
   // check if egpsearch
   start = strcasestr(aux, AUX_TAGS_EPGSEARCH_START);
   end = strcasestr(aux, AUX_TAGS_EPGSEARCH_END);
@@ -51,11 +50,11 @@ std::string parseaux(const char *aux)
     // add header
     sstrReturn << AUX_HEADER_EPGSEARCH;
     // parse first item
-    char *tmp;
+    const char *tmp;
     if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_1A_START)) != NULL) {
       if (tmp < end) {
         tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_1A_START);
-        char *tmp2;
+        const char *tmp2;
         if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_1A_END)) != NULL) {
           // add channel
           sstrReturn << tr("Channel:") << " " << std::string(tmp, tmp2 - tmp);
@@ -70,7 +69,7 @@ std::string parseaux(const char *aux)
       if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_2A_START)) != NULL) {
         if (tmp < end) {
           tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_2A_START);
-          char *tmp2;
+          const char *tmp2;
           if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_2A_END)) != NULL) {
             // add separator
             if (founditem) {
@@ -88,7 +87,7 @@ std::string parseaux(const char *aux)
         if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_3A_START)) != NULL) {
           if (tmp < end) {
             tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_3A_START);
-            char *tmp2;
+            const char *tmp2;
             if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_3A_END)) != NULL) {
               // add separator
               if (founditem) {
@@ -108,7 +107,7 @@ std::string parseaux(const char *aux)
     if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_1B_START)) != NULL) {
       if (tmp < end) {
         tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_1B_START);
-        char *tmp2;
+        const char *tmp2;
         if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_1B_END)) != NULL) {
           if (std::string(tmp, tmp2 - tmp) != "0") {
             // add separator
@@ -122,14 +121,14 @@ std::string parseaux(const char *aux)
             if ((tmp = strcasestr(start, AUX_TAGS_EPGSEARCH_ITEM_2B_START)) != NULL) {
               if (tmp < end) {
                 tmp += strlen(AUX_TAGS_EPGSEARCH_ITEM_2B_START);
-                char *tmp2;
-                if ((tmp2 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_2B_END)) != NULL) {
+                const char *tmp3;
+                if ((tmp3 = strcasestr(tmp, AUX_TAGS_EPGSEARCH_ITEM_2B_END)) != NULL) {
                   // add separator
                   if (founditem) {
                     sstrReturn << ", ";
                   }
                   // add search item
-                  sstrReturn << "eventid=" << std::string(tmp, tmp2 - tmp);
+                  sstrReturn << "eventid=" << std::string(tmp, tmp3 - tmp);
                 }
               }
             }
@@ -160,11 +159,11 @@ std::string parseaux(const char *aux)
     // add header
     sstrReturn << AUX_HEADER_VDRADMIN;
     // parse first item
-    char *tmp;
+    const char *tmp;
     if ((tmp = strcasestr(start, AUX_TAGS_VDRADMIN_ITEM1_START)) != NULL) {
       if (tmp < end) {
         tmp += strlen(AUX_TAGS_VDRADMIN_ITEM1_START);
-        char *tmp2;
+        const char *tmp2;
         if ((tmp2 = strcasestr(tmp, AUX_TAGS_VDRADMIN_ITEM1_END)) != NULL) {
           // add search item
           sstrReturn << std::string(tmp, tmp2 - tmp) << std::endl;
@@ -179,11 +178,11 @@ std::string parseaux(const char *aux)
     // add header
     sstrReturn << AUX_HEADER_PIN;
     // parse first item
-    char *tmp;
+    const char *tmp;
     if ((tmp = strcasestr(start, AUX_TAGS_PIN_ITEM1_START)) != NULL) {
       if (tmp < end) {
         tmp += strlen(AUX_TAGS_PIN_ITEM1_START);
-        char *tmp2;
+        const char *tmp2;
         if ((tmp2 = strcasestr(tmp, AUX_TAGS_PIN_ITEM1_END)) != NULL) {
           // add search item
           sstrReturn << std::string(tmp, tmp2 - tmp) << std::endl;

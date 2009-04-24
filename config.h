@@ -17,9 +17,7 @@ extern const char *imageExtensionTexts[NUM_IMAGEEXTENSIONTEXTS];
 #define NUM_IMAGEEXTENSIONTEXTS 0
 #endif
 
-#ifdef HAVE_FREETYPE
-# include "font.h"
-#endif
+#include "font.h"
 
 #include <vdr/skins.h>
 #include <vdr/font.h>
@@ -31,11 +29,7 @@ extern const char *imageExtensionTexts[NUM_IMAGEEXTENSIONTEXTS];
 #define MAXFONTSIZE 64
 #endif
 
-#ifdef DISABLE_ANIMATED_TEXT
-# define INIT_FONTS
-#else
-# define INIT_FONTS EnigmaConfig.InitFonts()
-#endif
+#define INIT_FONTS EnigmaConfig.InitFonts()
 
 struct EnigmaOsdSize
 {
@@ -82,8 +76,8 @@ struct FontInfo
 struct FontConfig
 {
   int Id;
-  char *KeyId;
-  char *KeyName;
+  const char *KeyId;
+  const char *KeyName;
 };
 
 extern FontConfig allFontConfig[FONT_NUMFONTS];
@@ -93,9 +87,6 @@ struct cEnigmaConfig
 private:
   char logoDir[255];
   char strImagesDir[255];
-#ifdef HAVE_FREETYPE
-  char strFontsDir[255];
-#endif
 public:
   cEnigmaConfig();
   ~cEnigmaConfig();
@@ -103,16 +94,8 @@ public:
   char *GetLogoDir(void) { return logoDir; }
   void SetImagesDir(const char *dir);
   char *GetImagesDir(void) { return strImagesDir; }
-#ifdef HAVE_FREETYPE
-  void SetFontsDir(const char *dir);
-  char *GetFontsDir(void) { return strFontsDir; }
-#endif
   const char *GetImageExtension(void);
   const cFont *GetFont(int id);
-#ifndef DISABLE_ANIMATED_TEXT
-  void InitFonts(void);
-  const cFont *CopyFont(eDvbFont vdrId);
-#endif
   void SetFont(int id, const char *font);
   void SetFont(int id, int vdrId);
   void GetOsdSize(struct EnigmaOsdSize *size);
@@ -158,6 +141,9 @@ public:
   int statusLineMode;
   int showWssSymbols;
   int showStatusSymbols;
+  int showScrollbar;
+  int showSignalInfo;
+  int showCaMode;
   FontInfo allFonts[FONT_NUMFONTS];
 };
 

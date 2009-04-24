@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2008-01-09 08:21+0100\n"
+"POT-Creation-Date: 2009-03-30 12:30+0200\n"
 "PO-Revision-Date: 2007-12-18 08:11+0100\n"
 "Last-Translator: Drazen Dupor <drazen.dupor@dupor.com>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -16,32 +16,14 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Sunday"
-msgstr "Nedjelja"
+msgid "Free-To-Air"
+msgstr ""
 
-msgid "Monday"
-msgstr "Ponedjeljak"
-
-msgid "Tuesday"
-msgstr "Utorak"
-
-msgid "Wednesday"
-msgstr "Srijeda"
-
-msgid "Thursday"
-msgstr "Èetvrtak"
-
-msgid "Friday"
-msgstr "Petak"
-
-msgid "Saturday"
-msgstr "Subota"
+msgid "encrypted"
+msgstr ""
 
 msgid "*** Invalid Channel ***"
 msgstr ""
-
-msgid "en_US"
-msgstr "hr_HR"
 
 msgid "WARNING"
 msgstr ""
@@ -80,9 +62,6 @@ msgid "EnigmaNG"
 msgstr ""
 
 msgid "TrueType Font"
-msgstr ""
-
-msgid "No TTF support!"
 msgstr ""
 
 msgid "Default OSD Font"
@@ -136,6 +115,9 @@ msgstr ""
 msgid "Free last line"
 msgstr ""
 
+msgid "if required"
+msgstr ""
+
 msgid "Try 8bpp single area"
 msgstr ""
 
@@ -157,6 +139,12 @@ msgstr ""
 msgid "Show VPS"
 msgstr ""
 
+msgid "Show signal info"
+msgstr ""
+
+msgid "Show CA system as text"
+msgstr ""
+
 msgid "Show progressbar"
 msgstr ""
 
@@ -164,6 +152,9 @@ msgid "Dynamic OSD size"
 msgstr ""
 
 msgid "Show messages in menu on"
+msgstr ""
+
+msgid "Show scrollbar in menu"
 msgstr ""
 
 msgid "pixel algo"
@@ -268,7 +259,7 @@ msgstr ""
 msgid "  Scroll other items"
 msgstr ""
 
-msgid "  Scoll behaviour"
+msgid "  Scroll behaviour"
 msgstr ""
 
 msgid "  Scroll delay (ms)"
@@ -372,3 +363,6 @@ msgstr ""
 
 msgid "No timer check"
 msgstr ""
+
+#~ msgid "en_US"
+#~ msgstr "hr_HR"

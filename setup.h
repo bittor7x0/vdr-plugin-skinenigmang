@@ -36,6 +36,7 @@ private:
   const char *showRemainingTexts[3];
   const char *showRecSizeTexts[3];
   const char *statusLineModeTexts[3];
+  const char *showScrollbarTexts[3];
 protected:
   virtual eOSState ProcessKey(eKeys Key);
   void Set(void);
@@ -57,7 +58,6 @@ public:
   cMenuSetupLogos(cEnigmaConfig *Data);
 };
 
-#ifndef DISABLE_ANIMATED_TEXT
 class cMenuSetupAnimText : public cMenuSetupSubMenu {
 private:
   const char *scrollModeTexts[2];
@@ -67,43 +67,26 @@ protected:
 public:
   cMenuSetupAnimText(cEnigmaConfig *Data);
 };
-#endif
 
-#ifdef HAVE_FREETYPE
 class cMenuSetupTTF : public cOsdMenu {
 private:
   FontInfo *data;
   int nFont;
   int nWidth;
   int nSize;
-#if VDRVERSNUM < 10504
-  const char **availTTFs;
-  int nMaxTTFs;
-#else // VDRVERSNUM >= 10504
   cStringList *fontList;
-#endif // VDRVERSNUM < 10504
 protected:
   virtual eOSState ProcessKey(eKeys Key);
   void Set(void);
   void Store(void);
 public:
-#if VDRVERSNUM < 10504
-  cMenuSetupTTF(FontInfo *fontinfo);
-#else // VDRVERSNUM >= 10504
   cMenuSetupTTF(FontInfo *fontinfo, cStringList* fontList);
-#endif // VDRVERSNUM < 10504
 };
-
-#endif
 
 class cMenuSetupFonts : public cMenuSetupSubMenu {
 private:
-#ifdef HAVE_FREETYPE
-#if VDRVERSNUM >= 10504
   cStringList fontNames;
   cStringList fontMonoNames;
-#endif
-#endif
 
 protected:
   virtual eOSState ProcessKey(eKeys Key);

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2008-01-09 08:21+0100\n"
+"POT-Creation-Date: 2009-03-30 12:30+0200\n"
 "PO-Revision-Date: 2007-12-18 08:11+0100\n"
 "Last-Translator: Rolf Ahrenberg <rahrenbe@cc.hut.fi>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -15,32 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Sunday"
-msgstr "Sunnuntai"
+msgid "Free-To-Air"
+msgstr ""
 
-msgid "Monday"
-msgstr "Maanantai"
-
-msgid "Tuesday"
-msgstr "Tiistai"
-
-msgid "Wednesday"
-msgstr "Keskiviikko"
-
-msgid "Thursday"
-msgstr "Torstai"
-
-msgid "Friday"
-msgstr "Perjantai"
-
-msgid "Saturday"
-msgstr "Lauantai"
+msgid "encrypted"
+msgstr ""
 
 msgid "*** Invalid Channel ***"
 msgstr "*** Virheellinen kanava ***"
-
-msgid "en_US"
-msgstr "fi_FI"
 
 msgid "WARNING"
 msgstr "VAROITUS"
@@ -80,9 +62,6 @@ msgstr "EnigmaNG"
 
 msgid "TrueType Font"
 msgstr "TrueType-kirjasin"
-
-msgid "No TTF support!"
-msgstr "Ei TrueType-kirjasintyyppi tukea!"
 
 msgid "Default OSD Font"
 msgstr "oletuskirjasintyyppi"
@@ -135,6 +114,9 @@ msgstr "värinäppäinrivillä"
 msgid "Free last line"
 msgstr "alimmalla vapaalla rivillä"
 
+msgid "if required"
+msgstr ""
+
 msgid "Try 8bpp single area"
 msgstr "Suosi yhtä 8bpp kuva-aluetta"
 
@@ -156,6 +138,13 @@ msgstr "Näytä tapahtuman aika"
 msgid "Show VPS"
 msgstr "Näytä VPS-tieto"
 
+#, fuzzy
+msgid "Show signal info"
+msgstr "  Näytä sähköpostikuvake"
+
+msgid "Show CA system as text"
+msgstr ""
+
 msgid "Show progressbar"
 msgstr "Näytä aikajana"
 
@@ -164,6 +153,10 @@ msgstr "Mukauta kuvaruutunäytön kokoa"
 
 msgid "Show messages in menu on"
 msgstr "Näytä viestit valikossa"
+
+#, fuzzy
+msgid "Show scrollbar in menu"
+msgstr "  Näytä symbolit valikossa"
 
 msgid "pixel algo"
 msgstr "näytteistys"
@@ -267,7 +260,7 @@ msgstr "  Vieritä aktiivista valintaa"
 msgid "  Scroll other items"
 msgstr "  Vieritä muita alueita"
 
-msgid "  Scoll behaviour"
+msgid "  Scroll behaviour"
 msgstr "  Vieritystapa"
 
 msgid "  Scroll delay (ms)"
@@ -371,3 +364,6 @@ msgstr "Ajastimien valvonta"
 
 msgid "No timer check"
 msgstr "Ei valvontaa"
+
+#~ msgid "en_US"
+#~ msgstr "fi_FI"

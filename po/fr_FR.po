@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2008-01-09 08:21+0100\n"
+"POT-Creation-Date: 2009-03-30 12:30+0200\n"
 "PO-Revision-Date: 2007-12-18 08:11+0100\n"
 "Last-Translator: Patrice Staudt <patrice.staudt@laposte.net>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -15,32 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Sunday"
-msgstr "Dimanche"
+msgid "Free-To-Air"
+msgstr ""
 
-msgid "Monday"
-msgstr "Lundi"
-
-msgid "Tuesday"
-msgstr "Mardi"
-
-msgid "Wednesday"
-msgstr "Mercredi"
-
-msgid "Thursday"
-msgstr "Jeudi"
-
-msgid "Friday"
-msgstr "Vendredi"
-
-msgid "Saturday"
-msgstr "Samedi"
+msgid "encrypted"
+msgstr ""
 
 msgid "*** Invalid Channel ***"
 msgstr "*** Chaîne non valable ***"
-
-msgid "en_US"
-msgstr "fr_FR"
 
 msgid "WARNING"
 msgstr "ATTENTION"
@@ -80,9 +62,6 @@ msgstr "EnigmaNG"
 
 msgid "TrueType Font"
 msgstr "TrueType"
-
-msgid "No TTF support!"
-msgstr "Les polices TrueType ne sont pas supportées!"
 
 msgid "Default OSD Font"
 msgstr "OSD standard"
@@ -135,6 +114,9 @@ msgstr "Button aide"
 msgid "Free last line"
 msgstr "Dernière ligne libre"
 
+msgid "if required"
+msgstr ""
+
 msgid "Try 8bpp single area"
 msgstr "Essayer une surface à 8bpp"
 
@@ -156,6 +138,13 @@ msgstr "Afficher le temps écoulé/restant"
 msgid "Show VPS"
 msgstr "Afficher le VPS"
 
+#, fuzzy
+msgid "Show signal info"
+msgstr "  Afficher l'icône courriel"
+
+msgid "Show CA system as text"
+msgstr ""
+
 msgid "Show progressbar"
 msgstr "Afficher barre de progression"
 
@@ -164,6 +153,10 @@ msgstr "Taille dynamique de OSD"
 
 msgid "Show messages in menu on"
 msgstr "Afficher les messages dans le menu"
+
+#, fuzzy
+msgid "Show scrollbar in menu"
+msgstr "  dans le menu"
 
 msgid "pixel algo"
 msgstr "Algorithme pixel"
@@ -267,7 +260,7 @@ msgstr "  Barre de défilement dans la liste active"
 msgid "  Scroll other items"
 msgstr "  Barre de défilement dans d'autres parties"
 
-msgid "  Scoll behaviour"
+msgid "  Scroll behaviour"
 msgstr "  Comportement de défilement"
 
 msgid "  Scroll delay (ms)"
@@ -371,3 +364,6 @@ msgstr "Observation de la programmation"
 
 msgid "No timer check"
 msgstr "Sans surveillance"
+
+#~ msgid "en_US"
+#~ msgstr "fr_FR"

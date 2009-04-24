@@ -23,7 +23,7 @@ cEnigmaStatus::cEnigmaStatus(void) : mReplayMode(replayNone),
 {}
 
 void cEnigmaStatus::Replaying(const cControl * /*Control */ , const char *Name,
-                              const char *FileName, bool On)
+                              const char *FileName, bool /* On */)
 {
   debug("cEnigmaStatus::Replaying(%s)", Name);
 
@@ -67,7 +67,7 @@ void cEnigmaStatus::Replaying(const cControl * /*Control */ , const char *Name,
   }
 }
 
-void cEnigmaStatus::Recording(const cDevice * Device, const char *Name, const char *FileName, bool On)
+void cEnigmaStatus::Recording(const cDevice * /* Device */, const char * /* Name */, const char * /* FileName */, bool /* On */)
 {
 }
 
@@ -75,11 +75,11 @@ void cEnigmaStatus::OsdClear(void)
 {
 }
 
-void cEnigmaStatus::OsdCurrentItem(const char *Text)
+void cEnigmaStatus::OsdCurrentItem(const char * /* Text */)
 {
 }
 
-void cEnigmaStatus::OsdItem(const char *Text, int Index)
+void cEnigmaStatus::OsdItem(const char * /* Text */, int /* ItemIndex */)
 {
 }
 

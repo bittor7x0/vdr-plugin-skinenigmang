@@ -12,7 +12,7 @@ See the file COPYING for license information.
 Requirements
 ------------
 
-- VDR version >= 1.4.0.
+- VDR version >= 1.6.0.
 
 - Logo pack from http://andreas.vdr-developer.org/enigmang
 
@@ -49,27 +49,8 @@ HAVE_IMAGEMAGICK = 1
 If you have installed ImageMagick and want to use images in event's
 and recording's details.
 
-SKINENIGMA_DISABLE_ANIMATED_TEXT = 1
-Disable any code that is used for scrolling or blinking text.
-NOTE: this is only useful if you want to save some bytes because you
-can disable them in the setup too.
-
-SKINENIGMA_FONTS =
-Set the descriptions for fonts you've patched in VDR. These fonts then
-can be selected in EnigmaNG setup.
-NOTE: This is NOT the path to your TrueType fonts!!!
-
-HAVE_FREETYPE = 1
-If you have installed FreeType2 and want to use TrueTypeFonts.
-
-
-Patches
--------
-
-In the patches directory you'll find patches that might be of interest
-to you before compiling. Just check it out!
-Every patch (*.diff) has a corresponding description (*.txt). Read it
-for more information.
+SKINENIGMA_DISABLE_SIGNALINFO = 1
+Do not include code to show signal strength and signal-to-noise ratio.
 
 
 Installation
@@ -179,6 +160,14 @@ Setup Options
 - Show VPS
   Hide or show VPS information in channel info and event info.
   
+- Show signal info
+  If set to yes the signal strength (top) and signal-to-noise ratio (bottom)
+  will be shown at the bottom right side of the channel info OSD.
+
+- Show CA system as text
+  Show used CA system (e.g. Cryptoworks) as text instead of symbol in the
+  channel info OSD.
+
 - Show progressbar
   This replaces progressbars shown with pipes (e.g. [||  ]) by a graphical
   progressbar.
@@ -193,6 +182,10 @@ Setup Options
     Help buttons   - Messages will hide the help buttons in menu OSD.
     Free last line - The same as "Last line" but now the available list items
                      is reduced by one.
+
+- Show scrollbar in menu (no/yes/if required)
+  Disable or enable the scrollbar in the menu OSD. If set to "if required" the
+  scrollbar will only be visible if scrolling is possible.
 
 
 * Logos & Symbols
@@ -268,7 +261,6 @@ Setup Options
   The number of logos/symbols to keep in the cache.
 
 * Animated Text
-  NOTE: only visible if SKINENIGMA_DISABLE_ANIMATED_TEXT is not set
 
 - Enable
   This option enables scrolling of long lines and blinking of some text.
@@ -287,12 +279,12 @@ Setup Options
   At the moment these areas cover the title and subtitle in the EPGs and
   recordings details and the message in the message OSD.
 
-- Scoll behaviour (to the left/left and right)
+- Scroll behaviour (to the left/left and right)
   Text can either scroll from the left to right and then start again at the
   left or it can scroll from the left to the right and then back from the
   right to the left (ping pong).
 
-- Scroll delay (ms) (50 - 1000)
+- Scroll delay (ms) (3 - 1000)
   The number of milliseconds to wait before the scrolling text is moved.
 
 - Scroll pause (ms) (500 - 2000)
@@ -327,9 +319,9 @@ Setup Options
 - Replay: times
 - Fixed Font
   Set the font for the named area.
-  If you have set HAVE_FREETYPE you can set the TrueTypeFont to use by pressing
-  the blue key. Then you can select one of the TrueTypeFonts found in EnigmaNG's
-  font directory (see above) and set it's size and width.
+  You can set the TrueTypeFont to use by pressing the blue key.
+  Then you can select one of the TrueTypeFonts known to fontconfig
+  and set it's size and width.
 
 * EPGSearch 
   NOTE: only visible if epgsearch support is compiled in
@@ -373,7 +365,7 @@ Credits
 - Rolf Ahrenberg for the Soppalusikka skin where I've lent some code.
   http://www.saunalahti.fi/~rahrenbe/vdr/soppalusikka/
 
-- Andreas Burger for the original "Enigma" for Text2Skin and his Text2Skin patches.
+- Andreas Brugger for the original "Enigma" for Text2Skin and his Text2Skin patches.
   http://brougs78.vdr-developer.org/
   http://www.vdr-portal.de/board/thread.php?threadid=28730
   http://www.vdr-wiki.de/wiki/index.php/Entwicklung_-_Tipps_und_Tricks
@@ -409,8 +401,26 @@ Credits
   http://www.vdr-portal.de/board/thread.php?postid=619867#post619867
 
 - The translation team:
-  See i18n-template.c.
+    English:    Andreas Mair <andreas _@_ vdr-developer.org>
+    Deutsch:    Andreas Mair <andreas _@_ vdr-developer.org>
+    Italiano:   Diego Pierotto <vdr-italian _@_ tiscali.it>
+    Nederlands: Johan Schuring <dorpsgek @vdr-portal.de>
+    Français:   Patrice Staudt <pat @vdr-portal.de>
+    Finnish:    Rolf Ahrenberg <rofafor @vdr-portal.de>
+    Polski:     ???
+    Español:    bittor from open7x0.org <bittor7x0 _at_ gmail.com>
+    Svenska:    ???
+    Russian:    SergArb @vdr-portal.de / neptunvasja @vdr-portal.de
+    Eesti:      ???
+    Dansk:      ???
+    Czech:      ???
+    Türkçe:     n/a
 
-- Udo Richter (udo_richter @gmx.de) for po2i18n.pl.
+- Udo Richter (udo_richter @gmx.de) for po2i18n.pl (used in EnigmaNG < 0.1.0).
   http://www.udo-richter.de/vdr/scripts.en.html#po2i18n
+
+- Christoph Haubrich <christoph.haubrich (AT) web.de> for skinelchi where I've
+  lent some code.
+  http://firefly.vdr-developer.org/skinelchi/
+
 // vim:et:sw=2:ts=2:

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2008-01-09 08:21+0100\n"
+"POT-Creation-Date: 2009-03-30 12:30+0200\n"
 "PO-Revision-Date: 2007-12-18 08:11+0100\n"
 "Last-Translator: dorpsgek @vdr-portal.de\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -15,32 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Sunday"
-msgstr "Zondag"
+msgid "Free-To-Air"
+msgstr ""
 
-msgid "Monday"
-msgstr "maandag"
-
-msgid "Tuesday"
-msgstr "Dinsdag"
-
-msgid "Wednesday"
-msgstr "woensdag"
-
-msgid "Thursday"
-msgstr "Donderdag"
-
-msgid "Friday"
-msgstr "Vrijdag"
-
-msgid "Saturday"
-msgstr "Zaterdag"
+msgid "encrypted"
+msgstr ""
 
 msgid "*** Invalid Channel ***"
 msgstr "*** Ongeldig Kanaal ***"
-
-msgid "en_US"
-msgstr "nl_NL"
 
 msgid "WARNING"
 msgstr "WAARSCHUWING"
@@ -80,9 +62,6 @@ msgstr "EnigmaNG"
 
 msgid "TrueType Font"
 msgstr "TrueType Font"
-
-msgid "No TTF support!"
-msgstr "TTF niet ondersteund!"
 
 msgid "Default OSD Font"
 msgstr "Standaard OSDfont"
@@ -135,6 +114,9 @@ msgstr "Help knoppen"
 msgid "Free last line"
 msgstr "Vrije laatste lijn"
 
+msgid "if required"
+msgstr ""
+
 msgid "Try 8bpp single area"
 msgstr "Op 8bpp bereik testen"
 
@@ -156,6 +138,13 @@ msgstr "Toon resterend/gedane tijd"
 msgid "Show VPS"
 msgstr "VPS tonen"
 
+#, fuzzy
+msgid "Show signal info"
+msgstr "  Mail-ikoon tonen"
+
+msgid "Show CA system as text"
+msgstr ""
+
 msgid "Show progressbar"
 msgstr "Progressiebalk tonen"
 
@@ -164,6 +153,10 @@ msgstr "Dynamische OSD grootte"
 
 msgid "Show messages in menu on"
 msgstr "Toon berichten in menu aan"
+
+#, fuzzy
+msgid "Show scrollbar in menu"
+msgstr "  Symbolen in menu tonen"
 
 msgid "pixel algo"
 msgstr "pixelalgoritme"
@@ -267,7 +260,7 @@ msgstr "  Lijst aktieve punten scrollen"
 msgid "  Scroll other items"
 msgstr "  Andere punten scrollen"
 
-msgid "  Scoll behaviour"
+msgid "  Scroll behaviour"
 msgstr "  Scroll gedrag"
 
 msgid "  Scroll delay (ms)"
@@ -371,3 +364,6 @@ msgstr "Monitoren"
 
 msgid "No timer check"
 msgstr "Geen controle"
+
+#~ msgid "en_US"
+#~ msgstr "nl_NL"

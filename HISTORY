@@ -1,6 +1,30 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
+2009-04-25: Version 0.1.0
+- Fixed: Calculating width of events' start times in channel info OSD (Reported by tomglx @vdr-poprtal.de).
+- Changed: pause scrolling when text has scrolled all to the left in scroll behaviour "to the left" (Reported by Andreas Brugger).
+- Reworked: (simplified) font loading/caching.
+- Updated Italian translation (Provided by Diego Pierotto).
+- Removed: ENABLE_COPYFONT define.
+- Changed: Reduced number of font recreations (Reported by balta @vdr-portal.de).
+- Added: more CA systems to text mappings in channel info OSD (Submitted by free-x @vdr-portal.de).
+- Added: symbol in channel info OSD if current channel has subtitles.
+- Changed: background colors for the DarkBlue theme (Submitted by zulu @vdr-portal.de).
+- Added: New option "Show CA system as text".
+- Changed: Reduced number of locks while drawing to OSD which increases display speed especially in menu OSD.
+- Added: show signal strength and signal-to-noise ratio in channel info OSD (can be disabled by setting SKINENIGMA_DISABLE_SIGNALINFO to 1).
+- Fixed: compiler error with certain gcc versions (Reported by C-3PO @ vdr-portal.de).
+- Changed: smooth scrolling text (based on skinelchi by Christoph Haubrich <christoph.haubrich (AT) web.de>).
+- Removed: SKINENIGMA_DISABLE_ANIMATED_TEXT define.
+- Changed: Replace "/" by "~" in channel logo names.
+- Added: new setting "Show scrollbar in menu".
+- Added: Override VDR's SetTabs() to adopt column widths in menu OSD to selected font size.
+- Added: Support subtitle tracks in tracks OSD: logo will only be shown if icons/subtitle/subtitle.xpm exists.
+- Fixed: missing logo in tracks OSD while using single area.
+- Minor bugfixes and enhancements.
+- Requires at least VDR v1.6.0.
+
 2008-03-09: Version 0.0.6
 - Added scrollbar in menu lists when compiled with VDR >= v1.5.15.
 - Fixed: VDR didn't responde anymore if the font used for lists was too small (<11px) and the marker in front of the active list item has been turned on.
@@ -10,7 +34,7 @@ VDR Skin 'EnigmaNG' Revision History
 - Updated Spanish translation (Submitted by Bittor Corl).
 - Updated Finnish translation (Submitted by Rolf Ahrenberg).
 - Fixed crash in EPG details when using epgsearch if channel isn't found.
-- Updated Italian translation (Provided by Gringo).
+- Updated Italian translation (Provided by Diego Pierotto).
 - Fix TrueTypeFonts support when compiled with VDR >= v1.5.4.
 - Use WeekDayNameFull() in VDR >= v1.5.5.
 - Use "Full Title Width" setting also for Tracks and Replay OSD.
@@ -39,7 +63,7 @@ VDR Skin 'EnigmaNG' Revision History
 - Updated Dutch translation (Provided by dorpsgek @vdr-portal.de).
 - Don't make info area in mainmenu too small (Requested by vdrchuck @vdr-portal.de).
 - Save and restore TTF FixedFont (Reported by zulu @vdr-portal.de).
-- Updated Italian translation (Provided by Gringo).
+- Updated Italian translation (Provided by Diego Pierotto).
 - Updated French translation (Provided by Pat @vdr-portal.de).
 
 2007-06-25: Version 0.0.5rc3
@@ -54,7 +78,7 @@ VDR Skin 'EnigmaNG' Revision History
 - Minor bugfixes and enhancements.
 
 2007-06-18: Version 0.0.5rc2
-- Added Italian translation (Submitted by Gringo).
+- Added Italian translation (Submitted by Diego Pierotto).
 - Changed logging to only report missing channel logos once.
 - Use MAXFONTNAME and MAXFONTSIZE as introduced in VDR 1.5.3.
 - Recognize VDR >=1.5.3 and disable HAVE_FREETYPE.

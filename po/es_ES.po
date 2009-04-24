@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2008-01-09 08:21+0100\n"
+"POT-Creation-Date: 2009-03-30 12:30+0200\n"
 "PO-Revision-Date: 2008-02-19 17:15+0100\n"
 "Last-Translator: bittor from open7x0.org <bittor7x0 _at_ gmail.com>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -15,32 +15,14 @@ msgstr ""
 "Content-Type: text/plain; charset=ISO-8859-15\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Sunday"
-msgstr "Domingo"
+msgid "Free-To-Air"
+msgstr ""
 
-msgid "Monday"
-msgstr "Lunes"
-
-msgid "Tuesday"
-msgstr "Martes"
-
-msgid "Wednesday"
-msgstr "Miércoles"
-
-msgid "Thursday"
-msgstr "Jueves"
-
-msgid "Friday"
-msgstr "Viernes"
-
-msgid "Saturday"
-msgstr "Sábado"
+msgid "encrypted"
+msgstr ""
 
 msgid "*** Invalid Channel ***"
 msgstr "*** Canal no válido ***"
-
-msgid "en_US"
-msgstr "es_ES"
 
 msgid "WARNING"
 msgstr "AVISO"
@@ -80,9 +62,6 @@ msgstr "EnigmaNG"
 
 msgid "TrueType Font"
 msgstr "Fuente TrueType"
-
-msgid "No TTF support!"
-msgstr "¡Sin soporte TTF!"
 
 msgid "Default OSD Font"
 msgstr "Fuente OSD defecto"
@@ -135,6 +114,9 @@ msgstr "Botones de ayuda"
 msgid "Free last line"
 msgstr "Última línea libre"
 
+msgid "if required"
+msgstr ""
+
 msgid "Try 8bpp single area"
 msgstr "Probar un área de 8bpp"
 
@@ -156,6 +138,13 @@ msgstr "Mostrar tiempo restante/transcurrido"
 msgid "Show VPS"
 msgstr "Mostrar VPS"
 
+#, fuzzy
+msgid "Show signal info"
+msgstr "  Mostrar icono correo"
+
+msgid "Show CA system as text"
+msgstr ""
+
 msgid "Show progressbar"
 msgstr "Mostrar barra de progreso"
 
@@ -164,6 +153,10 @@ msgstr "Tamaño OSD dinámico"
 
 msgid "Show messages in menu on"
 msgstr "Mostrar mensajes en el menú"
+
+#, fuzzy
+msgid "Show scrollbar in menu"
+msgstr "  Mostrar símbolos en menú"
 
 msgid "pixel algo"
 msgstr "Algoritmo píxel"
@@ -267,7 +260,7 @@ msgstr "  Scroll para la lista activa"
 msgid "  Scroll other items"
 msgstr "  Scroll para otros datos"
 
-msgid "  Scoll behaviour"
+msgid "  Scroll behaviour"
 msgstr "  Comportamiento del scroll"
 
 msgid "  Scroll delay (ms)"
@@ -371,3 +364,6 @@ msgstr "Comprobar programación"
 
 msgid "No timer check"
 msgstr "No comprobar programación"
+
+#~ msgid "en_US"
+#~ msgstr "es_ES"

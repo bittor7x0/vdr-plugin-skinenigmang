@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.24 2008/03/09 08:31:30 amair Exp $
+# $Id: Makefile,v 1.31 2009/04/06 09:46:27 amair Exp $
 
 # This turns usage of logos in the main menu complete. This might also
 # improve the performance of the menus. EXPERIMENTAL!!!
@@ -26,18 +26,9 @@ SKINENIGMA_USE_PLUGIN_MAILBOX = 1
 #  - Display current WSS mode in channel info and replay OSDs.
 SKINENIGMA_USE_PLUGIN_AVARDS = 1
 
-# Disable any code that is used for scrolling or blinking text.
-# NOTE: this is only useful if you want to save some bytes because you
-# can disable them in the setup too.
-#SKINENIGMA_DISABLE_ANIMATED_TEXT = 1
-
-# Set the descriptions for fonts you've patched in VDR. These fonts then
-# can be selected in EnigmaNG setup.
-# This is NOT the path to TrueType fonts!
-#SKINENIGMA_FONTS = "\"Test Font\", \"Test2 Font\""
-
-# If you have installed FreeType2 and want to use TrueTypeFonts.
-#HAVE_FREETYPE = 1
+# Disable code to show signal strength and signal-to-noise ratio
+# in channel info OSD.
+#SKINENIGMA_DISABLE_SIGNALINFO = 1
 
 # Strip debug symbols?  Set eg. to /bin/true if not
 #STRIP = strip
@@ -67,9 +58,9 @@ TMPDIR = /tmp
 ### Allow user defined options to overwrite defaults:
 #TODO
 CLEAR_BUG_WORKAROUND = 1
-ENABLE_COPYFONT = 1
 -include $(VDRDIR)/Make.config
 
+#CXXFLAGS += -Wall -W -Wconversion -Wshadow -Wpointer-arith -Wcast-align -Woverloaded-virtual -Wwrite-strings
 ### The version number of VDR's plugin API (taken from VDR's "config.h"):
 
 APIVERSION = $(shell sed -ne '/define APIVERSION/s/^.*"\(.*\)".*$$/\1/p' $(VDRDIR)/config.h)
@@ -113,44 +104,35 @@ ifdef SKINENIGMA_USE_PLUGIN_AVARDS
 DEFINES += -DUSE_PLUGIN_AVARDS
 endif
 
+ifdef SKINENIGMA_DISABLE_SIGNALINFO
+DEFINES += -DDISABLE_SIGNALINFO
+endif
+
 ifdef HAVE_IMAGEMAGICK
 DEFINES += -DHAVE_IMAGEMAGICK
 endif
 DEFINES += -DRECORDING_COVER='"Cover-Enigma"'
 
-ifdef SKINENIGMA_DISABLE_ANIMATED_TEXT
-DEFINES += -DDISABLE_ANIMATED_TEXT
-endif
-
 ifdef CLEAR_BUG_WORKAROUND
 DEFINES += -DCLEAR_BUG_WORKAROUND
 endif
 
-ifdef ENABLE_COPYFONT
-DEFINES += -DENABLE_COPYFONT
-endif
-
-DEFINES += -DSKINENIGMA_FONTS=$(SKINENIGMA_FONTS)
-
 ### The object files (add further files here):
 
-OBJS = $(PLUGIN).o enigma.o config.o logo.o i18n.o tools.o status.o texteffects.o setup.o
+OBJS = $(PLUGIN).o enigma.o config.o logo.o tools.o status.o texteffects.o setup.o font.o
 
 ifdef HAVE_IMAGEMAGICK
 OBJS += bitmap.o
 LIBS += -lMagick++
+INCLUDES += -I/usr/include/ImageMagick -I/usr/local/include/ImageMagick
 endif
 
-ifdef HAVE_FREETYPE
-	ifneq ($(shell which freetype-config),)
-		INCLUDES += $(shell freetype-config --cflags)
-		LIBS += $(shell freetype-config --libs)
-	else
-		INCLUDES += -I/usr/include/freetype -I/usr/local/include/freetype
-		LIBS += -lfreetype
-	endif
-	DEFINES += -DHAVE_FREETYPE
-	OBJS += font.o
+ifneq ($(shell which freetype-config),)
+	INCLUDES += $(shell freetype-config --cflags)
+	LIBS += $(shell freetype-config --libs)
+else
+	INCLUDES += -I/usr/include/freetype -I/usr/local/include/freetype
+	LIBS += -lfreetype
 endif
 
 ### The main target:
@@ -176,47 +158,25 @@ $(DEPFILE): Makefile
 PODIR     = po
 LOCALEDIR = $(VDRDIR)/locale
 I18Npo    = $(wildcard $(PODIR)/*.po)
-I18Nmo    = $(addsuffix .mo, $(foreach file, $(I18Npo), $(basename $(file))))
-I18Ndirs  = $(notdir $(foreach file, $(I18Npo), $(basename $(file))))
+I18Nmsgs  = $(addprefix $(LOCALEDIR)/, $(addsuffix /LC_MESSAGES/vdr-$(PLUGIN).mo, $(notdir $(foreach file, $(I18Npo), $(basename $(file))))))
 I18Npot   = $(PODIR)/$(PLUGIN).pot
-I18Nvdrmo = vdr-$(PLUGIN).mo
-ifeq ($(strip $(APIVERSION)),1.5.7)
-  I18Nvdrmo = $(PLUGIN).mo
-endif
 
 %.mo: %.po
 	msgfmt -c -o $@ $<
 
-$(I18Npot): $(subst i18n.c,,$(wildcard *.c))
-	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --msgid-bugs-address='<andreas@vdr-developer.org>' -o $@ $(subst i18n.c,,$(wildcard *.c))
+$(I18Npot): $(wildcard *.c)
+	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --msgid-bugs-address='<andreas@vdr-developer.org>' -o $@ $^
 
-$(I18Npo): $(I18Npot)
+%.po: $(I18Npot)
 	msgmerge -U --no-wrap --no-location --backup=none -q $@ $<
+	@touch $@
 
-ifneq ($(strip $(VDRLOCALE)),)
-### do gettext based i18n stuff
+$(I18Nmsgs): $(LOCALEDIR)/%/LC_MESSAGES/vdr-$(PLUGIN).mo: $(PODIR)/%.mo
+	@mkdir -p $(dir $@)
+	cp $< $@
 
-i18n: $(I18Nmo)
-	@mkdir -p $(LOCALEDIR)
-	for i in $(I18Ndirs); do\
-	    mkdir -p $(LOCALEDIR)/$$i/LC_MESSAGES;\
-	    cp $(PODIR)/$$i.mo $(LOCALEDIR)/$$i/LC_MESSAGES/$(I18Nvdrmo);\
-	    done
-
-i18n.c: i18n-template.c
-	@cp i18n-template.c i18n.c
-
-else ### do i18n.c based i18n stuff
-
-i18n:
-	@### nothing to do
-
-#i18n compatibility generator:
-i18n.c: i18n-template.c buildtools/po2i18n.pl $(I18Npo)
-	buildtools/po2i18n.pl < i18n-template.c > i18n.c
-
-endif
-
+.PHONY: i18n
+i18n: $(I18Nmsgs) $(I18Npot)
 
 ### Targets:
 
@@ -227,7 +187,7 @@ ifndef SKINENIGMA_DEBUG
 endif
 	@cp --remove-destination $@ $(LIBDIR)/$@.$(APIVERSION)
 
-dist: clean i18n.c
+dist: clean
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)
 	@mkdir $(TMPDIR)/$(ARCHIVE)
 	@cp -a * $(TMPDIR)/$(ARCHIVE)
@@ -236,4 +196,4 @@ dist: clean i18n.c
 	@echo Distribution package created as $(PACKAGE).tgz
 
 clean:
-	@-rm -f $(OBJS) $(DEPFILE) i18n.c *.so *.tgz core* *~ $(PODIR)/*.mo $(PODIR)/*.pot
+	@-rm -f $(OBJS) $(DEPFILE) *.so *.tgz core* *~ $(PODIR)/*.mo $(PODIR)/*.pot

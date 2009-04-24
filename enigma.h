@@ -26,17 +26,6 @@ public:
   virtual cSkinDisplayMessage *DisplayMessage(void);
 };
 
-
-// interface for use texteffects (=threads)
-class cSkinEnigmaThreadedOsd {
-friend class cEnigmaTextEffects;
-
-public:
-  virtual ~cSkinEnigmaThreadedOsd(void)
-  {};
-  virtual void DrawTitle(const char *Title) = 0;
-};
-
 // interface for common functions
 class cSkinEnigmaBaseOsd {
 

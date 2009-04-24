@@ -9,40 +9,25 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2008-03-09 06:37+0100\n"
-"PO-Revision-Date: 2008-03-09 01:09+0100\n"
-"Last-Translator: Gringo <vdr-italian@tiscali.it>\n"
+"POT-Creation-Date: 2009-03-30 12:30+0200\n"
+"PO-Revision-Date: 2009-04-11 00:00+0100\n"
+"Last-Translator: Diego Pierotto <vdr-italian@tiscali.it>\n"
 "Language-Team:  <vdr@linuxtv.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Italian\n"
+"X-Poedit-Country: ITALY\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
-msgid "Sunday"
-msgstr "Domenica"
+msgid "Free-To-Air"
+msgstr "in chiaro"
 
-msgid "Monday"
-msgstr "Lunedì"
-
-msgid "Tuesday"
-msgstr "Martedì"
-
-msgid "Wednesday"
-msgstr "mercoledì"
-
-msgid "Thursday"
-msgstr "Giovedì"
-
-msgid "Friday"
-msgstr "Venerdì"
-
-msgid "Saturday"
-msgstr "Sabato"
+msgid "encrypted"
+msgstr "codificato"
 
 msgid "*** Invalid Channel ***"
-msgstr "*** Canale non valido ***"
-
-msgid "en_US"
-msgstr "it_IT"
+msgstr "*** Canale NON valido ***"
 
 msgid "WARNING"
 msgstr "ATTENZIONE"
@@ -66,7 +51,7 @@ msgid "RERUNS OF THIS SHOW"
 msgstr "REPLICHE DI QUESTO SPETTACOLO"
 
 msgid "Size"
-msgstr "Dim."
+msgstr "Dimensione"
 
 msgid "Auxiliary information"
 msgstr "Informazione ausiliare"
@@ -82,9 +67,6 @@ msgstr "EnigmaNG"
 
 msgid "TrueType Font"
 msgstr "Car. TrueType"
-
-msgid "No TTF support!"
-msgstr "Nessun supporto TTF!"
 
 msgid "Default OSD Font"
 msgstr "Car. OSD pred."
@@ -137,6 +119,9 @@ msgstr "Tasti aiuto"
 msgid "Free last line"
 msgstr "Ultima riga libera"
 
+msgid "if required"
+msgstr "se richiesto"
+
 msgid "Try 8bpp single area"
 msgstr "Prova area singola a 8bpp"
 
@@ -153,10 +138,16 @@ msgid "Full title width"
 msgstr "Lunghezza titolo completo"
 
 msgid "Show remaining/elapsed time"
-msgstr "Mostra tempo rimasto/trascorso"
+msgstr "Mostra tempo rim./trasc."
 
 msgid "Show VPS"
 msgstr "Mostra VPS"
+
+msgid "Show signal info"
+msgstr "Mostra info segnale"
+
+msgid "Show CA system as text"
+msgstr "Mostra sistema CA come testo"
 
 msgid "Show progressbar"
 msgstr "Mostra barra avanzamento"
@@ -166,6 +157,9 @@ msgstr "Dimensione OSD dinamica"
 
 msgid "Show messages in menu on"
 msgstr "Mostra messaggi nel menu"
+
+msgid "Show scrollbar in menu"
+msgstr "Mostra barra scorrimento nel menu"
 
 msgid "pixel algo"
 msgstr "algoritmo pixel"
@@ -180,7 +174,7 @@ msgid "only if new mail present"
 msgstr "solo se presenti nuove email"
 
 msgid "Flushing channel logo cache..."
-msgstr "Pulizia cache logo canale..."
+msgstr "Pulizia cache loghi canali..."
 
 msgid "Show symbols"
 msgstr "Mostra simboli"
@@ -207,7 +201,7 @@ msgid "Show status symbols"
 msgstr "Mostra simboli stato"
 
 msgid "  Show flags"
-msgstr "  Mostra segni"
+msgstr "  Mostra bandierine"
 
 msgid "  Show WSS mode symbols"
 msgstr "  Mostra simboli mod. WSS"
@@ -243,10 +237,10 @@ msgid "data"
 msgstr "dati"
 
 msgid "Channel logo cache size"
-msgstr "Dim. cache logo canale"
+msgstr "Dim. cache loghi canali"
 
 msgid "Button$Flush cache"
-msgstr "Pulisci cache"
+msgstr "Svuota cache"
 
 msgid "left and right"
 msgstr "sinistra e destra"
@@ -269,8 +263,8 @@ msgstr "  Scorri elenco valori attivi"
 msgid "  Scroll other items"
 msgstr "  Scorri altri valori"
 
-msgid "  Scoll behaviour"
-msgstr "  Modalità scorrimento"
+msgid "  Scroll behaviour"
+msgstr "  ModalitÃ  scorrimento"
 
 msgid "  Scroll delay (ms)"
 msgstr "  Ritardo scorrimento (ms)"
@@ -285,10 +279,10 @@ msgid "Name"
 msgstr "Nome"
 
 msgid "Width"
-msgstr "Ampiezza"
+msgstr "Larghezza"
 
 msgid "No TrueType fonts installed!"
-msgstr "Nessun carattere TrueType installato!"
+msgstr "Nessun car. TrueType installato!"
 
 msgid "Fixed Font"
 msgstr "Carattere fisso"
@@ -312,7 +306,7 @@ msgid "Channelinfo: title"
 msgstr "Info canale: titolo"
 
 msgid "Channelinfo: subtitle"
-msgstr "Info canale: sottotitolo"
+msgstr "Info canale: sottotitoli"
 
 msgid "Channelinfo: language"
 msgstr "Info canale: lingua"
@@ -336,7 +330,7 @@ msgid "Details: title"
 msgstr "Dettagli: titolo"
 
 msgid "Details: subtitle"
-msgstr "Dettagli: sottotitolo"
+msgstr "Dettagli: sottotitoli"
 
 msgid "Details: date"
 msgstr "Dettagli: data"
@@ -351,16 +345,16 @@ msgid "if exists"
 msgstr "se esiste"
 
 msgid "Number of Reruns"
-msgstr "Numero di repliche"
+msgstr "Numero repliche"
 
 msgid "Use Subtitle for reruns"
-msgstr "Utilizza sottotitolo per repliche"
+msgstr "Utilizza sottotitoli repliche"
 
 msgid "Show timer conflicts"
 msgstr "Mostra conflitti timer"
 
 msgid "EnigmaNG skin"
-msgstr "Interfaccia EnigmaNG"
+msgstr "Stile interfaccia EnigmaNG"
 
 msgid "Channel:"
 msgstr "Canale:"
@@ -373,3 +367,7 @@ msgstr "Verifica timer"
 
 msgid "No timer check"
 msgstr "Nessuna verifica timer"
+
+#~ msgid "en_US"
+#~ msgstr "it_IT"
+

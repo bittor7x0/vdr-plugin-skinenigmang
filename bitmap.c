@@ -48,6 +48,9 @@ bool cOSDImageBitmap::DrawMagick(const char *Filename, int x, int y, int width, 
         case 2:
           image.zoom(Geometry(width, height));
           break;
+        default:
+          esyslog("ERROR: unknown resize mode %d", EnigmaConfig.resizeImages);
+          break;
       }
     }
     geo = image.size();
@@ -68,10 +71,10 @@ bool cOSDImageBitmap::DrawMagick(const char *Filename, int x, int y, int width, 
     const PixelPacket *pix = image.getConstPixels(0, 0, w, h);
     for (int iy = 0; iy < h; ++iy) {
       for (int ix = 0; ix < w; ++ix) {
-        tColor col = (~(pix->opacity * 255 / MaxRGB) << 24)
-                     | ((pix->red * 255 / MaxRGB) << 16)
-                     | ((pix->green * 255 / MaxRGB) << 8)
-                     | (pix->blue * 255 / MaxRGB);
+        tColor col = (~(int)(pix->opacity * 255 / MaxRGB) << 24)
+                     | ((int)(pix->red * 255 / MaxRGB) << 16)
+                     | ((int)(pix->green * 255 / MaxRGB) << 8)
+                     | (int)(pix->blue * 255 / MaxRGB);
         bmp->DrawPixel(x + ix, y + iy, col);
         ++pix;
       }

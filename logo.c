@@ -96,24 +96,36 @@ bool cEnigmaLogoCache::LoadChannelLogo(const cChannel *Channel)
     return false;
 
   bool fFoundLogo = false;
+  const char *logoname = NULL;
+  char *strLogo = NULL;
+  char *filename = NULL;
+
   char *strChannelID = EnigmaConfig.useChannelId && !Channel->GroupSep() ? strdup(*Channel->GetChannelID().ToString()) : NULL;
-  const char *logoname = EnigmaConfig.useChannelId && !Channel->GroupSep() ? strChannelID : Channel->Name();
-  if (logoname) {
-    char *filename = (char *)malloc(strlen(logoname) + 20 /* should be enough for folder */);
-    if (filename == NULL) return false;
-    strcpy(filename, "hqlogos/");
-    strcat(filename, logoname);
+  logoname = EnigmaConfig.useChannelId && !Channel->GroupSep() ? strChannelID : Channel->Name();
+  if (logoname == NULL) goto leave;
+
+  strLogo = strreplace(strdup(logoname), '/', '~');
+  if (strLogo == NULL) goto leave;
+
+  filename = (char *)malloc(strlen(strLogo) + 20 /* should be enough for folder */);
+  if (filename == NULL) goto leave;
+
+  strcpy(filename, "hqlogos/");
+  strcat(filename, strLogo);
+  if (!(fFoundLogo = Load(filename, ChannelLogoWidth, ChannelLogoHeight, false))) {
+    strcpy(filename, "logos/");
+    strcat(filename, strLogo);
     if (!(fFoundLogo = Load(filename, ChannelLogoWidth, ChannelLogoHeight, false))) {
-      strcpy(filename, "logos/");
-      strcat(filename, logoname);
-      if (!(fFoundLogo = Load(filename, ChannelLogoWidth, ChannelLogoHeight, false))) {
-        error("cPluginSkinEnigma::LoadChannelLogo: LOGO \"%s.xpm\" NOT FOUND in %s/[hq]logos", logoname, EnigmaConfig.GetLogoDir());
-        fFoundLogo = Load("hqlogos/no_logo", ChannelLogoWidth, ChannelLogoHeight); //TODO? different default logo for channel/group?
-      }
+      error("cPluginSkinEnigma::LoadChannelLogo: LOGO \"%s.xpm\" NOT FOUND in %s/[hq]logos", strLogo, EnigmaConfig.GetLogoDir());
+      fFoundLogo = Load("hqlogos/no_logo", ChannelLogoWidth, ChannelLogoHeight); //TODO? different default logo for channel/group?
     }
-    free(filename);
-    free(strChannelID);
   }
+
+leave:
+  free(filename);
+  free(strLogo);
+  free(strChannelID);
+
   return fFoundLogo;
 }
 

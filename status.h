@@ -35,7 +35,7 @@ struct tTimer : public cListObject {
   {}
 
     virtual int Compare(const cListObject & listObj) const {
-      tTimer *e = (tTimer *) & listObj;
+      const tTimer *e = (const tTimer *)&listObj;
       int r = startTime - e->startTime;
       if (r == 0)
         r = e->priority - priority;
