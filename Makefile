@@ -1,7 +1,7 @@
 #
 # Makefile for a Video Disk Recorder plugin
 #
-# $Id: Makefile,v 1.31 2009/04/06 09:46:27 amair Exp $
+# $Id: Makefile,v 1.34 2010/03/08 14:31:57 amair Exp $
 
 # This turns usage of logos in the main menu complete. This might also
 # improve the performance of the menus. EXPERIMENTAL!!!
@@ -47,7 +47,7 @@ VERSION = $(shell grep 'static const char VERSION\[\] *=' $(PLUGIN).c | awk '{ p
 ### The C++ compiler and options:
 
 CXX      ?= g++
-CXXFLAGS ?= -fPIC -g -O2 -Wall -Woverloaded-virtual
+CXXFLAGS ?= -g -O2 -Wall -Woverloaded-virtual -Wno-parentheses
 
 ### The directory environment:
 
@@ -55,9 +55,11 @@ VDRDIR = ../../..
 LIBDIR = ../../lib
 TMPDIR = /tmp
 
+### Make sure that necessary options are included:
+
+-include $(VDRDIR)/Make.global
+
 ### Allow user defined options to overwrite defaults:
-#TODO
-CLEAR_BUG_WORKAROUND = 1
 -include $(VDRDIR)/Make.config
 
 #CXXFLAGS += -Wall -W -Wconversion -Wshadow -Wpointer-arith -Wcast-align -Woverloaded-virtual -Wwrite-strings
@@ -113,6 +115,10 @@ DEFINES += -DHAVE_IMAGEMAGICK
 endif
 DEFINES += -DRECORDING_COVER='"Cover-Enigma"'
 
+# This is a simple workaround if one wants to use
+# softdevice plugin without a single 8bpp area,
+# because this combination shows some false colored
+# areas in menu OSD.
 ifdef CLEAR_BUG_WORKAROUND
 DEFINES += -DCLEAR_BUG_WORKAROUND
 endif
@@ -168,7 +174,7 @@ $(I18Npot): $(wildcard *.c)
 	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --msgid-bugs-address='<andreas@vdr-developer.org>' -o $@ $^
 
 %.po: $(I18Npot)
-	msgmerge -U --no-wrap --no-location --backup=none -q $@ $<
+	msgmerge -U --no-wrap --no-location --backup=none --no-fuzzy-matching -q $@ $<
 	@touch $@
 
 $(I18Nmsgs): $(LOCALEDIR)/%/LC_MESSAGES/vdr-$(PLUGIN).mo: $(PODIR)/%.mo

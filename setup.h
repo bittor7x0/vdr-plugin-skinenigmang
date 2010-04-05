@@ -14,7 +14,6 @@ private:
   cEnigmaConfig data;
 
   virtual void Setup(void);
-  void AddCategory(const char *Title);
 protected:
   virtual eOSState ProcessKey(eKeys Key);
   virtual void Store(void);
@@ -27,13 +26,14 @@ protected:
   cEnigmaConfig *data;
   virtual eOSState ProcessKey(eKeys Key);
   virtual void Set(void) = 0;
+  void AddCategory(const char *Title);
 public:
   cMenuSetupSubMenu(const char *Title, cEnigmaConfig *Data);
 };
 
 class cMenuSetupGeneral : public cMenuSetupSubMenu {
 private:
-  const char *showRemainingTexts[3];
+  const char *showRemainingTexts[4];
   const char *showRecSizeTexts[3];
   const char *statusLineModeTexts[3];
   const char *showScrollbarTexts[3];
@@ -51,6 +51,7 @@ private:
 #ifdef USE_PLUGIN_MAILBOX
   const char *showMailIconTexts[3];
 #endif
+  const char *showStatusSymbolsTexts[3];
 protected:
   virtual eOSState ProcessKey(eKeys Key);
   void Set(void);

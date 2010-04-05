@@ -20,7 +20,7 @@
 #endif
 
 
-static const char VERSION[] = "0.1.0";
+static const char VERSION[] = "0.1.1";
 static const char DESCRIPTION[] = trNOOP("EnigmaNG skin");
 
 class cPluginSkinEnigma : public cPlugin {
@@ -127,8 +127,7 @@ bool cPluginSkinEnigma::Start(void)
   if (!fImagesDirSet) {
     // set epgimages directory
     char *dir = NULL;
-    asprintf(&dir, "%s/epgimages", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N));
-    if (dir) {
+    if (-1 != asprintf(&dir, "%s/epgimages", cPlugin::ConfigDirectory(PLUGIN_NAME_I18N))) {
       EnigmaConfig.SetImagesDir(dir);
       fImagesDirSet = true;
       free(dir);
@@ -181,8 +180,10 @@ bool cPluginSkinEnigma::SetupParse(const char *OptionName, const char *Value)
   else if (!strcasecmp(OptionName, "ShowSymbolsReplay"))         EnigmaConfig.showSymbolsReplay = atoi(Value);
   else if (!strcasecmp(OptionName, "ShowSymbolsMsgs"))           EnigmaConfig.showSymbolsMsgs = atoi(Value);
   else if (!strcasecmp(OptionName, "ShowSymbolsAudio"))          EnigmaConfig.showSymbolsAudio = atoi(Value);
+  else if (!strcasecmp(OptionName, "ShowColSymbolsDetails"))     EnigmaConfig.showColSymbolsDetails = atoi(Value);
   else if (!strcasecmp(OptionName, "ShowLogo"))                  EnigmaConfig.showLogo = atoi(Value);
   else if (!strcasecmp(OptionName, "ShowInfo"))                  EnigmaConfig.showInfo = atoi(Value);
+  else if (!strcasecmp(OptionName, "MinInfoWidth"))              EnigmaConfig.minInfoWidth = atoi(Value);
   else if (!strcasecmp(OptionName, "ShowMarker"))                EnigmaConfig.showMarker = atoi(Value);
   else if (!strcasecmp(OptionName, "ShowVPS"))                   EnigmaConfig.showVps = atoi(Value);
   else if (!strcasecmp(OptionName, "ShowFlags"))                 EnigmaConfig.showFlags = atoi(Value);
@@ -251,6 +252,7 @@ bool cPluginSkinEnigma::SetupParse(const char *OptionName, const char *Value)
   else if (!strcasecmp(OptionName, "ShowScrollbar"))             EnigmaConfig.showScrollbar = atoi(Value);
   else if (!strcasecmp(OptionName, "ShowSignalInfo"))            EnigmaConfig.showSignalInfo = atoi(Value);
   else if (!strcasecmp(OptionName, "ShowCaMode"))                EnigmaConfig.showCaMode = atoi(Value);
+  else if (!strcasecmp(OptionName, "DrawRoundCorners"))          EnigmaConfig.drawRoundCorners = atoi(Value);
   else return false;
 
   return true;

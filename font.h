@@ -17,6 +17,10 @@
 #include <vdr/font.h>
 #include <vdr/config.h>
 
+#ifndef MINFONTSIZE
+#define MINFONTSIZE 10
+#endif
+
 using std::map;
 using std::string;
 

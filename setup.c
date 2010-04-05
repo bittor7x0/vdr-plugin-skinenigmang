@@ -42,17 +42,18 @@ cPluginSkinEnigmaSetup::cPluginSkinEnigmaSetup(void)
   Setup();
 }
 
-void cPluginSkinEnigmaSetup::AddCategory(const char *Title) {
+void cMenuSetupSubMenu::AddCategory(const char *Title) {
   char *buffer = NULL;
 
-  asprintf(&buffer, "---\t%s ----------------------------------------------------------------------------------", Title );
+  if (-1 != asprintf(&buffer, "--- %s ---", Title )) {
 
-  cOsdItem *item = new cOsdItem(buffer);
-  free(buffer);
+    cOsdItem *item = new cOsdItem(buffer);
+    free(buffer);
 
-  if (item) {
-    item->SetSelectable(false);
-    Add(item);
+    if (item) {
+      item->SetSelectable(false);
+      Add(item);
+    }
   }
 }
 
@@ -96,8 +97,10 @@ void cPluginSkinEnigmaSetup::Store(void)
   SetupStore("ShowSymbolsReplay", EnigmaConfig.showSymbolsReplay);
   SetupStore("ShowSymbolsMsgs", EnigmaConfig.showSymbolsMsgs);
   SetupStore("ShowSymbolsAudio", EnigmaConfig.showSymbolsAudio);
+  SetupStore("ShowColSymbolsDetails", EnigmaConfig.showColSymbolsDetails);
   SetupStore("ShowLogo", EnigmaConfig.showLogo);
   SetupStore("ShowInfo", EnigmaConfig.showInfo);
+  SetupStore("MinInfoWidth", EnigmaConfig.minInfoWidth);
   SetupStore("ShowVPS", EnigmaConfig.showVps);
   SetupStore("ShowFlags", EnigmaConfig.showFlags);
   SetupStore("ShowMarker", EnigmaConfig.showMarker);
@@ -130,6 +133,7 @@ void cPluginSkinEnigmaSetup::Store(void)
   SetupStore("ShowScrollbar", EnigmaConfig.showScrollbar);
   SetupStore("ShowSignalInfo", EnigmaConfig.showSignalInfo);
   SetupStore("ShowCaMode", EnigmaConfig.showCaMode);
+  SetupStore("DrawRoundCorners", EnigmaConfig.drawRoundCorners);
 
   char tmp[sizeof(EnigmaConfig.allFonts[0].Name) + 8];
   for (int id = 0; id < FONT_NUMFONTS; id++) {
@@ -201,6 +205,7 @@ cMenuSetupGeneral::cMenuSetupGeneral(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr
   showRemainingTexts[0] = tr("elapsed");
   showRemainingTexts[1] = tr("remaining");
   showRemainingTexts[2] = tr("percent");
+  showRemainingTexts[3] = tr("elapsed/remaining");
 
   showRecSizeTexts[0] = tr("never");
   showRecSizeTexts[1] = tr("use size.vdr only");
@@ -218,7 +223,26 @@ cMenuSetupGeneral::cMenuSetupGeneral(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr
 
 eOSState cMenuSetupGeneral::ProcessKey(eKeys Key)
 {
-  return cMenuSetupSubMenu::ProcessKey(Key);
+  int oldShowInfo = data->showInfo;
+
+  eOSState state = cMenuSetupSubMenu::ProcessKey(Key);
+
+  if (Key != kNone &&
+      ((data->showInfo != oldShowInfo)
+      )) {
+    Set();
+  }
+
+  if (state == osUnknown) {
+    switch (Key) {
+      case kOk:
+        return osBack;
+      default:
+        break;
+    }
+  }
+
+  return state;
 }
 
 void cMenuSetupGeneral::Set(void)
@@ -227,20 +251,25 @@ void cMenuSetupGeneral::Set(void)
   Clear();
 
   Add(new cMenuEditBoolItem(tr("Try 8bpp single area"), &data->singleArea8Bpp));
+  Add(new cMenuEditBoolItem(tr("Round corners"), &data->drawRoundCorners));
+  Add(new cMenuEditBoolItem(tr("Full title width"), &data->fullTitleWidth)); // channel info / replay / tracks
+  Add(new cMenuEditBoolItem(tr("Show VPS"), &data->showVps)); // channel info / epg details
+  Add(new cMenuEditBoolItem(tr("Dynamic OSD size"), &data->dynOsd));
+  AddCategory(tr("Menu OSD"));
   Add(new cMenuEditBoolItem(tr("Show info area in main menu"), &data->showInfo));
+  if (data->showInfo)
+    Add(new cMenuEditIntItem(tr("  Min width of info area"), &data->minInfoWidth, 80, Setup.OSDWidth));
+  Add(new cMenuEditStraItem(tr("Show messages in menu on"), &data->statusLineMode, 3, statusLineModeTexts));
+  Add(new cMenuEditStraItem(tr("Show scrollbar in menu"), &data->showScrollbar, 3, showScrollbarTexts));
+  AddCategory(tr("EPG & Recording Details OSD"));
   Add(new cMenuEditBoolItem(tr("Show auxiliary information"), &data->showAuxInfo, trVDR("top"), trVDR("bottom")));
   Add(new cMenuEditStraItem(tr("Show recording's size"), &data->showRecSize, 3, showRecSizeTexts));
-  Add(new cMenuEditBoolItem(tr("Full title width"), &data->fullTitleWidth));
-  Add(new cMenuEditStraItem(tr("Show remaining/elapsed time"), &data->showRemaining, 3, showRemainingTexts));
-  Add(new cMenuEditBoolItem(tr("Show VPS"), &data->showVps));
+  AddCategory(tr("Channel Info OSD"));
+  Add(new cMenuEditStraItem(tr("Show remaining/elapsed time"), &data->showRemaining, 4, showRemainingTexts));
 #ifndef DISABLE_SIGNALINFO
   Add(new cMenuEditBoolItem(tr("Show signal info"), &data->showSignalInfo));
 #endif //DISABLE_SIGNALINFO
   Add(new cMenuEditBoolItem(tr("Show CA system as text"), &data->showCaMode));
-  Add(new cMenuEditBoolItem(tr("Show progressbar"), &data->showProgressbar));
-  Add(new cMenuEditBoolItem(tr("Dynamic OSD size"), &data->dynOsd));
-  Add(new cMenuEditStraItem(tr("Show messages in menu on"), &data->statusLineMode, 3, statusLineModeTexts));
-  Add(new cMenuEditStraItem(tr("Show scrollbar in menu"), &data->showScrollbar, 3, showScrollbarTexts));
 
   SetCurrent(Get(currentItem));
   Display();
@@ -261,6 +290,10 @@ cMenuSetupLogos::cMenuSetupLogos(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr("Lo
   showMailIconTexts[1] = tr("only if new mail present");
   showMailIconTexts[2] = tr("always");
 #endif
+
+  showStatusSymbolsTexts[0] = trVDR("no");
+  showStatusSymbolsTexts[1] = trVDR("yes");
+  showStatusSymbolsTexts[2] = tr("active only");
 
   Set();
 }
@@ -320,9 +353,11 @@ void cMenuSetupLogos::Set(void)
     Add(new cMenuEditBoolItem(tr("  Show symbols in audio"), &data->showSymbolsAudio));
   }
 
+  Add(new cMenuEditBoolItem(tr("Colored status symbols in EPG details"), &data->showColSymbolsDetails));
   Add(new cMenuEditBoolItem(tr("Show symbols in lists"), &data->showListSymbols));
+  Add(new cMenuEditBoolItem(tr("Show progressbar in lists"), &data->showProgressbar));
   Add(new cMenuEditBoolItem(tr("Show marker in lists"), &data->showMarker));
-  Add(new cMenuEditBoolItem(tr("Show status symbols"), &data->showStatusSymbols));
+  Add(new cMenuEditStraItem(tr("Show status symbols"), &data->showStatusSymbols, 3, showStatusSymbolsTexts));
   if (data->showStatusSymbols) {
     Add(new cMenuEditBoolItem(tr("  Show flags"), &data->showFlags));
 #ifdef USE_PLUGIN_AVARDS
@@ -494,6 +529,9 @@ cMenuSetupFonts::cMenuSetupFonts(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr("Fo
 
   cFont::GetAvailableFontNames(&fontMonoNames, true);
   cFont::GetAvailableFontNames(&fontNames);
+  fontNames.Insert(strdup(DefaultFontSml));
+  fontNames.Insert(strdup(DefaultFontOsd));
+  fontMonoNames.Insert(strdup(DefaultFontFix));
 
   Set();
 }

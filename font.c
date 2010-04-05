@@ -26,20 +26,26 @@ const cFont* cGraphtftFont::GetFont(const char *Filename, int Size, int Width)
   if (Filename == NULL)
     return NULL;
 
+	if (Size < MINFONTSIZE)
+		Size = MINFONTSIZE;
+	if (Width == 0)
+		Width = 100;
+
   char *cachename = NULL;
-  asprintf(&cachename, "%s_%d_%d", Filename, Size, Width);
-  string CacheName = cachename;
-  free(cachename);
-  cachename = NULL;
+  if (-1 != asprintf(&cachename, "%s_%d_%d", Filename, Size, Width)) {
+    string CacheName = cachename;
+    free(cachename);
+    cachename = NULL;
 
-  if (_cache.find(CacheName) != _cache.end())
-    return _cache[CacheName];
+    if (_cache.find(CacheName) != _cache.end())
+      return _cache[CacheName];
 
-  debug("cGraphtftFont::Load() CREATING FONT %s size=%d width=%d", Filename, Size, Width);
-  cFont *newFont = cFont::CreateFont(Filename, Size, Width > 0 ? (Size * Width / 100) : 0);
-  if (newFont) {
-    _cache[CacheName] = newFont;
-    return newFont;
+    debug("cGraphtftFont::Load() CREATING FONT %s size=%d width=%d", Filename, Size, Width);
+    cFont *newFont = cFont::CreateFont(Filename, Size, Width > 0 ? (Size * Width / 100) : 0);
+    if (newFont) {
+      _cache[CacheName] = newFont;
+      return newFont;
+    }
   }
 
   error("ERROR: EnigmaNG: Couldn't load font %s:%d", Filename, Size);

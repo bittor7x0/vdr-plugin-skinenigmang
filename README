@@ -121,11 +121,41 @@ Setup Options
   NOTE: after commit the settings you have to fully close and re-open the OSD
   to make the change affect.
 
+- Round corners
+  If enabled some corners in the OSD will be rounded.
+
+- Full title width
+  If enabled the titlebar in the channel info will be drawn above the channel
+  logo. This has no effect if channel logos are disabled.
+
+- Show VPS
+  Hide or show VPS information in channel info and event info.
+  
+- Dynamic OSD size
+  Get OSD size from Avards or VDR >= v1.5.4.
+  NOTE: This requires EnigmaNG compiled with SKINENIGMA_USE_PLUGIN_AVARDS = 1
+        and a running Avards plugin.
+  
++ Menu OSD
 - Show info area in main menu
   This info area is shown in the main menu and it will show the current/next
   timers and the number of timer conflicts (if SKINENIGMA_USE_PLUGIN_EPGSEACH has
   been defined).
 
+- Min width of info area
+  This sets the minimum width the info area will have.
+
+- Show messages in menu on (Last line/Help buttons/Free last line)
+    Last line      - Messages will hide the last line in the menu OSD.
+    Help buttons   - Messages will hide the help buttons in menu OSD.
+    Free last line - The same as "Last line" but now the available list items
+                     is reduced by one.
+
+- Show scrollbar in menu (no/yes/if required)
+  Disable or enable the scrollbar in the menu OSD. If set to "if required" the
+  scrollbar will only be visible if scrolling is possible.
+
++ EPG & Recording Details OSD
 - Show auxiliary information (top/bottom)
   Here you can set where you want to have the auxiliary information
   when you open an event's or recording's info screen. This information
@@ -147,19 +177,14 @@ Setup Options
     always            - This will also use size.vdr if available. Otherwise
                         it will calculate the size itself.
 
-- Full title width
-  If enabled the titlebar in the channel info will be drawn above the channel
-  logo. This has no effect if channel logos are disabled.
-
-- Show remaining/elapsed time (elapsed/remaining/percent)
++ Channel Info OSD
+- Show remaining/elapsed time (elapsed/remaining/percent/"elapsed/remaining")
   Here you can set if you want to read the number of minutes an event is
   already running (preceded by "+") or the number of minutes an event will
   run (preceded by "-") or the percent the event has been running in the
-  channel info.
+  channel info. "elapsed/remaining" will show both elapsed and remaining number
+  of minutes.
 
-- Show VPS
-  Hide or show VPS information in channel info and event info.
-  
 - Show signal info
   If set to yes the signal strength (top) and signal-to-noise ratio (bottom)
   will be shown at the bottom right side of the channel info OSD.
@@ -167,25 +192,6 @@ Setup Options
 - Show CA system as text
   Show used CA system (e.g. Cryptoworks) as text instead of symbol in the
   channel info OSD.
-
-- Show progressbar
-  This replaces progressbars shown with pipes (e.g. [||  ]) by a graphical
-  progressbar.
-
-- Dynamic OSD size
-  Get OSD size from Avards or VDR >= v1.5.4.
-  NOTE: This requires EnigmaNG compiled with SKINENIGMA_USE_PLUGIN_AVARDS = 1
-        and a running Avards plugin.
-  
-- Show messages in menu on (Last line/Help buttons/Free last line)
-    Last line      - Messages will hide the last line in the menu OSD.
-    Help buttons   - Messages will hide the help buttons in menu OSD.
-    Free last line - The same as "Last line" but now the available list items
-                     is reduced by one.
-
-- Show scrollbar in menu (no/yes/if required)
-  Disable or enable the scrollbar in the menu OSD. If set to "if required" the
-  scrollbar will only be visible if scrolling is possible.
 
 
 * Logos & Symbols
@@ -201,14 +207,24 @@ Setup Options
 - Show symbols in audio
   If "Show Symbols" is set to "yes" you can enable or disable symbols for each OSD.
 
+- Colored status symbols in EPG details
+  If enabled the symbols for a running event, an event having a timer and so on will
+  be drawn colored in the EPG details OSD.
+
 - Show symbols in lists
   This replaces "T", "t", "V"... in the EPG views symbols.
+
+- Show progressbar in lists
+  This replaces progressbars shown with pipes (e.g. [||  ]) by a graphical
+  progressbar.
 
 - Show marker in lists
   If enabled a small circle is drawn in front of the selected item in lists.
 
-- Show status symbols
+- Show status symbols (no/yes/active only)
   Display the status symbols in channel info and recording's progress info.
+  "yes" will always show all symbols and "active only" will only show the active
+  (= hilighted) ones.
 
 - Show flags
   If enabled graphical flags are drawn for the audio channel languages if the

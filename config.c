@@ -48,17 +48,17 @@ FontConfig allFontConfig[FONT_NUMFONTS] =
 };
 
 cEnigmaConfig::cEnigmaConfig() : showAuxInfo(1), showLogo(1), showVps(1), showSymbols(1),
-                                 showSymbolsMenu(1), showSymbolsReplay(1), showSymbolsMsgs(1), showSymbolsAudio(1),
+                                 showSymbolsMenu(0), showSymbolsReplay(1), showSymbolsMsgs(1), showSymbolsAudio(1), showColSymbolsDetails(0),
                                  showListSymbols(1), showProgressbar(1), cacheSize(50),
-                                 useChannelId(0), showInfo(1), showRemaining(0), showMarker(1),
+                                 useChannelId(0), showInfo(1), minInfoWidth(144), showRemaining(0), showMarker(1),
                                  singleArea(1), singleArea8Bpp(1), showFlags(1), numReruns(5),
                                  useSubtitleRerun(1), showTimerConflicts(1), showRecSize(2),
                                  showImages(0), resizeImages(0), showMailIcon(0),
                                  imageWidth(120), imageHeight(80), imageExtension(0), fullTitleWidth(0),
                                  useTextEffects(0), scrollDelay(50), scrollPause(1500), scrollMode(0),
                                  blinkPause(1000), scrollInfo(1), scrollListItem(1), scrollOther(1), scrollTitle(1),
-                                 dynOsd(0), statusLineMode(0), showWssSymbols(0), showStatusSymbols(1), showScrollbar(1),
-                                 showSignalInfo(1), showCaMode(0)
+                                 dynOsd(0), statusLineMode(0), showWssSymbols(0), showStatusSymbols(0), showScrollbar(1),
+                                 showSignalInfo(0), showCaMode(0), drawRoundCorners(1)
 {
   memset(logoDir, 0, sizeof(logoDir));
   memset(strImagesDir, 0, sizeof(strImagesDir));
@@ -190,6 +190,11 @@ void cEnigmaConfig::GetOsdSize(struct EnigmaOsdSize *size)
     size->w = cOsd::OsdWidth();
     size->h = cOsd::OsdHeight();
   }
+
+  if (size->w < MINOSDWIDTH)
+    size->w = MINOSDWIDTH;
+  if (size->h < MINOSDHEIGHT)
+    size->h = MINOSDHEIGHT;
 
   debug("cEnigmaConfig::GetOsdSize() x=%d(%d) y=%d(%d) w=%d(%d) h=%d(%d)", size->x, Setup.OSDLeft, size->y, Setup.OSDTop, size->w, Setup.OSDWidth, size->h, Setup.OSDHeight);
 }

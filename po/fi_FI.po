@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2009-03-30 12:30+0200\n"
+"POT-Creation-Date: 2010-04-05 12:31+0200\n"
 "PO-Revision-Date: 2007-12-18 08:11+0100\n"
 "Last-Translator: Rolf Ahrenberg <rahrenbe@cc.hut.fi>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -39,14 +39,35 @@ msgstr "AJASTIMET"
 msgid "min"
 msgstr "min"
 
-msgid "Languages"
-msgstr "Kielet"
+msgid "Content: "
+msgstr ""
+
+msgid "Video"
+msgstr ""
+
+msgid "Audio"
+msgstr ""
+
+msgid "Subtitles"
+msgstr ""
 
 msgid "RERUNS OF THIS SHOW"
 msgstr "TOISTUVAT TAPAHTUMAT"
 
 msgid "Size"
 msgstr "Koko"
+
+msgid "cut"
+msgstr ""
+
+msgid "Length"
+msgstr ""
+
+msgid "Format"
+msgstr ""
+
+msgid "Est. bitrate"
+msgstr ""
 
 msgid "Auxiliary information"
 msgstr "Lisätiedot"
@@ -96,6 +117,10 @@ msgstr "jäljellä oleva"
 msgid "percent"
 msgstr "prosentti"
 
+#, fuzzy
+msgid "elapsed/remaining"
+msgstr "jäljellä oleva"
+
 msgid "never"
 msgstr "ei koskaan"
 
@@ -120,36 +145,27 @@ msgstr ""
 msgid "Try 8bpp single area"
 msgstr "Suosi yhtä 8bpp kuva-aluetta"
 
-msgid "Show info area in main menu"
-msgstr "Näytä infoalue päävalikossa"
-
-msgid "Show auxiliary information"
-msgstr "Näytä lisätiedot"
-
-msgid "Show recording's size"
-msgstr "Näytä tallenteen koko"
+msgid "Round corners"
+msgstr ""
 
 msgid "Full title width"
 msgstr "Levitä otsikkopalkki"
 
-msgid "Show remaining/elapsed time"
-msgstr "Näytä tapahtuman aika"
-
 msgid "Show VPS"
 msgstr "Näytä VPS-tieto"
 
-#, fuzzy
-msgid "Show signal info"
-msgstr "  Näytä sähköpostikuvake"
-
-msgid "Show CA system as text"
-msgstr ""
-
-msgid "Show progressbar"
-msgstr "Näytä aikajana"
-
 msgid "Dynamic OSD size"
 msgstr "Mukauta kuvaruutunäytön kokoa"
+
+msgid "Menu OSD"
+msgstr ""
+
+msgid "Show info area in main menu"
+msgstr "Näytä infoalue päävalikossa"
+
+#, fuzzy
+msgid "  Min width of info area"
+msgstr "  Vieritä infoaluetta"
 
 msgid "Show messages in menu on"
 msgstr "Näytä viestit valikossa"
@@ -157,6 +173,28 @@ msgstr "Näytä viestit valikossa"
 #, fuzzy
 msgid "Show scrollbar in menu"
 msgstr "  Näytä symbolit valikossa"
+
+msgid "EPG & Recording Details OSD"
+msgstr ""
+
+msgid "Show auxiliary information"
+msgstr "Näytä lisätiedot"
+
+msgid "Show recording's size"
+msgstr "Näytä tallenteen koko"
+
+msgid "Channel Info OSD"
+msgstr ""
+
+msgid "Show remaining/elapsed time"
+msgstr "Näytä tapahtuman aika"
+
+#, fuzzy
+msgid "Show signal info"
+msgstr "  Näytä sähköpostikuvake"
+
+msgid "Show CA system as text"
+msgstr ""
 
 msgid "pixel algo"
 msgstr "näytteistys"
@@ -169,6 +207,9 @@ msgstr "zoomaus"
 
 msgid "only if new mail present"
 msgstr "jos uutta postia"
+
+msgid "active only"
+msgstr ""
 
 msgid "Flushing channel logo cache..."
 msgstr "Tyhjennetään välimuistia..."
@@ -188,8 +229,14 @@ msgstr "  Näytä symbolit viesteissä"
 msgid "  Show symbols in audio"
 msgstr "  Näytä symbolit äänivalikossa"
 
+msgid "Colored status symbols in EPG details"
+msgstr ""
+
 msgid "Show symbols in lists"
 msgstr "Näytä tapahtumien symbolit"
+
+msgid "Show progressbar in lists"
+msgstr ""
 
 msgid "Show marker in lists"
 msgstr "Näytä valintasymboli"
@@ -365,5 +412,8 @@ msgstr "Ajastimien valvonta"
 msgid "No timer check"
 msgstr "Ei valvontaa"
 
-#~ msgid "en_US"
-#~ msgstr "fi_FI"
+#~ msgid "Show progressbar"
+#~ msgstr "Näytä aikajana"
+
+#~ msgid "Languages"
+#~ msgstr "Kielet"

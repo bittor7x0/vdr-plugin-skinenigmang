@@ -107,11 +107,13 @@ public:
   int showSymbolsReplay;
   int showSymbolsMsgs;
   int showSymbolsAudio;
+  int showColSymbolsDetails;
   int showListSymbols;
   int showProgressbar;
   int cacheSize;
   int useChannelId;
   int showInfo;
+  int minInfoWidth;
   int showRemaining;
   int showMarker;
   int singleArea;
@@ -144,6 +146,7 @@ public:
   int showScrollbar;
   int showSignalInfo;
   int showCaMode;
+  int drawRoundCorners;
   FontInfo allFonts[FONT_NUMFONTS];
 };
 

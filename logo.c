@@ -49,9 +49,11 @@ bool cEnigmaLogoCache::DrawEventImage(const cEvent *Event, int x, int y, int w, 
     return false;
 
   char *strFilename = NULL;
-  asprintf(&strFilename, "%s/%d.%s", EnigmaConfig.GetImagesDir(), Event->EventID(), EnigmaConfig.GetImageExtension());
-  int rc = DrawImage(strFilename, x, y, w, h, c, bmp);
-  free (strFilename);
+  int rc = false;
+  if (-1 != asprintf(&strFilename, "%s/%d.%s", EnigmaConfig.GetImagesDir(), Event->EventID(), EnigmaConfig.GetImageExtension())) {
+    rc = DrawImage(strFilename, x, y, w, h, c, bmp);
+    free (strFilename);
+  }
   return rc;
 }
 
@@ -61,9 +63,11 @@ bool cEnigmaLogoCache::DrawRecordingImage(const cRecording *Recording, int x, in
     return false;
 
   char *strFilename = NULL;
-  asprintf(&strFilename, "%s/%s.%s", Recording->FileName(), RECORDING_COVER, EnigmaConfig.GetImageExtension());
-  int rc = DrawImage(strFilename, x, y, w, h, c, bmp);
-  free (strFilename);
+  int rc = false;
+  if (-1 != asprintf(&strFilename, "%s/%s.%s", Recording->FileName(), RECORDING_COVER, EnigmaConfig.GetImageExtension())) {
+    rc = DrawImage(strFilename, x, y, w, h, c, bmp);
+    free (strFilename);
+  }
   return rc;
 }
 
@@ -144,9 +148,8 @@ bool cEnigmaLogoCache::Load(const char *fileNameP, int w, int h, bool fLogNotFou
   if (fileNameP == NULL)
     return false;
 
-  char *strFilename;
-  asprintf(&strFilename, "%s/%s.xpm", EnigmaConfig.GetLogoDir(), fileNameP);
-  if (strFilename == NULL)
+  char *strFilename = NULL;
+  if (-1 == asprintf(&strFilename, "%s/%s.xpm", EnigmaConfig.GetLogoDir(), fileNameP))
     return false;
 
   debug("cPluginSkinEnigma::Load(%s)", strFilename);

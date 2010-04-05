@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2009-03-30 12:30+0200\n"
+"POT-Creation-Date: 2010-04-05 12:31+0200\n"
 "PO-Revision-Date: 2007-12-18 08:11+0100\n"
 "Last-Translator: Paulo Lopes <pmml@netvita.pt>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -39,13 +39,34 @@ msgstr ""
 msgid "min"
 msgstr ""
 
-msgid "Languages"
+msgid "Content: "
+msgstr ""
+
+msgid "Video"
+msgstr ""
+
+msgid "Audio"
+msgstr ""
+
+msgid "Subtitles"
 msgstr ""
 
 msgid "RERUNS OF THIS SHOW"
 msgstr ""
 
 msgid "Size"
+msgstr ""
+
+msgid "cut"
+msgstr ""
+
+msgid "Length"
+msgstr ""
+
+msgid "Format"
+msgstr ""
+
+msgid "Est. bitrate"
 msgstr ""
 
 msgid "Auxiliary information"
@@ -96,6 +117,9 @@ msgstr ""
 msgid "percent"
 msgstr ""
 
+msgid "elapsed/remaining"
+msgstr ""
+
 msgid "never"
 msgstr ""
 
@@ -120,7 +144,34 @@ msgstr ""
 msgid "Try 8bpp single area"
 msgstr ""
 
+msgid "Round corners"
+msgstr ""
+
+msgid "Full title width"
+msgstr ""
+
+msgid "Show VPS"
+msgstr ""
+
+msgid "Dynamic OSD size"
+msgstr ""
+
+msgid "Menu OSD"
+msgstr ""
+
 msgid "Show info area in main menu"
+msgstr ""
+
+msgid "  Min width of info area"
+msgstr ""
+
+msgid "Show messages in menu on"
+msgstr ""
+
+msgid "Show scrollbar in menu"
+msgstr ""
+
+msgid "EPG & Recording Details OSD"
 msgstr ""
 
 msgid "Show auxiliary information"
@@ -129,31 +180,16 @@ msgstr ""
 msgid "Show recording's size"
 msgstr ""
 
-msgid "Full title width"
+msgid "Channel Info OSD"
 msgstr ""
 
 msgid "Show remaining/elapsed time"
-msgstr ""
-
-msgid "Show VPS"
 msgstr ""
 
 msgid "Show signal info"
 msgstr ""
 
 msgid "Show CA system as text"
-msgstr ""
-
-msgid "Show progressbar"
-msgstr ""
-
-msgid "Dynamic OSD size"
-msgstr ""
-
-msgid "Show messages in menu on"
-msgstr ""
-
-msgid "Show scrollbar in menu"
 msgstr ""
 
 msgid "pixel algo"
@@ -166,6 +202,9 @@ msgid "zoom image"
 msgstr ""
 
 msgid "only if new mail present"
+msgstr ""
+
+msgid "active only"
 msgstr ""
 
 msgid "Flushing channel logo cache..."
@@ -186,7 +225,13 @@ msgstr ""
 msgid "  Show symbols in audio"
 msgstr ""
 
+msgid "Colored status symbols in EPG details"
+msgstr ""
+
 msgid "Show symbols in lists"
+msgstr ""
+
+msgid "Show progressbar in lists"
 msgstr ""
 
 msgid "Show marker in lists"
@@ -362,6 +407,3 @@ msgstr ""
 
 msgid "No timer check"
 msgstr ""
-
-#~ msgid "en_US"
-#~ msgstr "pt_PT"

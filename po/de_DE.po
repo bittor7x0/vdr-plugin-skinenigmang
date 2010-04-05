@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2009-03-30 12:30+0200\n"
+"POT-Creation-Date: 2010-04-05 12:31+0200\n"
 "PO-Revision-Date: 2007-12-18 08:11+0100\n"
 "Last-Translator: Andreas Mair <andreas _@_ vdr-developer.org>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -39,14 +39,35 @@ msgstr "TIMER"
 msgid "min"
 msgstr "min"
 
-msgid "Languages"
-msgstr "Sprachen"
+msgid "Content: "
+msgstr "Inhalt: "
+
+msgid "Video"
+msgstr "Video"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Subtitles"
+msgstr "Untertitel"
 
 msgid "RERUNS OF THIS SHOW"
 msgstr "WIEDERHOLUNGEN"
 
 msgid "Size"
 msgstr "Größe"
+
+msgid "cut"
+msgstr "geschnitten"
+
+msgid "Length"
+msgstr "Länge"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "Est. bitrate"
+msgstr "Geschätzte Bitrate"
 
 msgid "Auxiliary information"
 msgstr "Zusatzinformation"
@@ -96,6 +117,9 @@ msgstr "restliche"
 msgid "percent"
 msgstr "Prozent"
 
+msgid "elapsed/remaining"
+msgstr "abgelaufene/restliche"
+
 msgid "never"
 msgstr "nie"
 
@@ -120,8 +144,35 @@ msgstr "wenn benötigt"
 msgid "Try 8bpp single area"
 msgstr "Einen 8bpp Bereich versuchen"
 
+msgid "Round corners"
+msgstr "Ecken abrunden"
+
+msgid "Full title width"
+msgstr "Volle Titelbreite"
+
+msgid "Show VPS"
+msgstr "VPS anzeigen"
+
+msgid "Dynamic OSD size"
+msgstr "Dynamische OSD-Größe"
+
+msgid "Menu OSD"
+msgstr "Menü OSD"
+
 msgid "Show info area in main menu"
 msgstr "Infobereich im Hauptmenü"
+
+msgid "  Min width of info area"
+msgstr "  Minimale Infobereich-Breite"
+
+msgid "Show messages in menu on"
+msgstr "Meldungen im Menü über"
+
+msgid "Show scrollbar in menu"
+msgstr "Bildlaufleiste im Menü anzeigen"
+
+msgid "EPG & Recording Details OSD"
+msgstr "EPG- & Aufnahmen-Details OSD"
 
 msgid "Show auxiliary information"
 msgstr "Zusatzinfo anzeigen"
@@ -129,32 +180,17 @@ msgstr "Zusatzinfo anzeigen"
 msgid "Show recording's size"
 msgstr "Aufnahmengröße anzeigen"
 
-msgid "Full title width"
-msgstr "Volle Titelbreite"
+msgid "Channel Info OSD"
+msgstr "Kanalinfo OSD"
 
 msgid "Show remaining/elapsed time"
 msgstr "Zeige abgel./restl. Zeit"
-
-msgid "Show VPS"
-msgstr "VPS anzeigen"
 
 msgid "Show signal info"
 msgstr "Zeige Signal-Informationen"
 
 msgid "Show CA system as text"
 msgstr "CA System als Text anzeigen"
-
-msgid "Show progressbar"
-msgstr "Fortschrittbalken anzeigen"
-
-msgid "Dynamic OSD size"
-msgstr "Dynamische OSD-Größe"
-
-msgid "Show messages in menu on"
-msgstr "Meldungen im Menü über"
-
-msgid "Show scrollbar in menu"
-msgstr "Bildlaufleiste im Menü anzeigen"
 
 msgid "pixel algo"
 msgstr "Pixel-Algorithmus"
@@ -167,6 +203,9 @@ msgstr "Zoomen"
 
 msgid "only if new mail present"
 msgstr "nur bei neuer Mail"
+
+msgid "active only"
+msgstr "nur aktive"
 
 msgid "Flushing channel logo cache..."
 msgstr "Logo-Cache wird geleert..."
@@ -186,8 +225,14 @@ msgstr "  Symbole bei den Meldungen"
 msgid "  Show symbols in audio"
 msgstr "  Symbole bei Audio"
 
+msgid "Colored status symbols in EPG details"
+msgstr "Farbige Statussymbole in den EPG-Details"
+
 msgid "Show symbols in lists"
 msgstr "Symbole in Listen"
+
+msgid "Show progressbar in lists"
+msgstr "Fortschrittbalken in Listen anzeigen"
 
 msgid "Show marker in lists"
 msgstr "Symbol vor Listeneinträgen"
@@ -362,6 +407,3 @@ msgstr "Überwachung"
 
 msgid "No timer check"
 msgstr "Ohne Überwachung"
-
-#~ msgid "en_US"
-#~ msgstr "de_DE"

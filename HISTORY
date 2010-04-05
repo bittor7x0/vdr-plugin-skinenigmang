@@ -1,6 +1,27 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
+2010-04-05: Version 0.1.1
+- Moved "General / Show progressbar" to "Logos & Symbols / Show progressbar in lists".
+- Fixed gcc 4.3 compiler warnings.
+- Show "Parental Rating" and "Contents" in EPG and recording details (requires at least VDR 1.7.11).
+- Show estimated bitrate and recording format (TS/PES) in recording's details.
+- Show subtitle tracks in EPG and recording details.
+- Changed defaults for setup options.
+- Don't define CLEAR_BUG_WORKAROUND by default.
+- Added new setup option "Colored status symbols in EPG details".
+- Added new theme "bgw" (Submitted by jlacvdr @gmail.com).
+- Added new setup option "Round corners".
+- Display cut length and size of recordings in recording's details (based on skinelchi-0.2.1).
+- Fixed calculation of channel info OSD areas.
+- Check for valid OSD width and height and font size and width.
+- Added VDR's default fonts to the TrueTypeFont selector.
+- Unselectable rows in menu OSD starting with "---" will be formated as headlines if "Show symbols in lists" is set.
+- New "elapsed/remaining" option for "Show remaining/elapsed time" setting.
+- New "active only" option for "Show status symbols" setting.
+- Added setup option for minimal info area width.
+- Restructured setup menu.
+
 2009-04-25: Version 0.1.0
 - Fixed: Calculating width of events' start times in channel info OSD (Reported by tomglx @vdr-poprtal.de).
 - Changed: pause scrolling when text has scrolled all to the left in scroll behaviour "to the left" (Reported by Andreas Brugger).

@@ -31,7 +31,7 @@ cEffect::cEffect(cOsd * osd, int x, int y, int width, int height, int depth /* =
 
 cEffect::~cEffect()
 {
-  delete(Text);
+  free(Text);
   delete(bmp);
 }
 
@@ -68,7 +68,7 @@ bool cEffectScroll::SetText(const char *text, const cFont *font, int offset /* =
     return true;
 
   if (Text)
-    delete(Text);
+    free(Text);
   Text = strdup(text);
 
   int textwidth = font->Width(text);
