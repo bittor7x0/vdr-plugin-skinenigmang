@@ -1,6 +1,9 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
+2010-xx-xx: Version 0.1.2
+- Changed: Look for channel logos only in "logos" folder ("hqlogos" folder no longer supported).
+
 2010-04-05: Version 0.1.1
 - Moved "General / Show progressbar" to "Logos & Symbols / Show progressbar in lists".
 - Fixed gcc 4.3 compiler warnings.

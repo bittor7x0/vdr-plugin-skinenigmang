@@ -114,15 +114,11 @@ bool cEnigmaLogoCache::LoadChannelLogo(const cChannel *Channel)
   filename = (char *)malloc(strlen(strLogo) + 20 /* should be enough for folder */);
   if (filename == NULL) goto leave;
 
-  strcpy(filename, "hqlogos/");
+  strcpy(filename, "logos/");
   strcat(filename, strLogo);
   if (!(fFoundLogo = Load(filename, ChannelLogoWidth, ChannelLogoHeight, false))) {
-    strcpy(filename, "logos/");
-    strcat(filename, strLogo);
-    if (!(fFoundLogo = Load(filename, ChannelLogoWidth, ChannelLogoHeight, false))) {
-      error("cPluginSkinEnigma::LoadChannelLogo: LOGO \"%s.xpm\" NOT FOUND in %s/[hq]logos", strLogo, EnigmaConfig.GetLogoDir());
-      fFoundLogo = Load("hqlogos/no_logo", ChannelLogoWidth, ChannelLogoHeight); //TODO? different default logo for channel/group?
-    }
+    error("cPluginSkinEnigma::LoadChannelLogo: LOGO \"%s.xpm\" NOT FOUND in %s/logos", strLogo, EnigmaConfig.GetLogoDir());
+    fFoundLogo = Load("logos/no_logo", ChannelLogoWidth, ChannelLogoHeight); //TODO? different default logo for channel/group?
   }
 
 leave:
