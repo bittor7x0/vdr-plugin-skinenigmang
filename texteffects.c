@@ -32,7 +32,9 @@ cEffect::cEffect(cOsd * osd, int x, int y, int width, int height, int depth /* =
 cEffect::~cEffect()
 {
   free(Text);
+  Text = NULL;
   delete(bmp);
+  bmp = NULL;
 }
 
 
