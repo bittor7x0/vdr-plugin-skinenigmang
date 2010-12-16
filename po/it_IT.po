@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
 "POT-Creation-Date: 2010-04-05 12:31+0200\n"
-"PO-Revision-Date: 2009-04-11 00:00+0100\n"
+"PO-Revision-Date: 2010-08-09 23:43+0100\n"
 "Last-Translator: Diego Pierotto <vdr-italian@tiscali.it>\n"
 "Language-Team:  <vdr@linuxtv.org>\n"
 "MIME-Version: 1.0\n"
@@ -45,16 +45,16 @@ msgid "min"
 msgstr "min"
 
 msgid "Content: "
-msgstr ""
+msgstr "Contenuto: "
 
 msgid "Video"
-msgstr ""
+msgstr "Video"
 
 msgid "Audio"
-msgstr ""
+msgstr "Audio"
 
 msgid "Subtitles"
-msgstr ""
+msgstr "Sottotitoli"
 
 msgid "RERUNS OF THIS SHOW"
 msgstr "REPLICHE DI QUESTO SPETTACOLO"
@@ -63,16 +63,16 @@ msgid "Size"
 msgstr "Dimensione"
 
 msgid "cut"
-msgstr ""
+msgstr "taglia"
 
 msgid "Length"
-msgstr ""
+msgstr "Durata"
 
 msgid "Format"
-msgstr ""
+msgstr "Formato"
 
 msgid "Est. bitrate"
-msgstr ""
+msgstr "Bitrate estimato"
 
 msgid "Auxiliary information"
 msgstr "Informazione ausiliare"
@@ -122,9 +122,8 @@ msgstr "rimasto"
 msgid "percent"
 msgstr "percentuale"
 
-#, fuzzy
 msgid "elapsed/remaining"
-msgstr "rimasto"
+msgstr "trascorso/rimasto"
 
 msgid "never"
 msgstr "mai"
@@ -151,7 +150,7 @@ msgid "Try 8bpp single area"
 msgstr "Prova area singola a 8bpp"
 
 msgid "Round corners"
-msgstr ""
+msgstr "Angoli arrotondati"
 
 msgid "Full title width"
 msgstr "Lunghezza titolo completo"
@@ -163,14 +162,13 @@ msgid "Dynamic OSD size"
 msgstr "Dimensione OSD dinamica"
 
 msgid "Menu OSD"
-msgstr ""
+msgstr "Menu OSD"
 
 msgid "Show info area in main menu"
 msgstr "Mostra area info nel menu"
 
-#, fuzzy
 msgid "  Min width of info area"
-msgstr "  Scorri info area"
+msgstr "  Larghezza min. area info"
 
 msgid "Show messages in menu on"
 msgstr "Mostra messaggi nel menu"
@@ -179,7 +177,7 @@ msgid "Show scrollbar in menu"
 msgstr "Mostra barra scorrimento nel menu"
 
 msgid "EPG & Recording Details OSD"
-msgstr ""
+msgstr "OSD EPG e dettagli registrazioni"
 
 msgid "Show auxiliary information"
 msgstr "Mostra info ausiliare"
@@ -188,7 +186,7 @@ msgid "Show recording's size"
 msgstr "Mostra dimensione reg."
 
 msgid "Channel Info OSD"
-msgstr ""
+msgstr "OSD info canale"
 
 msgid "Show remaining/elapsed time"
 msgstr "Mostra tempo rim./trasc."
@@ -212,7 +210,7 @@ msgid "only if new mail present"
 msgstr "solo se presenti nuove email"
 
 msgid "active only"
-msgstr ""
+msgstr "solo attivo"
 
 msgid "Flushing channel logo cache..."
 msgstr "Pulizia cache loghi canali..."
@@ -233,16 +231,16 @@ msgid "  Show symbols in audio"
 msgstr "  Mostra simboli audio"
 
 msgid "Colored status symbols in EPG details"
-msgstr ""
+msgstr "Simboli di stato colorati nei dettagli EPG"
 
 msgid "Show symbols in lists"
 msgstr "Mostra simboli elenchi"
 
 msgid "Show progressbar in lists"
-msgstr ""
+msgstr "Mostra indicatore elenchi"
 
 msgid "Show marker in lists"
-msgstr "Mostra indicatore elenchi"
+msgstr "Mostra marcatore elenchi"
 
 msgid "Show status symbols"
 msgstr "Mostra simboli stato"
@@ -293,7 +291,7 @@ msgid "left and right"
 msgstr "sinistra e destra"
 
 msgid "to the left"
-msgstr "verso la sinistra"
+msgstr "verso sinistra"
 
 msgid "Enable"
 msgstr "Abilita"
@@ -417,6 +415,6 @@ msgstr "Nessuna verifica timer"
 
 #~ msgid "Show progressbar"
 #~ msgstr "Mostra barra avanzamento"
-
 #~ msgid "Languages"
 #~ msgstr "Lingue"
+
