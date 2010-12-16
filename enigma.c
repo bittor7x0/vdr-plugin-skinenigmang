@@ -281,7 +281,7 @@ private:
   const cFont *pFontLanguage;
   const cFont *pFontMessage;
 
-  int xLogoLeft, xLogoRight, yLogoTop, yLogoBottom, xLogoDecoLeft, xLogoDecoRight, xLogoPos, yLogoPos;
+  int xLogoLeft, xLogoRight, yLogoTop, yLogoBottom, xLogoDecoLeft, xLogoDecoRight;
   int xTitleLeft, xTitleRight, yTitleTop, yTitleBottom, yTitleDecoTop, yTitleDecoBottom;
   int xEventNowLeft, xEventNowRight, yEventNowTop, yEventNowBottom;
   int xEventNextLeft, xEventNextRight, yEventNextTop, yEventNextBottom;
@@ -349,16 +349,15 @@ cSkinEnigmaDisplayChannel::cSkinEnigmaDisplayChannel(bool WithInfo)
   nBPP = 1;
 
   int MessageHeight = 2 * SmallGap + pFontMessage->Height() + 2 * SmallGap;
-  int LogoSize = 0;
+  int LogoHeight = 0;
   if (fWithInfo)
-    LogoSize = std::max(pFontTitle->Height() * 2 + pFontSubtitle->Height() * 2 + SmallGap, ChannelLogoHeight);
+    LogoHeight = std::max(pFontTitle->Height() * 2 + pFontSubtitle->Height() * 2 + SmallGap, EnigmaConfig.channelLogoHeight);
   else
-    LogoSize = std::max(std::max(pFontOsdTitle->Height(), pFontDate->Height()) + TitleDecoGap + TitleDecoHeight + TitleDecoGap2 + MessageHeight + pFontLanguage->Height() + SmallGap, ChannelLogoHeight);
+    LogoHeight = std::max(std::max(pFontOsdTitle->Height(), pFontDate->Height()) + TitleDecoGap + TitleDecoHeight + TitleDecoGap2 + MessageHeight + pFontLanguage->Height() + SmallGap, EnigmaConfig.channelLogoHeight);
 
-  LogoSize += (LogoSize % 2 ? 1 : 0);
   // title bar & logo area
   xLogoLeft = 0;
-  xLogoRight = xLogoLeft + LogoSize;
+  xLogoRight = xLogoLeft + EnigmaConfig.channelLogoWidth;
   xLogoDecoLeft = xLogoRight + LogoDecoGap;
   xLogoDecoRight = xLogoDecoLeft + LogoDecoWidth;
   xTitleLeft = (fShowLogo && (!EnigmaConfig.fullTitleWidth || !fWithInfo) ? xLogoDecoRight + LogoDecoGap2 : xLogoLeft);
@@ -368,15 +367,13 @@ cSkinEnigmaDisplayChannel::cSkinEnigmaDisplayChannel(bool WithInfo)
   yTitleDecoTop = yTitleBottom + TitleDecoGap;
   yTitleDecoBottom = yTitleDecoTop + TitleDecoHeight;
   yLogoTop = (fWithInfo ? yTitleDecoBottom + TitleDecoGap2 : yTitleTop);
-  yLogoBottom = yLogoTop + LogoSize;
-  xLogoPos = xLogoLeft + (LogoSize - ChannelLogoHeight) / 2;
-  yLogoPos = yLogoTop + (LogoSize - ChannelLogoHeight) / 2;
+  yLogoBottom = yLogoTop + LogoHeight;
   if (fWithInfo) {
     // current event area
     xEventNowLeft = (fShowLogo ? xLogoDecoRight + LogoDecoGap2 : xTitleLeft);
     xEventNowRight = xTitleRight;
     yEventNowTop = yLogoTop;
-    yEventNowBottom = yEventNowTop + (LogoSize - SmallGap) / 2;
+    yEventNowBottom = yEventNowTop + (LogoHeight - SmallGap) / 2;
     // next event area
     xEventNextLeft = xEventNowLeft;
     xEventNextRight = xEventNowRight;
@@ -396,7 +393,7 @@ cSkinEnigmaDisplayChannel::cSkinEnigmaDisplayChannel(bool WithInfo)
   // message area
   xMessageLeft = xEventNowLeft;
   xMessageRight = xTitleRight;
-  yMessageTop = yLogoTop + (LogoSize - MessageHeight) / 2;
+  yMessageTop = yLogoTop + (LogoHeight - MessageHeight) / 2;
   yMessageBottom = yMessageTop + MessageHeight;
   // date area
   cString date = DayDateTime();
@@ -800,8 +797,8 @@ void cSkinEnigmaDisplayChannel::SetChannel(const cChannel *Channel, int Number)
       osd->DrawRectangle(xLogoDecoLeft, yLogoTop, xLogoDecoRight - 1, yLogoBottom - 1, Theme.Color(clrLogoBg));
 
       if (EnigmaLogoCache.LoadChannelLogo(Channel)) {
-        osd->DrawBitmap(xLogoLeft + (xLogoRight - xLogoLeft - ChannelLogoWidth) / 2,
-                        yLogoTop + (yLogoBottom - yLogoTop - ChannelLogoHeight) / 2,
+        osd->DrawBitmap(xLogoLeft + (xLogoRight - xLogoLeft - EnigmaLogoCache.Get().Width()) / 2,
+                        yLogoTop + (yLogoBottom - yLogoTop - EnigmaLogoCache.Get().Height()) / 2,
                         EnigmaLogoCache.Get(), EnigmaLogoCache.Get().Color(1),
                         Theme.Color(clrLogoBg), true);
       }

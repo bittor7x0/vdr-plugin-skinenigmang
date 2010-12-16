@@ -20,9 +20,6 @@
 #include <vdr/recording.h>
 #include <vdr/osd.h>
 
-// size of channel logos
-#define ChannelLogoWidth  80
-#define ChannelLogoHeight 80
 // size of icons, e.g. icons top right in the main menu...
 #define IconWidth         80
 #define IconHeight        80

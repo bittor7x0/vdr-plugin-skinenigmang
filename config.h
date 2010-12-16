@@ -147,6 +147,8 @@ public:
   int showSignalInfo;
   int showCaMode;
   int drawRoundCorners;
+  int channelLogoWidth;
+  int channelLogoHeight;
   FontInfo allFonts[FONT_NUMFONTS];
 };
 
