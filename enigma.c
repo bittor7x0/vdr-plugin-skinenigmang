@@ -2377,6 +2377,7 @@ void cSkinEnigmaDisplayMenu::SetEvent(const cEvent *Event)
     const char *s = Event->ContentToString(Event->Contents(i));
     if (!isempty(s)) {
       if (fFirst) {
+        fFirst = false;
         sstrInfo << tr("Content: ");
       } else {
         sstrInfo << ", ";
@@ -2703,7 +2704,7 @@ void cSkinEnigmaDisplayMenu::SetRecording(const cRecording *Recording)
     const char *s = Info->GetEvent()->ContentToString(Info->GetEvent()->Contents(i));
     if (!isempty(s)) {
       if (fFirst) {
-      	fFirst = false;
+        fFirst = false;
         sstrInfo << tr("Content: ");
       } else {
         sstrInfo << ", ";
