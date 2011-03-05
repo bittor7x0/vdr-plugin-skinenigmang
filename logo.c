@@ -116,8 +116,7 @@ bool cEnigmaLogoCache::LoadChannelLogo(const cChannel *Channel)
 
   strcpy(filename, "logos/");
   strcat(filename, strLogo);
-  if (!(fFoundLogo = Load(filename, EnigmaConfig.channelLogoWidth, EnigmaConfig.channelLogoHeight, false))) {
-    error("cPluginSkinEnigma::LoadChannelLogo: LOGO \"%s.xpm\" NOT FOUND in %s/logos", strLogo, EnigmaConfig.GetLogoDir());
+  if (!(fFoundLogo = Load(filename, EnigmaConfig.channelLogoWidth, EnigmaConfig.channelLogoHeight))) {
     fFoundLogo = Load("logos/no_logo", EnigmaConfig.channelLogoWidth, EnigmaConfig.channelLogoHeight); //TODO? different default logo for channel/group?
   }
 
@@ -139,7 +138,7 @@ bool cEnigmaLogoCache::LoadIcon(const char *fileNameP)
   return Load(fileNameP, IconWidth, IconHeight);
 }
 
-bool cEnigmaLogoCache::Load(const char *fileNameP, int w, int h, bool fLogNotFound)
+bool cEnigmaLogoCache::Load(const char *fileNameP, int w, int h)
 {
   if (fileNameP == NULL)
     return false;
@@ -166,7 +165,7 @@ bool cEnigmaLogoCache::Load(const char *fileNameP, int w, int h, bool fLogNotFou
     // no - cache miss!
     debug("cPluginSkinEnigma::Load() CACHE MISS!");
     // try to load xpm logo
-    if (!LoadXpm(strFilename, w, h, fLogNotFound))
+    if (!LoadXpm(strFilename, w, h))
       return false;
     // check if cache is active
     if (cacheSizeM) {
@@ -203,7 +202,7 @@ cBitmap & cEnigmaLogoCache::Get(void)
   return *bitmapM;
 }
 
-bool cEnigmaLogoCache::LoadXpm(const char *fileNameP, int w, int h, bool fLogNotFound)
+bool cEnigmaLogoCache::LoadXpm(const char *fileNameP, int w, int h)
 {
   if (fileNameP == NULL)
     return false;
@@ -226,8 +225,7 @@ bool cEnigmaLogoCache::LoadXpm(const char *fileNameP, int w, int h, bool fLogNot
     }
   } else {
     // no xpm logo found
-    if (fLogNotFound)
-      error("cPluginSkinEnigma::LoadXpm(%s) LOGO NOT FOUND", fileNameP);
+    error("cPluginSkinEnigma::LoadXpm(%s) LOGO NOT FOUND", fileNameP);
   }
 
   delete bmp;

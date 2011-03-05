@@ -38,8 +38,8 @@ private:
 #endif
   std::map<std::string, cBitmap*> cacheMapM;
   bool DrawImage(const char *fileNameP, int x, int y, int w, int h, int c, cBitmap *bmp);
-  bool LoadXpm(const char *fileNameP, int w, int h, bool fLogNotFound = true);
-  bool Load(const char *fileNameP, int w, int h, bool fLogNotFound = true);
+  bool LoadXpm(const char *fileNameP, int w, int h);
+  bool Load(const char *fileNameP, int w, int h);
 public:
   cEnigmaLogoCache(unsigned int cacheSizeP);
   ~cEnigmaLogoCache();
