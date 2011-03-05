@@ -207,25 +207,29 @@ bool cEnigmaLogoCache::LoadXpm(const char *fileNameP, int w, int h)
   if (fileNameP == NULL)
     return false;
 
-  struct stat stbuf;
   cBitmap *bmp = new cBitmap(1, 1, 1);
 
   // create absolute filename
   debug("cPluginSkinEnigma::LoadXpm(%s)", fileNameP);
   // check validity
-  if ((lstat(fileNameP, &stbuf) == 0) && bmp->LoadXpm(fileNameP)) {
-    if ((bmp->Width() <= w) && (bmp->Height() <= h)) {
-      debug("cPluginSkinEnigma::LoadXpm(%s) LOGO FOUND", fileNameP);
-      // assign bitmap
-      bitmapM = bmp;
-      return true;
+  if (access(fileNameP, R_OK) == 0) {
+    if (bmp->LoadXpm(fileNameP)) {
+      if ((bmp->Width() <= w) && (bmp->Height() <= h)) {
+        debug("cPluginSkinEnigma::LoadXpm(%s) LOGO FOUND", fileNameP);
+        // assign bitmap
+        bitmapM = bmp;
+        return true;
+      } else {
+        // wrong size
+        error("cPluginSkinEnigma::LoadXpm(%s) LOGO HAS WRONG SIZE %d/%d (%d/%d)", fileNameP, bmp->Width(), bmp->Height(), w, h);
+      }
     } else {
-      // wrong size
-      error("cPluginSkinEnigma::LoadXpm(%s) LOGO HAS WRONG SIZE %d/%d (%d/%d)", fileNameP, bmp->Width(), bmp->Height(), w, h);
+      // bmp->LoadXpm() failed
+      error("cPluginSkinEnigma::LoadXpm(%s) VDR can't load logo", fileNameP);
     }
   } else {
     // no xpm logo found
-    error("cPluginSkinEnigma::LoadXpm(%s) LOGO NOT FOUND", fileNameP);
+    error("cPluginSkinEnigma::LoadXpm(%s) LOGO NOT FOUND/READABLE (%m)", fileNameP);
   }
 
   delete bmp;
