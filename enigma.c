@@ -1533,7 +1533,7 @@ void cSkinEnigmaDisplayMenu::SetupAreas(void)
         TE_MARQUEE(osd, -1, fScrollInfo, x + (timer->isRecording ? (bmRecording.Width() + Gap) : 0),
                    y, timer->title.c_str(),
                    Theme.Color(clrMenuItemSelectableFg), Theme.Color(clrAltBackground),
-                   pFontInfoTimerText, nBPP, w, h);
+                   pFontInfoTimerText, nBPP, w - (timer->isRecording ? (bmRecording.Width() + Gap) : 0), h);
         y += h;
         char* info = NULL;
         int rc = -1;
