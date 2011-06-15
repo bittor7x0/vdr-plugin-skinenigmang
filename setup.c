@@ -392,8 +392,8 @@ void cMenuSetupLogos::Set(void)
 #ifdef HAVE_IMAGEMAGICK
       Add(new cMenuEditStraItem(tr("  Resize images"), &data->resizeImages, 3, resizeImagesTexts));
 #endif
-      Add(new cMenuEditIntItem(tr("  Image width" ), &data->imageWidth, 80, 180));
-      Add(new cMenuEditIntItem(tr("  Image height" ), &data->imageHeight, 80, 144));
+      Add(new cMenuEditIntItem(tr("  Image width" ), &data->imageWidth, 80, 360));
+      Add(new cMenuEditIntItem(tr("  Image height" ), &data->imageHeight, 80, 288));
 #ifdef HAVE_IMAGEMAGICK
       Add(new cMenuEditStraItem(tr("  Image format"), &data->imageExtension, 3, imageExtensionTexts));
 #endif
@@ -403,12 +403,12 @@ void cMenuSetupLogos::Set(void)
 
   Add(new cMenuEditBoolItem(tr("Show channel logos"), &data->showLogo));
   if (data->showLogo) {
-    Add(new cMenuEditIntItem(tr("  Image width" ), &data->channelLogoWidth, 64, 180)); //TODO: find suitable max values
-    Add(new cMenuEditIntItem(tr("  Image height" ), &data->channelLogoHeight, 48, 144));
+    Add(new cMenuEditIntItem(tr("  Image width" ), &data->channelLogoWidth, 64, 360));
+    Add(new cMenuEditIntItem(tr("  Image height" ), &data->channelLogoHeight, 48, 288));
     Add(new cMenuEditBoolItem(tr("  Identify channel by"), &data->useChannelId, tr("name"), tr("data")));
   }
   if (data->showLogo || data->showSymbols) {
-    Add(new cMenuEditIntItem(tr("Channel logo cache size"), &data->cacheSize, 0, 1000));
+    Add(new cMenuEditIntItem(tr("Channel logo cache size"), &data->cacheSize, 0, 4000));
   }
 
   SetCurrent(Get(currentItem));
