@@ -848,7 +848,7 @@ void cSkinEnigmaDisplayChannel::SetEvents(const cEvent *Present,
     int total = e->Duration();
     snprintf(sLen, sizeof(sLen), "%d'", total / 60);
 
-    int now = (time(NULL) - e->StartTime());
+    int now = std::max((int)(time(NULL) - e->StartTime()), 0);
     if ((now < total) && ((now / 60) > 0)) {
       switch (EnigmaConfig.showRemaining) {
         case 0:
