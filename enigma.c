@@ -2615,8 +2615,13 @@ void cSkinEnigmaDisplayMenu::SetRecording(const cRecording *Recording)
 
   // draw recording date string
   std::stringstream sstrDate;
+#if VDRVERSNUM >= 10721
+  sstrDate << *DateString(Recording->Start())
+           << "  " << *TimeString(Recording->Start());
+#else
   sstrDate << *DateString(Recording->start)
            << "  " << *TimeString(Recording->start);
+#endif
 
   unsigned long long nRecSize = -1;
   unsigned long long nFileSize[1000];
@@ -2672,14 +2677,19 @@ void cSkinEnigmaDisplayMenu::SetRecording(const cRecording *Recording)
     bool fCutIn = true;
     cMark *mark = marks.First();
     while (mark) {
-      index->Get(mark->position, &FileNumber, &FileOffset); //TODO: will disc spin up?
+#if VDRVERSNUM >= 10721
+      int pos = mark->Position();
+#else
+      int pos = mark->position;
+#endif
+      index->Get(pos, &FileNumber, &FileOffset); //TODO: will disc spin up?
       if (fCutIn) {
-        nCutInFrame = mark->position;
+        nCutInFrame = pos;
         fCutIn = false;
         if (nRecSize >= 0)
           nCutInOffset = nFileSize[FileNumber-1] + FileOffset;
       } else {
-        nCutLength += mark->position - nCutInFrame;
+        nCutLength += pos - nCutInFrame;
         fCutIn = true;
         if (nRecSize >= 0)
           nRecSizeCut += nFileSize[FileNumber-1] + FileOffset - nCutInOffset;
@@ -2776,8 +2786,13 @@ void cSkinEnigmaDisplayMenu::SetRecording(const cRecording *Recording)
   }
   delete index;
 
+#if VDRVERSNUM >= 10721
+  sstrInfo << trVDR("Priority") << ": " << Recording->Priority() << std::endl
+           << trVDR("Lifetime") << ": " << Recording->Lifetime() << std::endl;
+#else
   sstrInfo << trVDR("Priority") << ": " << Recording->priority << std::endl
            << trVDR("Lifetime") << ": " << Recording->lifetime << std::endl;
+#endif
   if (Info->Aux()) {
     sstrInfo << std::endl << tr("Auxiliary information") << ":\n"
              << parseaux(Info->Aux());
