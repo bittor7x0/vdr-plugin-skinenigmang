@@ -2,6 +2,7 @@ VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
 2010-xx-xx: Version 0.1.2
+- Added: Hungarian translation (Provided by István Füley).
 - Updated: Italian translation (Provided by Diego Pierotto).
 - Added: New setup options for height and width of channel logos area.
 - Changed: Look for channel logos only in "logos" folder ("hqlogos" folder no longer supported).
