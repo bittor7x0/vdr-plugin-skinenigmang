@@ -659,6 +659,7 @@ void cSkinEnigmaDisplayChannel::DrawSymbols(const cChannel *Channel)
 #define FRONTEND_DEVICE "/dev/dvb/adapter%d/frontend%d"
 
 int cSkinEnigmaDisplayChannel::GetSignal(int &str, int &snr, fe_status_t & /* status */) {
+#if VDRVERSNUM < 10719
   if (m_Frontend < 0) {
     str = 0;
     snr = 0;
@@ -676,6 +677,11 @@ int cSkinEnigmaDisplayChannel::GetSignal(int &str, int &snr, fe_status_t & /* st
 
   ::ioctl(m_Frontend, FE_READ_SIGNAL_STRENGTH, &str);
   ::ioctl(m_Frontend, FE_READ_SNR, &snr);
+#else
+  cDevice* dev = cDevice::ActualDevice();
+  str = dev->SignalStrength();
+  snr = dev->SignalQuality();
+#endif
   UpdateSignalTimer.Set();
 
   return 0;
@@ -685,8 +691,8 @@ void cSkinEnigmaDisplayChannel::UpdateSignal() {
   if (xSignalBarLeft < 0)
     return;
 
-  int str = 0;
-  int snr = 0;
+  int str = -1;
+  int snr = -1;
   fe_status_t status;
   if (GetSignal(str, snr, status) < 0)
   {
@@ -694,7 +700,7 @@ void cSkinEnigmaDisplayChannel::UpdateSignal() {
     return;
   }
 
-  if (snr == 0 && str == 0)
+  if (snr < 0 && str < 0)
     return;
 
   xSignalBarLeft = xBottomRight - xIndent - MIN_CI_SIGNALBAR;

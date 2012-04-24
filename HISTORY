@@ -2,6 +2,7 @@ VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
 2010-xx-xx: Version 0.1.2
+- Changed: Use vdr fuctions to determine signal strength (Closes #811).
 - Added: Hungarian translation (Provided by István Füley).
 - Updated: Italian translation (Provided by Diego Pierotto).
 - Added: New setup options for height and width of channel logos area.
