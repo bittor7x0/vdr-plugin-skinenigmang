@@ -290,7 +290,9 @@ private:
   int xFirstSymbol, xDateLeft, xIndent;
 #ifndef DISABLE_SIGNALINFO
   int xSignalBarLeft, nStrBarWidth, nSnrBarWidth;
+#if VDRVERSNUM < 10719
   int m_Frontend;
+#endif
   cTimeMs UpdateSignalTimer;
 #endif //DISABLE_SIGNALINFO
 
@@ -336,7 +338,9 @@ cSkinEnigmaDisplayChannel::cSkinEnigmaDisplayChannel(bool WithInfo)
   xSignalBarLeft = EnigmaConfig.showSignalInfo ? 0 : -1;
   nStrBarWidth = 10000;
   nSnrBarWidth = 10000;
+#if VDRVERSNUM < 10719
   m_Frontend = -1;
+#endif
   UpdateSignalTimer.Set();
 #endif //DISABLE_SIGNALINFO
   nMessagesShown = 0;
@@ -462,8 +466,10 @@ cSkinEnigmaDisplayChannel::~cSkinEnigmaDisplayChannel()
   TE_STOP;
 
 #ifndef DISABLE_SIGNALINFO
+#if VDRVERSNUM < 10719
   if (m_Frontend >= 0)
     close(m_Frontend);
+#endif
 #endif //DISABLE_SIGNALINFO
 
   free(strLastDate);
@@ -678,6 +684,9 @@ int cSkinEnigmaDisplayChannel::GetSignal(int &str, int &snr, fe_status_t & /* st
   ::ioctl(m_Frontend, FE_READ_SIGNAL_STRENGTH, &str);
   ::ioctl(m_Frontend, FE_READ_SNR, &snr);
 #else
+  if (UpdateSignalTimer.Elapsed() < 500) {
+    return 0;
+  }
   cDevice* dev = cDevice::ActualDevice();
   str = dev->SignalStrength();
   snr = dev->SignalQuality();
@@ -708,8 +717,13 @@ void cSkinEnigmaDisplayChannel::UpdateSignal() {
   int bw = MIN_CI_SIGNALBAR; //45;
   int xSignalBarRight = xSignalBarLeft + bw;
 
+#if VDRVERSNUM < 10719
   str = str * bw / 0xFFFF;
   snr = snr * bw / 0xFFFF;
+#else
+  str = str * bw / 100;
+  snr = snr * bw / 100;
+#endif
 
   if (str != nStrBarWidth || snr != nSnrBarWidth) {
     nStrBarWidth = str;
@@ -783,10 +797,12 @@ void cSkinEnigmaDisplayChannel::SetChannel(const cChannel *Channel, int Number)
   }
 
 #ifndef DISABLE_SIGNALINFO
+#if VDRVERSNUM < 10719
   if (m_Frontend >= 0) {
     close(m_Frontend);
     m_Frontend = -1;
   }
+#endif
 #endif //DISABLE_SIGNALINFO
 
   xFirstSymbol = 0;
