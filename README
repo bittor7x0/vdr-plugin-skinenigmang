@@ -42,8 +42,8 @@ SKINENIGMA_USE_PLUGIN_MAILBOX = 1
 If you use the mailbox plugin this will include support for it.
 
 SKINENIGMA_NO_MENULOGO = 1
-This turns usage of logos in the main menu complete. This might also
-improve the performance of the menus. EXPERIMENTAL!!!
+This turns usage of logos in the main menu completely off. This might
+also improve the performance of the menus. EXPERIMENTAL!!!
 
 HAVE_IMAGEMAGICK = 1
 If you have installed ImageMagick and want to use images in event's
@@ -252,11 +252,11 @@ Setup Options
   The algorithm to use for resizing. Please ask the Imagemagick documentation if
   you want to know how the algorithms work.
 
-- Image width (80 - 180)
+- Image width (80 - 360)
   (NOTE: only visible if Imagemagick support is compiled in!)
   The width for event/recording images.
 
-- Image height (80 - 144)
+- Image height (80 - 244)
   (NOTE: only visible if Imagemagick support is compiled in!)
   The height for event/recording images.
 

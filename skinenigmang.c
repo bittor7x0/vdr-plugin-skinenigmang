@@ -20,7 +20,7 @@
 #endif
 
 
-static const char VERSION[] = "0.1.1";
+static const char VERSION[] = "0.1.2";
 static const char DESCRIPTION[] = trNOOP("EnigmaNG skin");
 
 class cPluginSkinEnigma : public cPlugin {

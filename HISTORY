@@ -1,10 +1,16 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
-2010-xx-xx: Version 0.1.2
+2012-04-29: Version 0.1.2
 - Changed: Use vdr fuctions to determine signal strength (Closes #811).
 - Added: Hungarian translation (Provided by István Füley).
+- Fixed: Don't use deprecated member access (introduced in VDR 1.7.21).
+- Changed: Increased max values for image/logo width/height and logo cache.
+- Fixed: Handle case if curent event starts in the future in channel info OSD (Fixes #649).
+- Fixed: width of a timer's title in menu OSD info area (Closes #633).
+- Included: Catalan translation (Submitted by Innocent De Marchi).
 - Updated: Italian translation (Provided by Diego Pierotto).
+- Fixed: Displaying Content Descriptor in EPG details.
 - Added: New setup options for height and width of channel logos area.
 - Changed: Look for channel logos only in "logos" folder ("hqlogos" folder no longer supported).
 
