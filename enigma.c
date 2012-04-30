@@ -335,7 +335,6 @@ cSkinEnigmaDisplayChannel::cSkinEnigmaDisplayChannel(bool WithInfo)
   fShowLogo = EnigmaConfig.showLogo;
   xFirstSymbol = 0;
 #ifndef DISABLE_SIGNALINFO
-  xSignalBarLeft = EnigmaConfig.showSignalInfo ? 0 : -1;
   nStrBarWidth = 10000;
   nSnrBarWidth = 10000;
 #if VDRVERSNUM < 10719
@@ -403,6 +402,9 @@ cSkinEnigmaDisplayChannel::cSkinEnigmaDisplayChannel(bool WithInfo)
   cString date = DayDateTime();
   int w = pFontDate->Width(date);
   xDateLeft = xTitleRight - xIndent - w - SmallGap;
+#ifndef DISABLE_SIGNALINFO
+  xSignalBarLeft = EnigmaConfig.showSignalInfo ? (xBottomRight - xIndent - MIN_CI_SIGNALBAR) : -1;
+#endif
 
   // create osd
   osd = cOsdProvider::NewOsd(OsdSize.x, OsdSize.y + (Setup.ChannelInfoPos ? 0 : (OsdSize.h - yBottomBottom)) );
@@ -553,7 +555,6 @@ void cSkinEnigmaDisplayChannel::DrawSymbols(const cChannel *Channel)
   int ys = yBottomTop + (yBottomBottom - yBottomTop - SymbolHeight) / 2;
 
 #ifndef DISABLE_SIGNALINFO
-  UpdateSignal();
   if (xSignalBarLeft >= 0)
     xs = xSignalBarLeft - Gap;
 #endif //DISABLE_SIGNALINFO
@@ -697,22 +698,17 @@ int cSkinEnigmaDisplayChannel::GetSignal(int &str, int &snr, fe_status_t & /* st
 }
 
 void cSkinEnigmaDisplayChannel::UpdateSignal() {
-  if (xSignalBarLeft < 0)
+  if (xSignalBarLeft <= 0)
     return;
 
   int str = -1;
   int snr = -1;
   fe_status_t status;
   if (GetSignal(str, snr, status) < 0)
-  {
-    xSignalBarLeft = -1;
     return;
-  }
 
   if (snr < 0 && str < 0)
     return;
-
-  xSignalBarLeft = xBottomRight - xIndent - MIN_CI_SIGNALBAR;
 
   int bw = MIN_CI_SIGNALBAR; //45;
   int xSignalBarRight = xSignalBarLeft + bw;
