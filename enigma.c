@@ -2554,7 +2554,7 @@ void cSkinEnigmaDisplayMenu::SetEvent(const cEvent *Event)
     strFirst = stringInfo.empty() ? NULL : stringInfo.c_str();
     strSecond = strDescr;
   }
-  if (strFirst || strSecond || strSecond) {
+  if (strFirst || strSecond || strThird) {
     y = yHeadlineBottom + SmallGap + 2 * pFontDetailsDate->Height();
     char *mytext = NULL;
     if (-1 != asprintf(&mytext, "%s%s%s%s%s", strFirst ? strFirst : "",
