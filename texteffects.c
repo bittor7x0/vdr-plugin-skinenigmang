@@ -295,7 +295,7 @@ void cEnigmaTextEffects::Action(void)
 
     TE_LOCK; //This causes an initial wait until the first Flush() is called (which TE_UNKOCKs)
     bool changed = false;
-    for (Effects_t::iterator effect = vecEffects.begin(); (effect != vecEffects.end()) && osd; effect++) {
+    for (Effects_t::iterator effect = vecEffects.begin(); (effect != vecEffects.end()) && osd; ++effect) {
       cEffect *e = (*effect);
       if (e == NULL)
         continue;
@@ -366,7 +366,7 @@ void cEnigmaTextEffects::Clear(void)
 
   //Must be TE_LOCKed by caller
 
-  for (Effects_t::iterator effect = vecEffects.begin(); effect != vecEffects.end(); effect++) {
+  for (Effects_t::iterator effect = vecEffects.begin(); effect != vecEffects.end(); ++effect) {
     delete(*effect);
   }
 
