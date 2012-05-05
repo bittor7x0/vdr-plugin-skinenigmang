@@ -15,6 +15,11 @@ using namespace Magick;
 #include <vector>
 
 #include <vdr/themes.h>
+
+void cOSDImageBitmap::Init(void)
+{
+  InitializeMagick(NULL);
+}
  
 cOSDImageBitmap::cOSDImageBitmap()
 {}

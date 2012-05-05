@@ -18,6 +18,7 @@ cEnigmaLogoCache::cEnigmaLogoCache(unsigned int cacheSizeP) :cacheSizeM(cacheSiz
 {
 #ifdef HAVE_IMAGEMAGICK
   bmpImage = new cBitmap(8, 8, 1);
+  cOSDImageBitmap::Init();
 #endif
 }
 

@@ -46,8 +46,8 @@ This turns usage of logos in the main menu completely off. This might
 also improve the performance of the menus. EXPERIMENTAL!!!
 
 HAVE_IMAGEMAGICK = 1
-If you have installed ImageMagick and want to use images in event's
-and recording's details.
+If you have installed ImageMagick and want to use images in events'
+and recordings' details.  Set to GRAPHICS to use GraphicsMagick.
 
 SKINENIGMA_DISABLE_SIGNALINFO = 1
 Do not include code to show signal strength and signal-to-noise ratio.

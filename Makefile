@@ -10,8 +10,8 @@
 # Debugging on/off 
 #SKINENIGMA_DEBUG = 1
 
-# If you have installed ImageMagick and want to use
-# images in event's and recording's details.
+# If you have installed ImageMagick and want to use images in events'
+# and recordings' details.  Set to GRAPHICS to use GraphicsMagick.
 #HAVE_IMAGEMAGICK = 1
 
 # If you are using the epgsearch plugin and want to see the number of
@@ -129,8 +129,13 @@ OBJS = $(PLUGIN).o enigma.o config.o logo.o tools.o status.o texteffects.o setup
 
 ifdef HAVE_IMAGEMAGICK
 OBJS += bitmap.o
+ifneq ($(HAVE_IMAGEMAGICK), GRAPHICS)
 LIBS += -lMagick++
 INCLUDES += -I/usr/include/ImageMagick -I/usr/local/include/ImageMagick
+else
+LIBS += $(shell pkg-config --libs GraphicsMagick++)
+INCLUDES += $(shell pkg-config --cflags GraphicsMagick++)
+endif
 endif
 
 ifneq ($(shell which freetype-config),)
