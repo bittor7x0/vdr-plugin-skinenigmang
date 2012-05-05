@@ -88,9 +88,6 @@ some things before:
 Options
 -------
 
-  -f path, --fonts=path
-      Path to the TrueTypeFonts (*.ttf) (Default: <logodir>/fonts).
-
   -i path, --epgimages=path
       Path to the epgimages (Default: <logodir>/epgimages).
 
