@@ -149,6 +149,8 @@ public:
   int drawRoundCorners;
   int channelLogoWidth;
   int channelLogoHeight;
+  int signalInfoWidth;
+  int progressBarWidth;
   FontInfo allFonts[FONT_NUMFONTS];
 };
 

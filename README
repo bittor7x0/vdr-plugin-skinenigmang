@@ -182,9 +182,16 @@ Setup Options
   channel info. "elapsed/remaining" will show both elapsed and remaining number
   of minutes.
 
+- Width of progress bar
+  The width of the progress bar that visualizes the elapsed time of the current
+  event.
+
 - Show signal info
   If set to yes the signal strength (top) and signal-to-noise ratio (bottom)
   will be shown at the bottom right side of the channel info OSD.
+
+- Width of signal info
+  The width of the signal info.
 
 - Show CA system as text
   Show used CA system (e.g. Cryptoworks) as text instead of symbol in the

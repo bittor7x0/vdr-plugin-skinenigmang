@@ -231,10 +231,6 @@ THEME_CLR(Theme, clrSignalLowFg, 0xFFCC0000);
 
 
 #define MIN_DATEWIDTH 144
-// Minimum progress bar width in channel info
-#define MIN_CI_PROGRESS 124
-// Minimum signal bar width in channel info
-#define MIN_CI_SIGNALBAR 74
 
 #define TinyGap 1
 #define SmallGap 2
@@ -403,7 +399,7 @@ cSkinEnigmaDisplayChannel::cSkinEnigmaDisplayChannel(bool WithInfo)
   int w = pFontDate->Width(date);
   xDateLeft = xTitleRight - xIndent - w - SmallGap;
 #ifndef DISABLE_SIGNALINFO
-  xSignalBarLeft = EnigmaConfig.showSignalInfo ? (xBottomRight - xIndent - MIN_CI_SIGNALBAR) : -1;
+  xSignalBarLeft = EnigmaConfig.showSignalInfo ? (xBottomRight - xIndent - EnigmaConfig.signalInfoWidth) : -1;
 #endif
 
   // create osd
@@ -659,7 +655,7 @@ void cSkinEnigmaDisplayChannel::DrawSymbols(const cChannel *Channel)
     }
   }
 
-  xFirstSymbol = DrawStatusSymbols(xBottomLeft + xIndent + MIN_CI_PROGRESS + Gap, xs, yBottomTop, yBottomBottom, Channel) - Gap;
+  xFirstSymbol = DrawStatusSymbols(xBottomLeft + xIndent + EnigmaConfig.progressBarWidth + Gap, xs, yBottomTop, yBottomBottom, Channel) - Gap;
 }
 
 #ifndef DISABLE_SIGNALINFO
@@ -710,7 +706,7 @@ void cSkinEnigmaDisplayChannel::UpdateSignal() {
   if (snr < 0 && str < 0)
     return;
 
-  int bw = MIN_CI_SIGNALBAR; //45;
+  int bw = EnigmaConfig.signalInfoWidth;
   int xSignalBarRight = xSignalBarLeft + bw;
 
 #if VDRVERSNUM < 10719
@@ -930,7 +926,7 @@ void cSkinEnigmaDisplayChannel::SetEvents(const cEvent *Present,
     }
     // draw timebar
     int xBarLeft = xBottomLeft + xIndent;
-    int xBarWidth = MIN_CI_PROGRESS;
+    int xBarWidth = EnigmaConfig.progressBarWidth;
     int x = xBarLeft + SmallGap + (int)(ceil((float)(now) / (float)(total) * (float)(xBarWidth - SmallGap - SmallGap)));
     x = std::min(x, xBarLeft + xBarWidth - SmallGap - 1);
     osd->DrawRectangle(xBarLeft, yBottomTop + Gap,

@@ -1,6 +1,9 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
+2012-xx-xx: Version 0.1.3
+- Added: Setup options to set width of signal information and progress bar in channel info OSD.
+
 2012-04-29: Version 0.1.2
 - Changed: Use vdr fuctions to determine signal strength (Closes #811).
 - Added: Hungarian translation (Provided by István Füley).

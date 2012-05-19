@@ -136,6 +136,8 @@ void cPluginSkinEnigmaSetup::Store(void)
   SetupStore("DrawRoundCorners", EnigmaConfig.drawRoundCorners);
   SetupStore("ChannelLogoWidth", EnigmaConfig.channelLogoWidth);
   SetupStore("ChannelLogoHeight", EnigmaConfig.channelLogoHeight);
+  SetupStore("SignalInfoWidth", EnigmaConfig.signalInfoWidth);
+  SetupStore("ProgressBarWidth", EnigmaConfig.progressBarWidth);
 
   char tmp[sizeof(EnigmaConfig.allFonts[0].Name) + 8];
   for (int id = 0; id < FONT_NUMFONTS; id++) {
@@ -226,11 +228,17 @@ cMenuSetupGeneral::cMenuSetupGeneral(cEnigmaConfig* Data) : cMenuSetupSubMenu(tr
 eOSState cMenuSetupGeneral::ProcessKey(eKeys Key)
 {
   int oldShowInfo = data->showInfo;
+#ifndef DISABLE_SIGNALINFO
+  int oldShowSignalInfo = data->showSignalInfo;
+#endif
 
   eOSState state = cMenuSetupSubMenu::ProcessKey(Key);
 
   if (Key != kNone &&
       ((data->showInfo != oldShowInfo)
+#ifndef DISABLE_SIGNALINFO
+       || (data->showSignalInfo != oldShowSignalInfo)
+#endif
       )) {
     Set();
   }
@@ -268,8 +276,11 @@ void cMenuSetupGeneral::Set(void)
   Add(new cMenuEditStraItem(tr("Show recording's size"), &data->showRecSize, 3, showRecSizeTexts));
   AddCategory(tr("Channel Info OSD"));
   Add(new cMenuEditStraItem(tr("Show remaining/elapsed time"), &data->showRemaining, 4, showRemainingTexts));
+  Add(new cMenuEditIntItem(tr("Width of progress bar"), &data->progressBarWidth, 74, Setup.OSDWidth));
 #ifndef DISABLE_SIGNALINFO
   Add(new cMenuEditBoolItem(tr("Show signal info"), &data->showSignalInfo));
+  if (data->showSignalInfo)
+    Add(new cMenuEditIntItem(tr("  Width of signal info"), &data->signalInfoWidth, 74, Setup.OSDWidth));
 #endif //DISABLE_SIGNALINFO
   Add(new cMenuEditBoolItem(tr("Show CA system as text"), &data->showCaMode));
 

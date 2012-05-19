@@ -255,6 +255,8 @@ bool cPluginSkinEnigma::SetupParse(const char *OptionName, const char *Value)
   else if (!strcasecmp(OptionName, "DrawRoundCorners"))          EnigmaConfig.drawRoundCorners = atoi(Value);
   else if (!strcasecmp(OptionName, "ChannelLogoWidth"))          EnigmaConfig.channelLogoWidth = atoi(Value);
   else if (!strcasecmp(OptionName, "ChannelLogoHeight"))         EnigmaConfig.channelLogoHeight = atoi(Value);
+  else if (!strcasecmp(OptionName, "SignalInfoWidth"))           EnigmaConfig.signalInfoWidth = atoi(Value);
+  else if (!strcasecmp(OptionName, "ProgressBarWidth"))          EnigmaConfig.progressBarWidth = atoi(Value);
   else return false;
 
   return true;
