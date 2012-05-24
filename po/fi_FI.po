@@ -8,12 +8,12 @@ msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
 "POT-Creation-Date: 2012-05-19 09:21+0200\n"
-"PO-Revision-Date: 2007-12-18 08:11+0100\n"
-"Last-Translator: Rolf Ahrenberg <rahrenbe@cc.hut.fi>\n"
-"Language-Team: <vdr@linuxtv.org>\n"
-"Language: \n"
+"PO-Revision-Date: 2012-05-22 22:25+0200\n"
+"Last-Translator: Ville Skytt√§ <ville.skytta@iki.fi>\n"
+"Language-Team: Finnish <vdr@linuxtv.org>\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-15\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "Channel:"
@@ -35,7 +35,7 @@ msgid "Default OSD Font"
 msgstr "oletuskirjasintyyppi"
 
 msgid "Default Fixed Size Font"
-msgstr "tasav‰linen kirjasintyyppi"
+msgstr "tasav√§linen kirjasintyyppi"
 
 msgid "Default Small Font"
 msgstr "pieni kirjasintyyppi"
@@ -47,7 +47,7 @@ msgid "Logos & Symbols"
 msgstr "Logot ja symbolit"
 
 msgid "Animated Text"
-msgstr "Tekstien el‰vˆinti"
+msgstr "Tekstien el√§v√∂inti"
 
 msgid "Fonts"
 msgstr "Kirjasintyypit"
@@ -59,14 +59,13 @@ msgid "elapsed"
 msgstr "kulunut"
 
 msgid "remaining"
-msgstr "j‰ljell‰ oleva"
+msgstr "j√§ljell√§ oleva"
 
 msgid "percent"
 msgstr "prosentti"
 
-#, fuzzy
 msgid "elapsed/remaining"
-msgstr "j‰ljell‰ oleva"
+msgstr "j√§ljell√§ oleva"
 
 msgid "never"
 msgstr "ei koskaan"
@@ -78,70 +77,67 @@ msgid "always"
 msgstr "aina"
 
 msgid "Last line"
-msgstr "alimmalla rivill‰"
+msgstr "alimmalla rivill√§"
 
 msgid "Help buttons"
-msgstr "v‰rin‰pp‰inrivill‰"
+msgstr "v√§rin√§pp√§inrivill√§"
 
 msgid "Free last line"
-msgstr "alimmalla vapaalla rivill‰"
+msgstr "alimmalla vapaalla rivill√§"
 
 msgid "if required"
-msgstr ""
+msgstr "tarvittaessa"
 
 msgid "Try 8bpp single area"
-msgstr "Suosi yht‰ 8bpp kuva-aluetta"
+msgstr "Suosi yht√§ 8bpp kuva-aluetta"
 
 msgid "Round corners"
 msgstr ""
 
 msgid "Full title width"
-msgstr "Levit‰ otsikkopalkki"
+msgstr "Levit√§ otsikkopalkki"
 
 msgid "Show VPS"
-msgstr "N‰yt‰ VPS-tieto"
+msgstr "N√§yt√§ VPS-tieto"
 
 msgid "Dynamic OSD size"
-msgstr "Mukauta kuvaruutun‰ytˆn kokoa"
+msgstr "Mukauta kuvaruutun√§yt√∂n kokoa"
 
 msgid "Menu OSD"
 msgstr ""
 
 msgid "Show info area in main menu"
-msgstr "N‰yt‰ infoalue p‰‰valikossa"
+msgstr "N√§yt√§ infoalue p√§√§valikossa"
 
-#, fuzzy
 msgid "  Min width of info area"
-msgstr "  Vierit‰ infoaluetta"
+msgstr "  Infoalueen minimileveys"
 
 msgid "Show messages in menu on"
-msgstr "N‰yt‰ viestit valikossa"
+msgstr "N√§yt√§ viestit valikossa"
 
-#, fuzzy
 msgid "Show scrollbar in menu"
-msgstr "  N‰yt‰ symbolit valikossa"
+msgstr "N√§yt√§ vierityspalkki valikossa"
 
 msgid "EPG & Recording Details OSD"
 msgstr ""
 
 msgid "Show auxiliary information"
-msgstr "N‰yt‰ lis‰tiedot"
+msgstr "N√§yt√§ lis√§tiedot"
 
 msgid "Show recording's size"
-msgstr "N‰yt‰ tallenteen koko"
+msgstr "N√§yt√§ tallenteen koko"
 
 msgid "Channel Info OSD"
 msgstr ""
 
 msgid "Show remaining/elapsed time"
-msgstr "N‰yt‰ tapahtuman aika"
+msgstr "N√§yt√§ tapahtuman aika"
 
 msgid "Width of progress bar"
 msgstr ""
 
-#, fuzzy
 msgid "Show signal info"
-msgstr "  N‰yt‰ s‰hkˆpostikuvake"
+msgstr "  N√§yt√§ s√§hk√∂postikuvake"
 
 msgid "  Width of signal info"
 msgstr ""
@@ -150,7 +146,7 @@ msgid "Show CA system as text"
 msgstr ""
 
 msgid "pixel algo"
-msgstr "n‰ytteistys"
+msgstr "n√§ytteistys"
 
 msgid "ratio algo"
 msgstr "skaalaus"
@@ -165,49 +161,49 @@ msgid "active only"
 msgstr ""
 
 msgid "Flushing channel logo cache..."
-msgstr "Tyhjennet‰‰n v‰limuistia..."
+msgstr "Tyhjennet√§√§n v√§limuistia..."
 
 msgid "Show symbols"
-msgstr "N‰yt‰ symbolit"
+msgstr "N√§yt√§ symbolit"
 
 msgid "  Show symbols in menu"
-msgstr "  N‰yt‰ symbolit valikossa"
+msgstr "  N√§yt√§ symbolit valikossa"
 
 msgid "  Show symbols in replay"
-msgstr "  N‰yt‰ symbolit toistettaessa"
+msgstr "  N√§yt√§ symbolit toistettaessa"
 
 msgid "  Show symbols in messages"
-msgstr "  N‰yt‰ symbolit viesteiss‰"
+msgstr "  N√§yt√§ symbolit viesteiss√§"
 
 msgid "  Show symbols in audio"
-msgstr "  N‰yt‰ symbolit ‰‰nivalikossa"
+msgstr "  N√§yt√§ symbolit √§√§nivalikossa"
 
 msgid "Colored status symbols in EPG details"
 msgstr ""
 
 msgid "Show symbols in lists"
-msgstr "N‰yt‰ tapahtumien symbolit"
+msgstr "N√§yt√§ tapahtumien symbolit"
 
 msgid "Show progressbar in lists"
 msgstr ""
 
 msgid "Show marker in lists"
-msgstr "N‰yt‰ valintasymboli"
+msgstr "N√§yt√§ valintasymboli"
 
 msgid "Show status symbols"
-msgstr "N‰yt‰ symbolit"
+msgstr "N√§yt√§ symbolit"
 
 msgid "  Show flags"
-msgstr "  N‰yt‰ liput"
+msgstr "  N√§yt√§ liput"
 
 msgid "  Show WSS mode symbols"
-msgstr "  N‰yt‰ WSS-symbolit"
+msgstr "  N√§yt√§ WSS-symbolit"
 
 msgid "  Show mail icon"
-msgstr "  N‰yt‰ s‰hkˆpostikuvake"
+msgstr "  N√§yt√§ s√§hk√∂postikuvake"
 
 msgid "Show event/recording images"
-msgstr "N‰yt‰ kuvat lis‰tietovalikossa"
+msgstr "N√§yt√§ kuvat lis√§tietovalikossa"
 
 msgid "  Resize images"
 msgstr "  Muokkaa kuvien kokoa"
@@ -222,22 +218,22 @@ msgid "  Image format"
 msgstr "  Kuvaformaatti"
 
 msgid "Show channel logos"
-msgstr "N‰yt‰ kanavalogot"
+msgstr "N√§yt√§ kanavalogot"
 
 msgid "  Identify channel by"
 msgstr "  Tunnista kanava"
 
 msgid "name"
-msgstr "nimest‰"
+msgstr "nimest√§"
 
 msgid "data"
 msgstr "tiedoista"
 
 msgid "Channel logo cache size"
-msgstr "V‰limuistin koko kanavalogoille"
+msgstr "V√§limuistin koko kanavalogoille"
 
 msgid "Button$Flush cache"
-msgstr "Tyhjenn‰"
+msgstr "Tyhjenn√§"
 
 msgid "left and right"
 msgstr "edestakaisin"
@@ -246,19 +242,19 @@ msgid "to the left"
 msgstr "vasemmalle"
 
 msgid "Enable"
-msgstr "K‰yt‰ el‰vˆinti‰"
+msgstr "K√§yt√§ el√§v√∂inti√§"
 
 msgid "  Scroll OSD title"
-msgstr "  Vierit‰ valikon otsikkoa"
+msgstr "  Vierit√§ valikon otsikkoa"
 
 msgid "  Scroll info area"
-msgstr "  Vierit‰ infoaluetta"
+msgstr "  Vierit√§ infoaluetta"
 
 msgid "  Scroll active list items"
-msgstr "  Vierit‰ aktiivista valintaa"
+msgstr "  Vierit√§ aktiivista valintaa"
 
 msgid "  Scroll other items"
-msgstr "  Vierit‰ muita alueita"
+msgstr "  Vierit√§ muita alueita"
 
 msgid "  Scroll behaviour"
 msgstr "  Vieritystapa"
@@ -282,10 +278,10 @@ msgid "Width"
 msgstr "Leveys"
 
 msgid "No TrueType fonts installed!"
-msgstr "TrueType-kirjasintyyppej‰ ei lˆydy!"
+msgstr "TrueType-kirjasintyyppej√§ ei l√∂ydy!"
 
 msgid "Fixed Font"
-msgstr "Tasav‰linen kirjasintyyppi"
+msgstr "Tasav√§linen kirjasintyyppi"
 
 msgid "Button$Set"
 msgstr "Aseta"
@@ -297,10 +293,10 @@ msgid "Messages"
 msgstr "Viestit"
 
 msgid "Date"
-msgstr "P‰iv‰ys"
+msgstr "P√§iv√§ys"
 
 msgid "Help keys"
-msgstr "V‰rin‰pp‰imet"
+msgstr "V√§rin√§pp√§imet"
 
 msgid "Channelinfo: title"
 msgstr "Kanavatieto: ohjelman nimi"
@@ -318,25 +314,25 @@ msgid "Info area: timers title"
 msgstr "Infoalue: ajastimen otsikko"
 
 msgid "Info area: timers text"
-msgstr "Infoalue: ajastimen leip‰teksti"
+msgstr "Infoalue: ajastimen leip√§teksti"
 
 msgid "Info area: warning title"
 msgstr "Infoalue: varoituksen otsikko"
 
 msgid "Info area: warning text"
-msgstr "Infoalue: varoituksen leip‰teksti"
+msgstr "Infoalue: varoituksen leip√§teksti"
 
 msgid "Details: title"
-msgstr "Lis‰tiedot: ohjelman nimi"
+msgstr "Lis√§tiedot: ohjelman nimi"
 
 msgid "Details: subtitle"
-msgstr "Lis‰tiedot: ohjelman kuvaus"
+msgstr "Lis√§tiedot: ohjelman kuvaus"
 
 msgid "Details: date"
-msgstr "Lis‰tiedot: p‰iv‰m‰‰r‰"
+msgstr "Lis√§tiedot: p√§iv√§m√§√§r√§"
 
 msgid "Details: text"
-msgstr "Lis‰tiedot: leip‰teksti"
+msgstr "Lis√§tiedot: leip√§teksti"
 
 msgid "Replay: times"
 msgstr "Toisto: kellonajat"
@@ -345,19 +341,19 @@ msgid "if exists"
 msgstr "jos olemassa"
 
 msgid "Number of Reruns"
-msgstr "Uusintojen lukum‰‰r‰"
+msgstr "Uusintojen lukum√§√§r√§"
 
 msgid "Use Subtitle for reruns"
-msgstr "K‰yt‰ lyhytt‰ kuvausta uusinnoille"
+msgstr "K√§yt√§ lyhytt√§ kuvausta uusinnoille"
 
 msgid "Show timer conflicts"
-msgstr "N‰yt‰ p‰‰llekk‰iset ajastimet"
+msgstr "N√§yt√§ p√§√§llekk√§iset ajastimet"
 
 msgid "Free-To-Air"
 msgstr ""
 
 msgid "encrypted"
-msgstr ""
+msgstr "salattu"
 
 msgid "*** Invalid Channel ***"
 msgstr "*** Virheellinen kanava ***"
@@ -366,10 +362,10 @@ msgid "WARNING"
 msgstr "VAROITUS"
 
 msgid "Timer conflict"
-msgstr "P‰‰llekk‰inen ajastin"
+msgstr "P√§√§llekk√§inen ajastin"
 
 msgid "Timer conflicts"
-msgstr "P‰‰llekk‰isi‰ ajastimia"
+msgstr "P√§√§llekk√§isi√§ ajastimia"
 
 msgid "TIMERS"
 msgstr "AJASTIMET"
@@ -387,7 +383,7 @@ msgid "Audio"
 msgstr ""
 
 msgid "Subtitles"
-msgstr ""
+msgstr "Tekstitys"
 
 msgid "RERUNS OF THIS SHOW"
 msgstr "TOISTUVAT TAPAHTUMAT"
@@ -405,13 +401,13 @@ msgid "Est. bitrate"
 msgstr ""
 
 msgid "Auxiliary information"
-msgstr "Lis‰tiedot"
+msgstr "Lis√§tiedot"
 
 msgid "Mute"
 msgstr "Mykistetty"
 
 msgid "Volume"
-msgstr "ƒ‰nenvoimakkuus"
+msgstr "√Ñ√§nenvoimakkuus"
 
 msgid "EnigmaNG"
 msgstr "EnigmaNG"
@@ -420,7 +416,7 @@ msgid "EnigmaNG skin"
 msgstr "EnigmaNG-ulkoasu"
 
 #~ msgid "Show progressbar"
-#~ msgstr "N‰yt‰ aikajana"
+#~ msgstr "N√§yt√§ aikajana"
 
 #~ msgid "Languages"
 #~ msgstr "Kielet"
