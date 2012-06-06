@@ -2,6 +2,7 @@ VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
 2012-xx-xx: Version 0.1.3
+- Fixed: Main menu info area with VDR 1.7.28+.
 - Added: Setup options to set width of signal information and progress bar in channel info OSD.
 
 2012-04-29: Version 0.1.2

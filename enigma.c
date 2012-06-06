@@ -1740,11 +1740,16 @@ void cSkinEnigmaDisplayMenu::SetTitle(const char *Title)
       strTitle = NULL;
   }
 
+#if VDRVERSNUM >= 10728
+#define IS_MAINMENU (MenuCategory() == mcMain)
+#else
   char *strTitlePrefix = NULL;
   if (-1 == asprintf(&strTitlePrefix, "%s  -  ", trVDR("VDR")))
     return;
+#define IS_MAINMENU (strncmp(strTitlePrefix, Title, strlen(strTitlePrefix)) == 0)
+#endif
 
-  if ((Title == NULL) || (isMainMenu && strncmp(strTitlePrefix, Title, strlen(strTitlePrefix)) == 0)) {
+  if ((Title == NULL) || (isMainMenu && IS_MAINMENU)) {
     if (fLockNeeded && !fLocked) {
       fLocked = true;
       TE_LOCK;
@@ -1756,7 +1761,7 @@ void cSkinEnigmaDisplayMenu::SetTitle(const char *Title)
     bool old_fShowLogo = fShowLogo;
     bool old_fShowInfo = fShowInfo;
 
-    if (strTitle == NULL || strncmp(strTitlePrefix, strTitle, strlen(strTitlePrefix)) == 0) {
+    if (strTitle == NULL || IS_MAINMENU) {
       isMainMenu = true;
       fShowLogo = fShowLogoDefault ? EnigmaConfig.showSymbolsMenu : false;
       fShowInfo = EnigmaConfig.showInfo;
@@ -1799,7 +1804,9 @@ void cSkinEnigmaDisplayMenu::SetTitle(const char *Title)
       if (fLockNeeded && !fLocked) TE_UNLOCK;
     }
   }
+#if VDRVERSNUM < 10728
   free (strTitlePrefix);
+#endif
 
   free(strLastDate);
   strLastDate = NULL;
