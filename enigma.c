@@ -25,6 +25,7 @@
 #include <vdr/osd.h>
 #include <vdr/themes.h>
 #include <vdr/plugin.h>
+#include <vdr/videodir.h>
 
 #ifndef DISABLE_SIGNALINFO
 #include <sys/ioctl.h>
@@ -1077,6 +1078,9 @@ private:
   const cFont *pFontInfoTimerText;
   const cFont *pFontFixed;
 
+#if VDRVERSNUM >= 10728
+  int lastDiskUsageState;
+#endif
   char *strTitle;
   char *strLastDate;
   char *strTheme;
@@ -1113,6 +1117,7 @@ private:
   bool fScrollOther;
   bool fScrollbarShown;
 
+  void DrawTitle(void);
   void DrawScrollbar(int Total, int Offset, int Shown, int Top, int Left, int Height, bool CanScrollUp, bool CanScrollDown);
   void SetTextScrollbar(void);
   void SetupAreas(void);
@@ -1146,6 +1151,9 @@ public:
 
 cSkinEnigmaDisplayMenu::cSkinEnigmaDisplayMenu(void)
 {
+#if VDRVERSNUM >= 10728
+  lastDiskUsageState = -1;
+#endif
   struct EnigmaOsdSize OsdSize;
   EnigmaConfig.GetOsdSize(&OsdSize);
 
@@ -1721,6 +1729,24 @@ void cSkinEnigmaDisplayMenu::Clear(void)
 
 }
 
+void cSkinEnigmaDisplayMenu::DrawTitle(void)
+{
+#if VDRVERSNUM >= 10728
+  bool WithDisk = MenuCategory() == mcMain || MenuCategory() == mcRecording;
+  idTitle = TE_MARQUEE(osd, idTitle, fScrollTitle,
+                       xTitleLeft + xIndent, yTitleTop + (yTitleBottom - yTitleTop - pFontOsdTitle->Height()) / 2,
+                       WithDisk ? (const char*)cString::sprintf("%s  -  %s", strTitle, *cVideoDiskUsage::String()) : strTitle,
+                       Theme.Color(clrTitleFg), Theme.Color(clrTitleBg),
+                       pFontOsdTitle, nBPP, xTitleRight - xTitleLeft - xIndent - 1);
+#else
+  idTitle = TE_MARQUEE(osd, idTitle, fScrollTitle,
+                       xTitleLeft + xIndent, yTitleTop + (yTitleBottom - yTitleTop - pFontOsdTitle->Height()) / 2,
+                       strTitle,
+                       Theme.Color(clrTitleFg), Theme.Color(clrTitleBg),
+                       pFontOsdTitle, nBPP, xTitleRight - xTitleLeft - xIndent - 1);
+#endif
+}
+
 void cSkinEnigmaDisplayMenu::SetTitle(const char *Title)
 {
   debug("cSkinEnigmaDisplayMenu::SetTitle(%s)", Title);
@@ -1754,7 +1780,7 @@ void cSkinEnigmaDisplayMenu::SetTitle(const char *Title)
       fLocked = true;
       TE_LOCK;
     }
-    idTitle = TE_MARQUEE(osd, idTitle, fScrollTitle, xTitleLeft + xIndent, yTitleTop + (yTitleBottom - yTitleTop - pFontOsdTitle->Height()) / 2, strTitle, Theme.Color(clrTitleFg), Theme.Color(clrTitleBg), pFontOsdTitle, nBPP, xTitleRight - xTitleLeft - xIndent - 1);
+    DrawTitle();
     if (fLockNeeded && !fLocked) TE_UNLOCK;
   } else {
     bool old_isMainMenu = isMainMenu;
@@ -1800,7 +1826,7 @@ void cSkinEnigmaDisplayMenu::SetTitle(const char *Title)
         fLocked = true;
         TE_LOCK;
       }
-      idTitle = TE_MARQUEE(osd, idTitle, fScrollTitle, xTitleLeft + xIndent, yTitleTop + (yTitleBottom - yTitleTop - pFontOsdTitle->Height()) / 2, strTitle, Theme.Color(clrTitleFg), Theme.Color(clrTitleBg), pFontOsdTitle, nBPP, xTitleRight - xTitleLeft - xIndent - 1);
+      DrawTitle();
       if (fLockNeeded && !fLocked) TE_UNLOCK;
     }
   }
@@ -2997,6 +3023,11 @@ void cSkinEnigmaDisplayMenu::Flush(void)
 {
   if (fLockNeeded && !fLocked) TE_LOCK;
 //debug("cSkinEnigmaDisplayMenu::Flush()");
+
+#if VDRVERSNUM >= 10728
+  if (cVideoDiskUsage::HasChanged(lastDiskUsageState))
+    DrawTitle();
+#endif
 
   if (fShowLogo) {
     time_t t = time(NULL);
