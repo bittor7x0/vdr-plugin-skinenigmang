@@ -1846,6 +1846,20 @@ void cSkinEnigmaDisplayMenu::SetButtons(const char *Red, const char *Green, cons
     fLocked = true;
     TE_LOCK;
   }
+#if VDRVERSNUM < 10730
+  int n0 = 0;
+  int n1 = 1;
+  int n2= 2;
+  int n3 = 3;
+#else
+  int n0 = Setup.ColorKey0;
+  int n1 = Setup.ColorKey1;
+  int n2 = Setup.ColorKey2;
+  int n3 = Setup.ColorKey3;
+#endif
+  const char *lutText[] = { Red, Green, Yellow, Blue };
+  tColor lutFg[] = { clrButtonRedFg, clrButtonGreenFg, clrButtonYellowFg, clrButtonBlueFg };
+  tColor lutBg[] = { clrButtonRedBg, clrButtonGreenBg, clrButtonYellowBg, clrButtonBlueBg };
   int w = (xButtonsRight - xButtonsLeft) / 4;
   int t3 = xButtonsLeft + xButtonsRight - xButtonsLeft - w;
   int t2 = t3 - w;
@@ -1853,32 +1867,33 @@ void cSkinEnigmaDisplayMenu::SetButtons(const char *Red, const char *Green, cons
   int t0 = xButtonsLeft;
 
   // draw color buttons
-  if (Red)
-    osd->DrawText(t0, yButtonsTop, Red, Theme.Color(clrButtonRedFg),
-                  Theme.Color(clrButtonRedBg), pFontHelpKeys, t1 - t0 + 1,
+  if (lutText[n0])
+    osd->DrawText(t0, yButtonsTop, lutText[n0], Theme.Color(lutFg[n0]),
+                  Theme.Color(lutBg[n0]), pFontHelpKeys, t1 - t0 + 1,
                   yButtonsBottom - yButtonsTop, taCenter);
   else {
-    osd->DrawRectangle(t0, yButtonsTop, Green ? t1 - 1 : t1, yButtonsBottom - 1, Theme.Color(clrBottomBg));
+    osd->DrawRectangle(t0, yButtonsTop, lutText[n1] ? t1 - 1 : t1, yButtonsBottom - 1, Theme.Color(clrBottomBg));
     if (EnigmaConfig.drawRoundCorners) {
       osd->DrawEllipse(t0, yButtonsBottom - Roundness, t0 + Roundness - 1, yButtonsBottom - 1, clrTransparent, -3);
     }
   }
-  if (Green)
-    osd->DrawText(t1, yButtonsTop, Green, Theme.Color(clrButtonGreenFg),
-                  Theme.Color(clrButtonGreenBg), pFontHelpKeys, w,
+  if (lutText[n1])
+    osd->DrawText(t1, yButtonsTop, lutText[n1], Theme.Color(lutFg[n1]),
+                  Theme.Color(lutBg[n1]), pFontHelpKeys, w,
                   yButtonsBottom - yButtonsTop, taCenter);
   else
-    osd->DrawRectangle(t1, yButtonsTop, Yellow ? t1 + w : t2 - 1, yButtonsBottom - 1, Theme.Color(clrBottomBg));
+    osd->DrawRectangle(t1, yButtonsTop, lutText[n2] ? t1 + w : t2 - 1, yButtonsBottom - 1, Theme.Color(clrBottomBg));
 
-  if (Yellow)
-    osd->DrawText(t2, yButtonsTop, Yellow, Theme.Color(clrButtonYellowFg),
-                  Theme.Color(clrButtonYellowBg), pFontHelpKeys, w,
+  if (lutText[n2])
+    osd->DrawText(t2, yButtonsTop, lutText[n2], Theme.Color(lutFg[n2]),
+                  Theme.Color(lutBg[n2]), pFontHelpKeys, w,
                   yButtonsBottom - yButtonsTop, taCenter);
   else
-    osd->DrawRectangle(t2, yButtonsTop, Blue ? t2 + w : t3 - 1, yButtonsBottom - 1, Theme.Color(clrBottomBg));
-  if (Blue)
-    osd->DrawText(t3, yButtonsTop, Blue, Theme.Color(clrButtonBlueFg),
-                  Theme.Color(clrButtonBlueBg), pFontHelpKeys, w,
+    osd->DrawRectangle(t2, yButtonsTop, lutText[n3] ? t2 + w : t3 - 1, yButtonsBottom - 1, Theme.Color(clrBottomBg));
+
+  if (lutText[n3])
+    osd->DrawText(t3, yButtonsTop, lutText[n3], Theme.Color(lutFg[n3]),
+                  Theme.Color(lutBg[n3]), pFontHelpKeys, w,
                   yButtonsBottom - yButtonsTop, taCenter);
   else {
     osd->DrawRectangle(t3, yButtonsTop, xButtonsRight, yButtonsBottom, Theme.Color(clrBottomBg));
