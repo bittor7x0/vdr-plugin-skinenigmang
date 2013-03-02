@@ -58,7 +58,7 @@ cEnigmaConfig::cEnigmaConfig() : showAuxInfo(1), showLogo(1), showVps(1), showSy
                                  useTextEffects(0), scrollDelay(50), scrollPause(1500), scrollMode(0),
                                  blinkPause(1000), scrollInfo(1), scrollListItem(1), scrollOther(1), scrollTitle(1),
                                  dynOsd(0), statusLineMode(0), showWssSymbols(0), showStatusSymbols(0), showScrollbar(1),
-                                 showSignalInfo(0), showCaMode(0), drawRoundCorners(1), channelLogoWidth(80), channelLogoHeight(80),
+                                 showSignalInfo(0), showCatGenCon(0), showCaMode(0), drawRoundCorners(1), channelLogoWidth(80), channelLogoHeight(80),
                                  signalInfoWidth(74), progressBarWidth(124)
 {
   memset(logoDir, 0, sizeof(logoDir));

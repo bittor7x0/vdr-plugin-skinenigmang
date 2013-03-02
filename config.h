@@ -145,6 +145,7 @@ public:
   int showStatusSymbols;
   int showScrollbar;
   int showSignalInfo;
+  int showCatGenCon;
   int showCaMode;
   int drawRoundCorners;
   int channelLogoWidth;

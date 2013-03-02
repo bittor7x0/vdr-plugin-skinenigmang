@@ -103,6 +103,7 @@ void cPluginSkinEnigmaSetup::Store(void)
   SetupStore("MinInfoWidth", EnigmaConfig.minInfoWidth);
   SetupStore("ShowVPS", EnigmaConfig.showVps);
   SetupStore("ShowFlags", EnigmaConfig.showFlags);
+  SetupStore("ShowCatGenCon", EnigmaConfig.showCatGenCon);
   SetupStore("ShowMarker", EnigmaConfig.showMarker);
   SetupStore("CacheSize", EnigmaConfig.cacheSize);
   SetupStore("UseChannelId", EnigmaConfig.useChannelId);
@@ -283,6 +284,7 @@ void cMenuSetupGeneral::Set(void)
     Add(new cMenuEditIntItem(tr("  Width of signal info"), &data->signalInfoWidth, 74, Setup.OSDWidth));
 #endif //DISABLE_SIGNALINFO
   Add(new cMenuEditBoolItem(tr("Show CA system as text"), &data->showCaMode));
+  Add(new cMenuEditBoolItem(tr("Show Category - Genre / Contents"), &data->showCatGenCon));
 
   SetCurrent(Get(currentItem));
   Display();

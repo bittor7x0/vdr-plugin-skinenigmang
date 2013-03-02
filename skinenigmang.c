@@ -187,6 +187,7 @@ bool cPluginSkinEnigma::SetupParse(const char *OptionName, const char *Value)
   else if (!strcasecmp(OptionName, "ShowMarker"))                EnigmaConfig.showMarker = atoi(Value);
   else if (!strcasecmp(OptionName, "ShowVPS"))                   EnigmaConfig.showVps = atoi(Value);
   else if (!strcasecmp(OptionName, "ShowFlags"))                 EnigmaConfig.showFlags = atoi(Value);
+  else if (!strcasecmp(OptionName, "ShowCatGenCon"))             EnigmaConfig.showCatGenCon = atoi(Value);
   else if (!strcasecmp(OptionName, "CacheSize"))                 EnigmaConfig.cacheSize = atoi(Value);
   else if (!strcasecmp(OptionName, "UseChannelId"))              EnigmaConfig.useChannelId = atoi(Value);
   else if (!strcasecmp(OptionName, "NumReruns"))                 EnigmaConfig.numReruns = atoi(Value);

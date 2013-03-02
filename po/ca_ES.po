@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
 "Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2012-05-19 09:21+0200\n"
+"POT-Creation-Date: 2013-03-02 14:52+0100\n"
 "PO-Revision-Date: 2010-10-23 22:43+0100\n"
 "Last-Translator: Innocent De Marchi <tangram.peces@gmail.com>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
@@ -146,6 +146,9 @@ msgstr ""
 
 msgid "Show CA system as text"
 msgstr "Mostra el sistema CA com a text"
+
+msgid "Show Category - Genre / Contents"
+msgstr ""
 
 msgid "pixel algo"
 msgstr "pixel algo"

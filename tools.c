@@ -38,6 +38,7 @@
 #define AUX_TAGS_PIN_ITEM1_END         "</protected>"
 #define AUX_TAGS_PIN_END               "</pin-plugin>"
 
+
 std::string parseaux(const char *aux)
 {
   bool founditem = false;
@@ -211,6 +212,22 @@ bool ischaracters(const char *str, const char *mask)
     match = match && tmp;
   }
   return match;
+}
+
+std::string ExtractAttribute(const char* evDescription, const char* name)
+{
+  std::string attribute;
+
+  if (!evDescription || !name) return attribute;
+
+  std::string description(evDescription);
+  size_t apos = description.find(name);
+  if (apos != std::string::npos) {
+    apos += strlen(name);
+    size_t npos = description.find('\n', apos);
+    attribute = description.substr(apos, npos - apos);
+  }
+  return attribute;
 }
 
 // vim:et:sw=2:ts=2:

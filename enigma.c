@@ -269,6 +269,7 @@ private:
   int idTitle;
   int idEvTitle;
   int idEvSubTitle;
+  int idEvCat;
   int nBPP;
 
   const cFont *pFontOsdTitle;
@@ -303,6 +304,7 @@ private:
 #endif //DISABLE_SIGNALINFO
   cString GetChannelName(const cChannel *Channel);
   cString GetChannelNumber(const cChannel *Channel, int Number);
+  int FindCatTextAndLen(const cEvent* e, int& xTextWidth, std::string& cat);
 public:
   cSkinEnigmaDisplayChannel(bool WithInfo);
   virtual ~ cSkinEnigmaDisplayChannel();
@@ -346,6 +348,7 @@ cSkinEnigmaDisplayChannel::cSkinEnigmaDisplayChannel(bool WithInfo)
   idTitle = -1;
   idEvTitle = -1;
   idEvSubTitle = -1;
+  idEvCat = -1;
   nBPP = 1;
 
   int MessageHeight = 2 * SmallGap + pFontMessage->Height() + 2 * SmallGap;
@@ -780,6 +783,44 @@ cString cSkinEnigmaDisplayChannel::GetChannelNumber(const cChannel *Channel, int
   return buffer;
 }
 
+int cSkinEnigmaDisplayChannel::FindCatTextAndLen(const cEvent* e, int& xTextWidth, std::string& cat)
+{
+  int xCatWidth = 0;
+  cat = ExtractAttribute(e->Description(), EVENT_CATEGORY);
+  std::string gen = ExtractAttribute(e->Description(), EVENT_GENRE);
+  if (!cat.empty() && !gen.empty())
+    cat += " - ";
+  cat += gen;
+
+#if VDRVERSNUM >= 10711
+  if (cat.empty()) {
+    std::string strInfo;
+    bool fFirst = true;
+    for (int i = 0; e->Contents(i); i++) {
+      const char *s = e->ContentToString(e->Contents(i));
+      if (!isempty(s)) {
+        if (!fFirst)
+          strInfo += " ";
+        fFirst = false;
+        strInfo += s;
+      }
+    }
+    cat += strInfo;
+  }
+#endif
+
+  if (!cat.empty()) {
+    if (pFontSubtitle->Width(e->ShortText()) > xTextWidth * .5)
+      xCatWidth = std::min((int)(xTextWidth * .3), pFontLanguage->Width(cat.c_str()));
+    else
+      xCatWidth = std::min((int)(xTextWidth * .5), pFontLanguage->Width(cat.c_str()));
+    xTextWidth -= xCatWidth;
+  }
+
+  return xCatWidth;
+
+}
+
 void cSkinEnigmaDisplayChannel::SetChannel(const cChannel *Channel, int Number)
 {
   debug("cSkinEnigmaDisplayChannel::SetChannel()");
@@ -853,10 +894,12 @@ void cSkinEnigmaDisplayChannel::SetEvents(const cEvent *Present,
 
   EnigmaTextEffects.ResetText(idEvTitle, Theme.Color(clrMenuTxtFg), Theme.Color(clrBackground), false);
   EnigmaTextEffects.ResetText(idEvSubTitle, Theme.Color(clrMenuItemNotSelectableFg), Theme.Color(clrBackground), false);
-  idEvTitle = idEvSubTitle = -1;
+  EnigmaTextEffects.ResetText(idEvCat, Theme.Color(clrMenuItemNotSelectableFg), Theme.Color(clrBackground), false);
+  idEvTitle = idEvSubTitle = idEvCat = -1;
 
   // check epg datas
   const cEvent *e = Present;    // Current event
+  int wDur = 0;
   if (e) {
     char sLen[6];
     char sNow[12];
@@ -882,8 +925,9 @@ void cSkinEnigmaDisplayChannel::SetEvents(const cEvent *Present,
           error("Invalid value for ShowRemaining: %d", EnigmaConfig.showRemaining);
       }
     }
+    wDur = std::max(pFontTitle->Width(sLen), pFontSubtitle->Width(sNow));
 
-    int xDurationLeft = xEventNowRight - Gap - std::max(pFontTitle->Width(sLen), pFontSubtitle->Width(sNow));
+    int xDurationLeft = xEventNowRight - Gap - wDur;
     int xDurationWidth = xEventNowRight - Gap - xDurationLeft;
     int xTextLeft = xTimeLeft + xTimeWidth + BigGap;
     int xTextWidth = xDurationLeft - xTextLeft - BigGap;
@@ -913,6 +957,17 @@ void cSkinEnigmaDisplayChannel::SetEvents(const cEvent *Present,
                         Theme.Color(clrSymbolTimerActive),
                         Theme.Color(clrBackground));
     }
+
+    if (EnigmaConfig.showCatGenCon) {
+      std::string cat;
+      int xCatWidth = FindCatTextAndLen(e, xTextWidth, cat);
+
+      // draw category
+      idEvCat = TE_MARQUEE(osd, idEvCat, fScrollOther, xTextLeft + xTextWidth + SmallGap, yEventNowTop + lineHeightTitle, cat.c_str(),
+                                Theme.Color(clrMenuItemNotSelectableFg),
+                                Theme.Color(clrBackground), pFontSubtitle, nBPP, xCatWidth - SmallGap, pFontSubtitle->Height(), taRight);
+    }
+
     // draw shorttext
     idEvSubTitle = TE_MARQUEE(osd, idEvSubTitle, fScrollOther, xTextLeft, yEventNowTop + lineHeightTitle, e->ShortText(),
                               Theme.Color(clrMenuItemNotSelectableFg),
@@ -945,7 +1000,7 @@ void cSkinEnigmaDisplayChannel::SetEvents(const cEvent *Present,
     char sLen[6];
     snprintf(sLen, sizeof(sLen), "%d'", e->Duration() / 60);
 
-    int xDurationLeft = xEventNowRight - Gap - pFontTitle->Width(sLen);
+    int xDurationLeft = xEventNowRight - Gap - wDur;
     int xDurationWidth = xEventNowRight - Gap - xDurationLeft;
     int xTextLeft = xTimeLeft + xTimeWidth + BigGap;
     int xTextWidth = xDurationLeft - xTextLeft - BigGap;
@@ -966,6 +1021,17 @@ void cSkinEnigmaDisplayChannel::SetEvents(const cEvent *Present,
       osd->DrawBitmap(xTimeLeft + (xTimeWidth - bmTimer.Width()) / 2,
                       yEventNextTop + lineHeightTitle, bmTimer,
                       Theme.Color(clrSymbolTimerActive), Theme.Color(clrAltBackground));
+
+    if (EnigmaConfig.showCatGenCon) {
+      std::string cat;
+      int xCatWidth = FindCatTextAndLen(e, xTextWidth, cat);
+
+      // draw category
+      osd->DrawText(xTextLeft + xTextWidth + SmallGap, yEventNextTop + lineHeightTitle, cat.c_str(),
+                    Theme.Color(clrMenuItemNotSelectableFg),
+                    Theme.Color(clrAltBackground), pFontSubtitle, xCatWidth - SmallGap, 0, taRight);
+    }
+
     // draw shorttext
     osd->DrawText(xTextLeft, yEventNextTop + lineHeightTitle, e->ShortText(),
                   Theme.Color(clrMenuItemNotSelectableFg),
