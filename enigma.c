@@ -304,7 +304,7 @@ private:
 #endif //DISABLE_SIGNALINFO
   cString GetChannelName(const cChannel *Channel);
   cString GetChannelNumber(const cChannel *Channel, int Number);
-  int FindCatTextAndLen(const cEvent* e, int& xTextWidth, std::string& cat);
+  int FindCatTextAndLen(const cEvent* e, std::string& cat);
 public:
   cSkinEnigmaDisplayChannel(bool WithInfo);
   virtual ~ cSkinEnigmaDisplayChannel();
@@ -783,9 +783,8 @@ cString cSkinEnigmaDisplayChannel::GetChannelNumber(const cChannel *Channel, int
   return buffer;
 }
 
-int cSkinEnigmaDisplayChannel::FindCatTextAndLen(const cEvent* e, int& xTextWidth, std::string& cat)
+int cSkinEnigmaDisplayChannel::FindCatTextAndLen(const cEvent* e, std::string& cat)
 {
-  int xCatWidth = 0;
   cat = ExtractAttribute(e->Description(), EVENT_CATEGORY);
   std::string gen = ExtractAttribute(e->Description(), EVENT_GENRE);
   if (!cat.empty() && !gen.empty())
@@ -809,15 +808,7 @@ int cSkinEnigmaDisplayChannel::FindCatTextAndLen(const cEvent* e, int& xTextWidt
   }
 #endif
 
-  if (!cat.empty()) {
-    if (pFontSubtitle->Width(e->ShortText()) > xTextWidth * .5)
-      xCatWidth = std::min((int)(xTextWidth * .3), pFontLanguage->Width(cat.c_str()));
-    else
-      xCatWidth = std::min((int)(xTextWidth * .5), pFontLanguage->Width(cat.c_str()));
-    xTextWidth -= xCatWidth;
-  }
-
-  return xCatWidth;
+  return 0;
 
 }
 
@@ -958,18 +949,21 @@ void cSkinEnigmaDisplayChannel::SetEvents(const cEvent *Present,
                         Theme.Color(clrBackground));
     }
 
+    std::string strShortText = e->ShortText() ? e->ShortText() : "";
     if (EnigmaConfig.showCatGenCon) {
       std::string cat;
-      int xCatWidth = FindCatTextAndLen(e, xTextWidth, cat);
-
-      // draw category
-      idEvCat = TE_MARQUEE(osd, idEvCat, fScrollOther, xTextLeft + xTextWidth + SmallGap, yEventNowTop + lineHeightTitle, cat.c_str(),
-                                Theme.Color(clrMenuItemNotSelectableFg),
-                                Theme.Color(clrBackground), pFontSubtitle, nBPP, xCatWidth - SmallGap, pFontSubtitle->Height(), taRight);
+      if (FindCatTextAndLen(e, cat) == 0 && !cat.empty()) {
+        // append category to shorttext
+        if (strShortText.empty()) {
+          strShortText = "[" + cat + "]";
+        } else {
+          strShortText += " [" + cat + "]";
+        }
+      }
     }
 
     // draw shorttext
-    idEvSubTitle = TE_MARQUEE(osd, idEvSubTitle, fScrollOther, xTextLeft, yEventNowTop + lineHeightTitle, e->ShortText(),
+    idEvSubTitle = TE_MARQUEE(osd, idEvSubTitle, fScrollOther, xTextLeft, yEventNowTop + lineHeightTitle, strShortText.c_str(),
                               Theme.Color(clrMenuItemNotSelectableFg),
                               Theme.Color(clrBackground), pFontSubtitle, nBPP, xTextWidth, pFontSubtitle->Height());
 
@@ -1022,18 +1016,21 @@ void cSkinEnigmaDisplayChannel::SetEvents(const cEvent *Present,
                       yEventNextTop + lineHeightTitle, bmTimer,
                       Theme.Color(clrSymbolTimerActive), Theme.Color(clrAltBackground));
 
+    std::string strShortText = e->ShortText() ? e->ShortText() : "";
     if (EnigmaConfig.showCatGenCon) {
       std::string cat;
-      int xCatWidth = FindCatTextAndLen(e, xTextWidth, cat);
-
-      // draw category
-      osd->DrawText(xTextLeft + xTextWidth + SmallGap, yEventNextTop + lineHeightTitle, cat.c_str(),
-                    Theme.Color(clrMenuItemNotSelectableFg),
-                    Theme.Color(clrAltBackground), pFontSubtitle, xCatWidth - SmallGap, 0, taRight);
+      if (FindCatTextAndLen(e, cat) == 0 && !cat.empty()) {
+        // append category to shorttext
+        if (strShortText.empty()) {
+          strShortText = "[" + cat + "]";
+        } else {
+          strShortText += " [" + cat + "]";
+        }
+      }
     }
 
     // draw shorttext
-    osd->DrawText(xTextLeft, yEventNextTop + lineHeightTitle, e->ShortText(),
+    osd->DrawText(xTextLeft, yEventNextTop + lineHeightTitle, strShortText.c_str(),
                   Theme.Color(clrMenuItemNotSelectableFg),
                   Theme.Color(clrAltBackground), pFontSubtitle, xTextWidth);
   }
