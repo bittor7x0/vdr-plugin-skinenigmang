@@ -563,8 +563,12 @@ void cSkinEnigmaDisplayChannel::DrawSymbols(const cChannel *Channel)
   if (EnigmaConfig.showVps) {
     // check if vps
     // get schedule
+#if VDRVERSNUM >= 20301
+    LOCK_SCHEDULES_READ
+#else
     cSchedulesLock SchedulesLock;
     const cSchedules *Schedules = cSchedules::Schedules(SchedulesLock);
+#endif
     if (Schedules) {
       const cSchedule *Schedule = Schedules->GetSchedule(Channel);
       if (Schedule) {
@@ -1414,6 +1418,7 @@ void cSkinEnigmaDisplayMenu::SetColors(void)
 {
   debug("cSkinEnigmaDisplayMenu::SetColors()");
 
+#if VDRVERSNUM < 20301
   if (osd->GetBitmap(1) == NULL) { //single area
     return;
   }
@@ -1493,6 +1498,7 @@ void cSkinEnigmaDisplayMenu::SetColors(void)
     // color 14 reserved for "clrMessageStatusFg + 2 * Type"
     // color 15 reserved for "clrMessageStatusBg + 2 * Type"
   }
+#endif
 }
 
 void cSkinEnigmaDisplayMenu::SetupAreas(void)
@@ -1596,7 +1602,12 @@ void cSkinEnigmaDisplayMenu::SetupAreas(void)
     }
 #endif //USE_PLUGIN_EPGSEARCH
 
+#if VDRVERSNUM >= 20301
+    LOCK_TIMERS_READ
+    if (Timers->GetNextActiveTimer()) {
+#else
     if (Timers.GetNextActiveTimer()) {
+#endif
       int h = pFontInfoTimerHeadline->Height();
       // Show next active timers
       y += h / 2;
@@ -2636,7 +2647,12 @@ void cSkinEnigmaDisplayMenu::SetEvent(const cEvent *Event)
           i++;
           sstrReruns << "- "
                      << *DayDateTime(r->event->StartTime());
+#if VDRVERSNUM >= 20301
+          LOCK_CHANNELS_READ
+          const cChannel *channel = Channels->GetByChannelID(r->event->ChannelID(), true, true);
+#else
           cChannel *channel = Channels.GetByChannelID(r->event->ChannelID(), true, true);
+#endif
           if (channel)
             sstrReruns << " " << channel->ShortName(true);
           sstrReruns << ":  " << r->event->Title();
@@ -2681,7 +2697,7 @@ void cSkinEnigmaDisplayMenu::SetEvent(const cEvent *Event)
   if (fShowLogo) {
     // draw logo
     osd->DrawRectangle(xDateLeft + SmallGap, yDateTop, xDateRight - 1, yDateBottom - SmallGap - 1, Theme.Color(clrLogoBg));
-    if (!(EnigmaConfig.showImages && EnigmaLogoCache.DrawEventImage(Event, xLogoLeft, yLogoTop, xLogoRight - xLogoLeft, yLogoBottom - yLogoTop, nNumImageColors, osd->GetBitmap(2) ? osd->GetBitmap(2) : osd->GetBitmap(0)))) {
+    if (!(EnigmaConfig.showImages && EnigmaLogoCache.DrawEventImage(Event, xLogoLeft, yLogoTop, xLogoRight - xLogoLeft, yLogoBottom - yLogoTop, nNumImageColors, osd))) {
       if (EnigmaLogoCache.LoadIcon("icons/menu/schedule"))
         osd->DrawBitmap(xLogoLeft + (xLogoRight - xLogoLeft - EnigmaLogoCache.Get().Width()) / 2,
                         yLogoTop + (yLogoBottom - yLogoTop - EnigmaLogoCache.Get().Height()) / 2,
@@ -2855,7 +2871,12 @@ void cSkinEnigmaDisplayMenu::SetRecording(const cRecording *Recording)
   }
 #endif
 
+#if VDRVERSNUM >= 20301
+  LOCK_CHANNELS_READ
+  const cChannel *channel = Channels->GetByChannelID(Info->ChannelID());
+#else
   cChannel *channel = Channels.GetByChannelID(Info->ChannelID());
+#endif
   if (channel)
     sstrInfo << trVDR("Channel") << ": " << channel->Number() << " - " << channel->Name() << std::endl;
   if (EnigmaConfig.showRecSize > 0) {
@@ -3033,7 +3054,7 @@ void cSkinEnigmaDisplayMenu::SetRecording(const cRecording *Recording)
 #ifndef SKINENIGMA_NO_MENULOGO
   if (fShowLogo) {
     osd->DrawRectangle(xDateLeft + SmallGap, yDateTop, xDateRight - 1, yDateBottom - SmallGap - 1, Theme.Color(clrLogoBg));
-    if (!(EnigmaConfig.showImages && EnigmaLogoCache.DrawRecordingImage(Recording, xLogoLeft, yLogoTop, xLogoRight - xLogoLeft, yLogoBottom - yLogoTop, nNumImageColors, osd->GetBitmap(2) ? osd->GetBitmap(2) : osd->GetBitmap(0)))) {
+    if (!(EnigmaConfig.showImages && EnigmaLogoCache.DrawRecordingImage(Recording, xLogoLeft, yLogoTop, xLogoRight - xLogoLeft, yLogoBottom - yLogoTop, nNumImageColors, osd))) {
       // draw logo
       if (EnigmaLogoCache.LoadIcon("icons/menu/recordings"))
         osd->DrawBitmap(xLogoLeft + (xLogoRight - xLogoLeft - EnigmaLogoCache.Get().Width()) / 2,
@@ -3607,7 +3628,9 @@ cSkinEnigmaDisplayVolume::cSkinEnigmaDisplayVolume()
     osd->SetAreas(SingleArea, sizeof(SingleArea) / sizeof(tArea));
   } else {
     debug("cSkinEnigmaDisplayVolume: using multiple areas");
+#if VDRVERSNUM < 20301
     cBitmap *bitmap = NULL;
+#endif
     if (fShowSymbol) {
       tArea Areas[] = { {xLogoLeft, yLogoTop, xLogoRight + LogoDecoGap + LogoDecoWidth - 1, yLogoBottom - 1, 4},
                         {xTitleLeft, yTitleTop, xTitleRight - 1, yBottomBottom - 1, 4}
@@ -3622,7 +3645,9 @@ cSkinEnigmaDisplayVolume::cSkinEnigmaDisplayVolume()
         throw 1;
         return;
       }
+#if VDRVERSNUM < 20301
       bitmap = osd->GetBitmap(1);
+#endif
     } else {
       tArea Areas[] = { {xTitleLeft, yTitleTop, xTitleRight - 1, yBottomBottom - 1, 4}
       };
@@ -3636,8 +3661,11 @@ cSkinEnigmaDisplayVolume::cSkinEnigmaDisplayVolume()
         throw 1;
         return;
       }
+#if VDRVERSNUM < 20301
       bitmap = osd->GetBitmap(0);
+#endif
     }
+#if VDRVERSNUM < 20301
     if (bitmap) {
       // set colors
       bitmap->Reset();
@@ -3649,6 +3677,7 @@ cSkinEnigmaDisplayVolume::cSkinEnigmaDisplayVolume()
       bitmap->SetColor(5, Theme.Color(clrVolumeBarMute));
       bitmap->SetColor(6, Theme.Color(clrTitleFg));
     }
+#endif
   }
   // clear all
   osd->DrawRectangle(0, 0, osd->Width(), osd->Height(), clrTransparent);
@@ -4172,7 +4201,12 @@ void cSkinEnigmaDisplayMessage::Flush(void)
 bool cSkinEnigmaBaseOsd::HasChannelTimerRecording(const cChannel *Channel)
 {
   // try to find current channel from timers
-  for (cTimer * t = Timers.First(); t; t = Timers.Next(t)) {
+#if VDRVERSNUM >= 20301
+  LOCK_TIMERS_READ
+  for (const cTimer *t = Timers->First(); t; t = Timers->Next(t)) {
+#else
+  for (cTimer *t = Timers.First(); t; t = Timers.Next(t)) {
+#endif
     if ((t->Channel() == Channel) && t->Recording())
       return true;
   }
