@@ -6,27 +6,81 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
-"Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2013-03-02 14:52+0100\n"
+"Report-Msgid-Bugs-To: <vdr@jwendel.de>\n"
+"POT-Creation-Date: 2020-08-24 17:33+0200\n"
 "PO-Revision-Date: 2007-12-18 08:11+0100\n"
 "Last-Translator: SergArb @vdr-portal.de / neptunvasja @vdr-portal.de\n"
 "Language-Team: <vdr@linuxtv.org>\n"
-"Language: \n"
+"Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-5\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Channel:"
+msgid "Free-To-Air"
 msgstr ""
 
-msgid "Search pattern:"
+msgid "encrypted"
 msgstr ""
 
-msgid "Timer check"
-msgstr "Проверка таймеров"
+msgid "*** Invalid Channel ***"
+msgstr "*** Неправильный канал ***"
 
-msgid "No timer check"
+msgid "WARNING"
+msgstr "ПРЕДУПРЕЖДЕНИЕ"
+
+msgid "Timer conflict"
+msgstr "Конфликт таймера"
+
+msgid "Timer conflicts"
+msgstr "Конфликты таймеров"
+
+msgid "TIMERS"
+msgstr "ТАЙМЕРЫ"
+
+msgid "min"
+msgstr "мин"
+
+msgid "Content: "
 msgstr ""
+
+msgid "Video"
+msgstr ""
+
+msgid "Audio"
+msgstr ""
+
+msgid "Subtitles"
+msgstr ""
+
+msgid "RERUNS OF THIS SHOW"
+msgstr "ПОВТОРЕНИЯ"
+
+msgid "Size"
+msgstr "Размер"
+
+msgid "cut"
+msgstr ""
+
+msgid "Length"
+msgstr ""
+
+msgid "Format"
+msgstr ""
+
+msgid "Est. bitrate"
+msgstr ""
+
+msgid "Auxiliary information"
+msgstr "Расш. информация"
+
+msgid "Mute"
+msgstr "Выкл.звук"
+
+msgid "Volume"
+msgstr "Громкость"
+
+msgid "EnigmaNG"
+msgstr "EnigmaNG"
 
 msgid "TrueType Font"
 msgstr ""
@@ -278,9 +332,6 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-msgid "Size"
-msgstr "Размер"
-
 msgid "Width"
 msgstr ""
 
@@ -356,71 +407,20 @@ msgstr "Использ. подзаголовки для повторения"
 msgid "Show timer conflicts"
 msgstr "Показать конфликты таймеров"
 
-msgid "Free-To-Air"
-msgstr ""
-
-msgid "encrypted"
-msgstr ""
-
-msgid "*** Invalid Channel ***"
-msgstr "*** Неправильный канал ***"
-
-msgid "WARNING"
-msgstr "ПРЕДУПРЕЖДЕНИЕ"
-
-msgid "Timer conflict"
-msgstr "Конфликт таймера"
-
-msgid "Timer conflicts"
-msgstr "Конфликты таймеров"
-
-msgid "TIMERS"
-msgstr "ТАЙМЕРЫ"
-
-msgid "min"
-msgstr "мин"
-
-msgid "Content: "
-msgstr ""
-
-msgid "Video"
-msgstr ""
-
-msgid "Audio"
-msgstr ""
-
-msgid "Subtitles"
-msgstr ""
-
-msgid "RERUNS OF THIS SHOW"
-msgstr "ПОВТОРЕНИЯ"
-
-msgid "cut"
-msgstr ""
-
-msgid "Length"
-msgstr ""
-
-msgid "Format"
-msgstr ""
-
-msgid "Est. bitrate"
-msgstr ""
-
-msgid "Auxiliary information"
-msgstr "Расш. информация"
-
-msgid "Mute"
-msgstr "Выкл.звук"
-
-msgid "Volume"
-msgstr "Громкость"
-
-msgid "EnigmaNG"
-msgstr "EnigmaNG"
-
 msgid "EnigmaNG skin"
 msgstr "EnigmaNG скин"
+
+msgid "Channel:"
+msgstr ""
+
+msgid "Search pattern:"
+msgstr ""
+
+msgid "Timer check"
+msgstr "Проверка таймеров"
+
+msgid "No timer check"
+msgstr ""
 
 #~ msgid "Show progressbar"
 #~ msgstr "Показывать индикатор продвижения"

@@ -896,10 +896,10 @@ void cSkinEnigmaDisplayChannel::SetEvents(const cEvent *Present,
   const cEvent *e = Present;    // Current event
   int wDur = 0;
   if (e) {
-    char sLen[6];
-    char sNow[12];
+    char sLen[11];
+    char sNow[15];
     int total = e->Duration();
-    snprintf(sLen, sizeof(sLen), "%d'", total / 60);
+    sprintf(sLen, "%d'", total / 60);
 
     int now = std::max((int)(time(NULL) - e->StartTime()), 0);
     if ((now < total) && ((now / 60) > 0)) {
@@ -995,8 +995,8 @@ void cSkinEnigmaDisplayChannel::SetEvents(const cEvent *Present,
 
   e = Following;                // Next event
   if (e) {
-    char sLen[6];
-    snprintf(sLen, sizeof(sLen), "%d'", e->Duration() / 60);
+    char sLen[20];
+    sprintf(sLen, "%d'", e->Duration() / 60);
 
     int xDurationLeft = xEventNowRight - Gap - wDur;
     int xDurationWidth = xEventNowRight - Gap - xDurationLeft;

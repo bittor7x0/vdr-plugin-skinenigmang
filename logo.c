@@ -51,7 +51,7 @@ bool cEnigmaLogoCache::DrawEventImage(const cEvent *Event, int x, int y, int w, 
 
   char *strFilename = NULL;
   int rc = false;
-  if (-1 != asprintf(&strFilename, "%s/%d.%s", EnigmaConfig.GetImagesDir(), Event->EventID(), EnigmaConfig.GetImageExtension())) {
+  if (-1 != asprintf(&strFilename, "%s/%d_0.%s", EnigmaConfig.GetImagesDir(), Event->EventID(), EnigmaConfig.GetImageExtension())) {
     rc = DrawImage(strFilename, x, y, w, h, c, osd);
     free (strFilename);
   }
@@ -65,7 +65,7 @@ bool cEnigmaLogoCache::DrawRecordingImage(const cRecording *Recording, int x, in
 
   char *strFilename = NULL;
   int rc = false;
-  if (-1 != asprintf(&strFilename, "%s/%s.%s", Recording->FileName(), RECORDING_COVER, EnigmaConfig.GetImageExtension())) {
+  if (-1 != asprintf(&strFilename, "%s/%s_0.%s", Recording->FileName(), RECORDING_COVER, EnigmaConfig.GetImageExtension())) {
     rc = DrawImage(strFilename, x, y, w, h, c, osd);
     free (strFilename);
   }

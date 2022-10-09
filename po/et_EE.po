@@ -6,27 +6,81 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
-"Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2013-03-02 14:52+0100\n"
+"Report-Msgid-Bugs-To: <vdr@jwendel.de>\n"
+"POT-Creation-Date: 2020-08-24 17:33+0200\n"
 "PO-Revision-Date: 2007-12-18 08:11+0100\n"
 "Last-Translator: Arthur Konovalov <kasjas@hot.ee>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
-"Language: \n"
+"Language: ee\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-13\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Channel:"
+msgid "Free-To-Air"
 msgstr ""
 
-msgid "Search pattern:"
+msgid "encrypted"
 msgstr ""
 
-msgid "Timer check"
+msgid "*** Invalid Channel ***"
 msgstr ""
 
-msgid "No timer check"
+msgid "WARNING"
 msgstr ""
+
+msgid "Timer conflict"
+msgstr ""
+
+msgid "Timer conflicts"
+msgstr ""
+
+msgid "TIMERS"
+msgstr ""
+
+msgid "min"
+msgstr "min"
+
+msgid "Content: "
+msgstr ""
+
+msgid "Video"
+msgstr ""
+
+msgid "Audio"
+msgstr ""
+
+msgid "Subtitles"
+msgstr ""
+
+msgid "RERUNS OF THIS SHOW"
+msgstr ""
+
+msgid "Size"
+msgstr ""
+
+msgid "cut"
+msgstr ""
+
+msgid "Length"
+msgstr ""
+
+msgid "Format"
+msgstr ""
+
+msgid "Est. bitrate"
+msgstr ""
+
+msgid "Auxiliary information"
+msgstr "Lisainfo"
+
+msgid "Mute"
+msgstr ""
+
+msgid "Volume"
+msgstr ""
+
+msgid "EnigmaNG"
+msgstr "EnigmaNG"
 
 msgid "TrueType Font"
 msgstr ""
@@ -275,9 +329,6 @@ msgstr ""
 msgid "Name"
 msgstr ""
 
-msgid "Size"
-msgstr ""
-
 msgid "Width"
 msgstr ""
 
@@ -353,71 +404,20 @@ msgstr ""
 msgid "Show timer conflicts"
 msgstr ""
 
-msgid "Free-To-Air"
-msgstr ""
-
-msgid "encrypted"
-msgstr ""
-
-msgid "*** Invalid Channel ***"
-msgstr ""
-
-msgid "WARNING"
-msgstr ""
-
-msgid "Timer conflict"
-msgstr ""
-
-msgid "Timer conflicts"
-msgstr ""
-
-msgid "TIMERS"
-msgstr ""
-
-msgid "min"
-msgstr "min"
-
-msgid "Content: "
-msgstr ""
-
-msgid "Video"
-msgstr ""
-
-msgid "Audio"
-msgstr ""
-
-msgid "Subtitles"
-msgstr ""
-
-msgid "RERUNS OF THIS SHOW"
-msgstr ""
-
-msgid "cut"
-msgstr ""
-
-msgid "Length"
-msgstr ""
-
-msgid "Format"
-msgstr ""
-
-msgid "Est. bitrate"
-msgstr ""
-
-msgid "Auxiliary information"
-msgstr "Lisainfo"
-
-msgid "Mute"
-msgstr ""
-
-msgid "Volume"
-msgstr ""
-
-msgid "EnigmaNG"
-msgstr "EnigmaNG"
-
 msgid "EnigmaNG skin"
 msgstr "EnigmaNG kest"
+
+msgid "Channel:"
+msgstr ""
+
+msgid "Search pattern:"
+msgstr ""
+
+msgid "Timer check"
+msgstr ""
+
+msgid "No timer check"
+msgstr ""
 
 #~ msgid "Show progressbar"
 #~ msgstr "Edenemisriba näitamine"

@@ -6,27 +6,81 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
-"Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2013-03-02 14:52+0100\n"
+"Report-Msgid-Bugs-To: <vdr@jwendel.de>\n"
+"POT-Creation-Date: 2020-08-24 17:33+0200\n"
 "PO-Revision-Date: 2007-12-18 08:11+0100\n"
 "Last-Translator: Patrice Staudt <patrice.staudt@laposte.net>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
-"Language: \n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Channel:"
-msgstr "Chaîne:"
+msgid "Free-To-Air"
+msgstr ""
 
-msgid "Search pattern:"
-msgstr "Modèle de recherche"
+msgid "encrypted"
+msgstr ""
 
-msgid "Timer check"
-msgstr "Observation de la programmation"
+msgid "*** Invalid Channel ***"
+msgstr "*** Chaîne non valable ***"
 
-msgid "No timer check"
-msgstr "Sans surveillance"
+msgid "WARNING"
+msgstr "ATTENTION"
+
+msgid "Timer conflict"
+msgstr "Conflit de programmation"
+
+msgid "Timer conflicts"
+msgstr "Conflits de programmation"
+
+msgid "TIMERS"
+msgstr "PROGRAMMATION"
+
+msgid "min"
+msgstr "min"
+
+msgid "Content: "
+msgstr ""
+
+msgid "Video"
+msgstr ""
+
+msgid "Audio"
+msgstr ""
+
+msgid "Subtitles"
+msgstr ""
+
+msgid "RERUNS OF THIS SHOW"
+msgstr "REPETITION"
+
+msgid "Size"
+msgstr "Taille"
+
+msgid "cut"
+msgstr ""
+
+msgid "Length"
+msgstr ""
+
+msgid "Format"
+msgstr ""
+
+msgid "Est. bitrate"
+msgstr ""
+
+msgid "Auxiliary information"
+msgstr "Information auxiliare"
+
+msgid "Mute"
+msgstr "Silence"
+
+msgid "Volume"
+msgstr "Volume"
+
+msgid "EnigmaNG"
+msgstr "EnigmaNG"
 
 msgid "TrueType Font"
 msgstr "TrueType"
@@ -278,9 +332,6 @@ msgstr "  Pause de clignotement (ms)"
 msgid "Name"
 msgstr "Nom"
 
-msgid "Size"
-msgstr "Taille"
-
 msgid "Width"
 msgstr "Largeur"
 
@@ -356,71 +407,20 @@ msgstr "Utilise sous-titres pour les répétitions"
 msgid "Show timer conflicts"
 msgstr "Afficher les conflits de programmation"
 
-msgid "Free-To-Air"
-msgstr ""
-
-msgid "encrypted"
-msgstr ""
-
-msgid "*** Invalid Channel ***"
-msgstr "*** Chaîne non valable ***"
-
-msgid "WARNING"
-msgstr "ATTENTION"
-
-msgid "Timer conflict"
-msgstr "Conflit de programmation"
-
-msgid "Timer conflicts"
-msgstr "Conflits de programmation"
-
-msgid "TIMERS"
-msgstr "PROGRAMMATION"
-
-msgid "min"
-msgstr "min"
-
-msgid "Content: "
-msgstr ""
-
-msgid "Video"
-msgstr ""
-
-msgid "Audio"
-msgstr ""
-
-msgid "Subtitles"
-msgstr ""
-
-msgid "RERUNS OF THIS SHOW"
-msgstr "REPETITION"
-
-msgid "cut"
-msgstr ""
-
-msgid "Length"
-msgstr ""
-
-msgid "Format"
-msgstr ""
-
-msgid "Est. bitrate"
-msgstr ""
-
-msgid "Auxiliary information"
-msgstr "Information auxiliare"
-
-msgid "Mute"
-msgstr "Silence"
-
-msgid "Volume"
-msgstr "Volume"
-
-msgid "EnigmaNG"
-msgstr "EnigmaNG"
-
 msgid "EnigmaNG skin"
 msgstr "Skin EnigmaNG"
+
+msgid "Channel:"
+msgstr "Chaîne:"
+
+msgid "Search pattern:"
+msgstr "Modèle de recherche"
+
+msgid "Timer check"
+msgstr "Observation de la programmation"
+
+msgid "No timer check"
+msgstr "Sans surveillance"
 
 #~ msgid "Show progressbar"
 #~ msgstr "Afficher barre de progression"

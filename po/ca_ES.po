@@ -8,27 +8,81 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
-"Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2013-03-02 14:52+0100\n"
+"Report-Msgid-Bugs-To: <vdr@jwendel.de>\n"
+"POT-Creation-Date: 2020-08-24 17:33+0200\n"
 "PO-Revision-Date: 2010-10-23 22:43+0100\n"
 "Last-Translator: Innocent De Marchi <tangram.peces@gmail.com>\n"
 "Language-Team: <vdr@linuxtv.org>\n"
-"Language: \n"
+"Language: ca\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Channel:"
-msgstr "Canal:"
+msgid "Free-To-Air"
+msgstr "Free-To-Air"
 
-msgid "Search pattern:"
-msgstr "Patró de recerca:"
+msgid "encrypted"
+msgstr "encritat"
 
-msgid "Timer check"
-msgstr "Verificació de temps"
+msgid "*** Invalid Channel ***"
+msgstr "*** Canal no vàlid ***"
 
-msgid "No timer check"
-msgstr "Sense verificació de temps"
+msgid "WARNING"
+msgstr "PERILL"
+
+msgid "Timer conflict"
+msgstr "Conflicte d'hora"
+
+msgid "Timer conflicts"
+msgstr "Conflictes d'hores"
+
+msgid "TIMERS"
+msgstr "HORES"
+
+msgid "min"
+msgstr "mínim"
+
+msgid "Content: "
+msgstr "Contingut:"
+
+msgid "Video"
+msgstr "Vídeo"
+
+msgid "Audio"
+msgstr "Audio"
+
+msgid "Subtitles"
+msgstr "Subtitols"
+
+msgid "RERUNS OF THIS SHOW"
+msgstr "REPETICIONS D'AQUEST ESPECTACLE"
+
+msgid "Size"
+msgstr "Tamany"
+
+msgid "cut"
+msgstr "talla"
+
+msgid "Length"
+msgstr "Longitud"
+
+msgid "Format"
+msgstr "Format"
+
+msgid "Est. bitrate"
+msgstr "Estat de la tasa de bits"
+
+msgid "Auxiliary information"
+msgstr "Informació auxiliar"
+
+msgid "Mute"
+msgstr "Silenci"
+
+msgid "Volume"
+msgstr "Volumen"
+
+msgid "EnigmaNG"
+msgstr "EnigmaNG"
 
 msgid "TrueType Font"
 msgstr "Font TrueType"
@@ -276,9 +330,6 @@ msgstr "  Pausa \"Blink\" (ms)"
 msgid "Name"
 msgstr "Nom"
 
-msgid "Size"
-msgstr "Tamany"
-
 msgid "Width"
 msgstr "Amplada"
 
@@ -354,68 +405,17 @@ msgstr "Fer servir sub-títols per les repeticions "
 msgid "Show timer conflicts"
 msgstr "Mostra els conflictes de temps"
 
-msgid "Free-To-Air"
-msgstr "Free-To-Air"
-
-msgid "encrypted"
-msgstr "encritat"
-
-msgid "*** Invalid Channel ***"
-msgstr "*** Canal no vàlid ***"
-
-msgid "WARNING"
-msgstr "PERILL"
-
-msgid "Timer conflict"
-msgstr "Conflicte d'hora"
-
-msgid "Timer conflicts"
-msgstr "Conflictes d'hores"
-
-msgid "TIMERS"
-msgstr "HORES"
-
-msgid "min"
-msgstr "mínim"
-
-msgid "Content: "
-msgstr "Contingut:"
-
-msgid "Video"
-msgstr "Vídeo"
-
-msgid "Audio"
-msgstr "Audio"
-
-msgid "Subtitles"
-msgstr "Subtitols"
-
-msgid "RERUNS OF THIS SHOW"
-msgstr "REPETICIONS D'AQUEST ESPECTACLE"
-
-msgid "cut"
-msgstr "talla"
-
-msgid "Length"
-msgstr "Longitud"
-
-msgid "Format"
-msgstr "Format"
-
-msgid "Est. bitrate"
-msgstr "Estat de la tasa de bits"
-
-msgid "Auxiliary information"
-msgstr "Informació auxiliar"
-
-msgid "Mute"
-msgstr "Silenci"
-
-msgid "Volume"
-msgstr "Volumen"
-
-msgid "EnigmaNG"
-msgstr "EnigmaNG"
-
 msgid "EnigmaNG skin"
 msgstr "EnigmaNG skin"
+
+msgid "Channel:"
+msgstr "Canal:"
+
+msgid "Search pattern:"
+msgstr "Patró de recerca:"
+
+msgid "Timer check"
+msgstr "Verificació de temps"
+
+msgid "No timer check"
+msgstr "Sense verificació de temps"

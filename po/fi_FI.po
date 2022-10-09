@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: VDR 1.5.7\n"
-"Report-Msgid-Bugs-To: <andreas@vdr-developer.org>\n"
-"POT-Creation-Date: 2013-03-02 14:52+0100\n"
+"Report-Msgid-Bugs-To: <vdr@jwendel.de>\n"
+"POT-Creation-Date: 2020-08-24 17:33+0200\n"
 "PO-Revision-Date: 2012-05-22 22:25+0200\n"
 "Last-Translator: Ville Skyttä <ville.skytta@iki.fi>\n"
 "Language-Team: Finnish <vdr@linuxtv.org>\n"
@@ -16,17 +16,71 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Channel:"
-msgstr "Kanava:"
+msgid "Free-To-Air"
+msgstr ""
 
-msgid "Search pattern:"
-msgstr "Hakutapa:"
+msgid "encrypted"
+msgstr "salattu"
 
-msgid "Timer check"
-msgstr "Ajastimien valvonta"
+msgid "*** Invalid Channel ***"
+msgstr "*** Virheellinen kanava ***"
 
-msgid "No timer check"
-msgstr "Ei valvontaa"
+msgid "WARNING"
+msgstr "VAROITUS"
+
+msgid "Timer conflict"
+msgstr "Päällekkäinen ajastin"
+
+msgid "Timer conflicts"
+msgstr "Päällekkäisiä ajastimia"
+
+msgid "TIMERS"
+msgstr "AJASTIMET"
+
+msgid "min"
+msgstr "min"
+
+msgid "Content: "
+msgstr ""
+
+msgid "Video"
+msgstr ""
+
+msgid "Audio"
+msgstr ""
+
+msgid "Subtitles"
+msgstr "Tekstitys"
+
+msgid "RERUNS OF THIS SHOW"
+msgstr "TOISTUVAT TAPAHTUMAT"
+
+msgid "Size"
+msgstr "Koko"
+
+msgid "cut"
+msgstr ""
+
+msgid "Length"
+msgstr ""
+
+msgid "Format"
+msgstr ""
+
+msgid "Est. bitrate"
+msgstr ""
+
+msgid "Auxiliary information"
+msgstr "Lisätiedot"
+
+msgid "Mute"
+msgstr "Mykistetty"
+
+msgid "Volume"
+msgstr "Äänenvoimakkuus"
+
+msgid "EnigmaNG"
+msgstr "EnigmaNG"
 
 msgid "TrueType Font"
 msgstr "TrueType-kirjasin"
@@ -274,9 +328,6 @@ msgstr "  Vilkutuksen tauko (ms)"
 msgid "Name"
 msgstr "Nimi"
 
-msgid "Size"
-msgstr "Koko"
-
 msgid "Width"
 msgstr "Leveys"
 
@@ -352,71 +403,20 @@ msgstr "Käytä lyhyttä kuvausta uusinnoille"
 msgid "Show timer conflicts"
 msgstr "Näytä päällekkäiset ajastimet"
 
-msgid "Free-To-Air"
-msgstr ""
-
-msgid "encrypted"
-msgstr "salattu"
-
-msgid "*** Invalid Channel ***"
-msgstr "*** Virheellinen kanava ***"
-
-msgid "WARNING"
-msgstr "VAROITUS"
-
-msgid "Timer conflict"
-msgstr "Päällekkäinen ajastin"
-
-msgid "Timer conflicts"
-msgstr "Päällekkäisiä ajastimia"
-
-msgid "TIMERS"
-msgstr "AJASTIMET"
-
-msgid "min"
-msgstr "min"
-
-msgid "Content: "
-msgstr ""
-
-msgid "Video"
-msgstr ""
-
-msgid "Audio"
-msgstr ""
-
-msgid "Subtitles"
-msgstr "Tekstitys"
-
-msgid "RERUNS OF THIS SHOW"
-msgstr "TOISTUVAT TAPAHTUMAT"
-
-msgid "cut"
-msgstr ""
-
-msgid "Length"
-msgstr ""
-
-msgid "Format"
-msgstr ""
-
-msgid "Est. bitrate"
-msgstr ""
-
-msgid "Auxiliary information"
-msgstr "Lisätiedot"
-
-msgid "Mute"
-msgstr "Mykistetty"
-
-msgid "Volume"
-msgstr "Äänenvoimakkuus"
-
-msgid "EnigmaNG"
-msgstr "EnigmaNG"
-
 msgid "EnigmaNG skin"
 msgstr "EnigmaNG-ulkoasu"
+
+msgid "Channel:"
+msgstr "Kanava:"
+
+msgid "Search pattern:"
+msgstr "Hakutapa:"
+
+msgid "Timer check"
+msgstr "Ajastimien valvonta"
+
+msgid "No timer check"
+msgstr "Ei valvontaa"
 
 #~ msgid "Show progressbar"
 #~ msgstr "Näytä aikajana"
