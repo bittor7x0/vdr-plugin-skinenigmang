@@ -907,7 +907,7 @@ void cSkinEnigmaDisplayChannel::SetEvents(const cEvent *Present,
         case 0:
           snprintf(sNow, sizeof(sNow), "+%d'", now / 60);
           break;
-        case 1: 
+        case 1:
           snprintf(sNow, sizeof(sNow), "-%d'", (int)ceil((total - now) / 60.0));
           break;
         case 2:
@@ -1228,7 +1228,7 @@ cSkinEnigmaDisplayMenu::cSkinEnigmaDisplayMenu(void)
   fSetupAreasDone = false;
   osd = NULL;
   SetFonts();
-  
+
   strTitle = NULL;
   strLastDate = NULL;
   strLastText = NULL;
@@ -1255,7 +1255,7 @@ cSkinEnigmaDisplayMenu::cSkinEnigmaDisplayMenu(void)
   fScrollbarShown = false;
 
   int LogoHeight = std::max(std::max(pFontOsdTitle->Height(), pFontDate->Height()) + TitleDeco + pFontDetailsTitle->Height() + Gap + pFontDetailsSubtitle->Height(),
-                            std::max(3 * pFontDate->Height(), 
+                            std::max(3 * pFontDate->Height(),
                                      (EnigmaConfig.showImages ? std::max(EnigmaConfig.imageHeight, IconHeight) : IconHeight)
                                     )
                            );
@@ -1345,7 +1345,7 @@ cSkinEnigmaDisplayMenu::cSkinEnigmaDisplayMenu(void)
                         {xBodyLeft,    yInfoTop + pFontDetailsDate->Height(), xInfoRight - 1, (EnigmaConfig.statusLineMode == 1 ? yBodyBottom : yMessageTop) - 1, 2}, // body/info area (below symbols area)
                         {xMessageLeft, yMessageTop, xButtonsRight - 1, yButtonsBottom - 1, 4} //buttons/message area
       };
- 
+
       eOsdError rc = osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea));
       if (rc == oeOk)
         osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
@@ -1363,7 +1363,7 @@ cSkinEnigmaDisplayMenu::cSkinEnigmaDisplayMenu(void)
                         {xDateLeft,    yDateTop, xLogoRight - 1, yTitleDecoBottom - 1, 4}, //date area
                         {xMessageLeft, yMessageTop, xButtonsRight - 1, yButtonsBottom - 1, 4} //buttons/message area
       };
- 
+
       eOsdError rc = osd->CanHandleAreas(Areas, sizeof(Areas) / sizeof(tArea));
       if (rc == oeOk)
         osd->SetAreas(Areas, sizeof(Areas) / sizeof(tArea));
@@ -1732,7 +1732,7 @@ void cSkinEnigmaDisplayMenu::DrawScrollbar(int Total, int Offset, int Shown, int
   int xl = Left + SmallGap;
   // arrow up
   osd->DrawRectangle(xl, yt, xl + ScrollbarWidth, yt + SmallGap,
-                     CanScrollUp ? Theme.Color(clrMenuTxtFg) : Theme.Color(clrAltBackground));    
+                     CanScrollUp ? Theme.Color(clrMenuTxtFg) : Theme.Color(clrAltBackground));
   osd->DrawRectangle(xl + ScrollbarWidth - SmallGap, yt + SmallGap, xl + ScrollbarWidth, yt + ScrollbarHeight,
                      CanScrollUp ? Theme.Color(clrMenuTxtFg) : Theme.Color(clrAltBackground));
   // draw background of scrollbar
@@ -2427,7 +2427,7 @@ int cSkinEnigmaDisplayMenu::DrawFlag(int x, int y, const tComponent *p)
     flag += p->language;
     /*TODO
     if (p->description) {
-      
+
     }
     */
     if (EnigmaLogoCache.LoadSymbol(flag.c_str())) {
@@ -2468,7 +2468,7 @@ void cSkinEnigmaDisplayMenu::SetEvent(const cEvent *Event)
 
   int y = yDateBottom + (pFontDetailsDate->Height() - bmVPS.Height()) / 2;
   int xs = xDateRight - Gap;
-  // check if event has VPS 
+  // check if event has VPS
   if (EnigmaConfig.showVps && Event->Vps()) {
     // draw VPS symbol
     if (Event->Vps() != Event->StartTime()) {
@@ -2640,7 +2640,7 @@ void cSkinEnigmaDisplayMenu::SetEvent(const cEvent *Event)
     if (epgSearchPlugin->Service("Epgsearch-searchresults-v1.0", &data)) {
       cList<Epgsearch_searchresults_v1_0::cServiceSearchResult>* list = data.pResultList;
       if (list && (list->Count() > 1)) {
-        //TODO: current event is shown as rerun 
+        //TODO: current event is shown as rerun
         sstrReruns << tr("RERUNS OF THIS SHOW") << ':' << std::endl;
         int i = 0;
         for (Epgsearch_searchresults_v1_0::cServiceSearchResult *r = list->First(); r && i < EnigmaConfig.numReruns; r = list->Next(r)) {
@@ -3000,7 +3000,7 @@ void cSkinEnigmaDisplayMenu::SetRecording(const cRecording *Recording)
   int y = yBodyTop + (yHeadlineBottom - yBodyTop - th) / 2;
 
   // draw recording title
-  TE_MARQUEE(osd, -1, fScrollOther, xBodyLeft + Gap, y, Title, 
+  TE_MARQUEE(osd, -1, fScrollOther, xBodyLeft + Gap, y, Title,
              Theme.Color(clrMenuTxtFg), Theme.Color(clrAltBackground),
              pFontDetailsTitle, nBPP, xHeadlineRight - xBodyLeft - Gap - 1, pFontDetailsTitle->Height());
 
@@ -3292,7 +3292,7 @@ cSkinEnigmaDisplayReplay::cSkinEnigmaDisplayReplay(bool ModeOnly)
   } else {
     debug("cSkinEnigmaDisplayReplay: using multiple areas");
     tArea Areas[] = { {xTitleLeft, yTitleTop, xTitleRight - 1, yTitleDecoBottom - 1, 2},
-                      {xLogoLeft, yLogoTop, xLogoDecoRight + 1, yLogoBottom - 1, 4}, //TODO? "+1" because of wrong colors with "-1" 
+                      {xLogoLeft, yLogoTop, xLogoDecoRight + 1, yLogoBottom - 1, 4}, //TODO? "+1" because of wrong colors with "-1"
                       {xProgressLeft, yProgressTop, xTimeRight - 1, yTimeBottom - 1, 4},
                       {xBottomLeft, yBottomTop, xBottomRight - 1, yBottomBottom - 1, 4}
     };
@@ -4158,7 +4158,7 @@ void cSkinEnigmaDisplayMessage::SetMessage(eMessageType Type, const char *Text)
   idMessage = TE_MARQUEE(osd, idMessage, fScrollOther, xMessageLeft, yMessageTop + 2 * SmallGap, Text,
                          Theme.Color(clrMessageStatusFg + 2 * Type),
                          Theme.Color(clrMessageStatusBg + 2 * Type),
-                         pFontMessage, nBPP, 
+                         pFontMessage, nBPP,
                          xMessageRight - xMessageLeft,
                          yMessageBottom - 2 * SmallGap - yMessageTop - 2 * SmallGap, taCenter);
   // draw bottom
@@ -4239,7 +4239,7 @@ int cSkinEnigmaBaseOsd::DrawStatusSymbols(int /* x0 */, int xs, int top, int bot
           fFlagFound = true;
         }
       }
-    
+
       if (!fFlagFound) {
         const char *strLang = Track->description ? Track->description : (strFile + strlen("flags/")); //don't show "flags/" in OSD
         xs -= (pFontLanguage->Width(strLang) + SmallGap);
