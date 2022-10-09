@@ -7,7 +7,7 @@
 # improve the performance of the menus. EXPERIMENTAL!!!
 #SKINENIGMA_NO_MENULOGO = 1
 
-# Debugging on/off 
+# Debugging on/off
 #SKINENIGMA_DEBUG = 1
 
 # If you have installed ImageMagick and want to use images in events'
@@ -44,83 +44,89 @@ PLUGIN = skinenigmang
 
 VERSION = $(shell grep 'static const char VERSION\[\] *=' $(PLUGIN).c | awk '{ print $$6 }' | sed -e 's/[";]//g')
 
-### The C++ compiler and options:
+# Use package data if installed...otherwise assume we're under the VDR source directory:
+PKGCFG = $(if $(VDRDIR),$(shell pkg-config --variable=$(1) $(VDRDIR)/vdr.pc),$(shell pkg-config --variable=$(1) vdr || pkg-config --variable=$(1) ../../../vdr.pc))
 
-CXX      ?= g++
-CXXFLAGS ?= -g -O2 -Wall -Woverloaded-virtual -Wno-parentheses
+LIBDIR = $(call PKGCFG,libdir)
+LOCDIR = $(call PKGCFG,locdir)
+PLGCFG = $(call PKGCFG,plgcfg)
+CONFIGDIR = $(call PKGCFG,configdir)
 
-### The directory environment:
+TMPDIR ?= /tmp
 
-VDRDIR = ../../..
-LIBDIR = ../../lib
-TMPDIR = /tmp
+### The compiler options:
 
-### Make sure that necessary options are included:
+export CFLAGS   = $(call PKGCFG,cflags)
+export CXXFLAGS = $(call PKGCFG,cxxflags) -fPIC
 
--include $(VDRDIR)/Make.global
+CXXFLAGS += -Wno-unused-result
+
+### The version number of VDR's plugin API:
+
+APIVERSION = $(call PKGCFG,apiversion)
 
 ### Allow user defined options to overwrite defaults:
--include $(VDRDIR)/Make.config
 
-#CXXFLAGS += -Wall -W -Wconversion -Wshadow -Wpointer-arith -Wcast-align -Woverloaded-virtual -Wwrite-strings
-### The version number of VDR's plugin API (taken from VDR's "config.h"):
-
-APIVERSION = $(shell sed -ne '/define APIVERSION/s/^.*"\(.*\)".*$$/\1/p' $(VDRDIR)/config.h)
-
-### Test whether VDR has locale support
-VDRLOCALE = $(shell grep '^LOCALEDIR' $(VDRDIR)/Makefile)
+-include $(PLGCFG)
 
 ### The name of the distribution archive:
 
 ARCHIVE = $(PLUGIN)-$(VERSION)
 PACKAGE = vdr-$(ARCHIVE)
 
+### The name of the shared object file:
+
+SOFILE = libvdr-$(PLUGIN).so
+
 ### Includes and Defines (add further entries here):
 
-INCLUDES += -I$(VDRDIR)/include
+INCLUDES +=
+#INCLUDES += -I$(VDRDIR)/include
 
 DEFINES += -D_GNU_SOURCE -DPLUGIN_NAME_I18N='"$(PLUGIN)"'
 
-ifdef SKINENIGMA_USE_PLUGIN_EPGSEARCH 
-DEFINES += -DUSE_PLUGIN_EPGSEARCH
+ifdef SKINENIGMA_USE_PLUGIN_EPGSEARCH
+   DEFINES += -DUSE_PLUGIN_EPGSEARCH
 else
 # for backwards compatibility only
-ifdef SKINENIGMA_HAVE_EPGSEARCH
-DEFINES += -DUSE_PLUGIN_EPGSEARCH
-endif
+   ifdef SKINENIGMA_HAVE_EPGSEARCH
+      DEFINES += -DUSE_PLUGIN_EPGSEARCH
+   endif
 endif
 
 ifdef SKINENIGMA_DEBUG
-DEFINES += -DDEBUG
+   DEFINES += -DDEBUG
 endif
 
 ifdef SKINENIGMA_NO_MENULOGO
-DEFINES += -DSKINENIGMA_NO_MENULOGO
+   DEFINES += -DSKINENIGMA_NO_MENULOGO
 endif
 
 ifdef SKINENIGMA_USE_PLUGIN_MAILBOX
-DEFINES += -DUSE_PLUGIN_MAILBOX
+   DEFINES += -DUSE_PLUGIN_MAILBOX
 endif
 
 ifdef SKINENIGMA_USE_PLUGIN_AVARDS
-DEFINES += -DUSE_PLUGIN_AVARDS
+   DEFINES += -DUSE_PLUGIN_AVARDS
 endif
 
 ifdef SKINENIGMA_DISABLE_SIGNALINFO
-DEFINES += -DDISABLE_SIGNALINFO
+   DEFINES += -DDISABLE_SIGNALINFO
 endif
 
 ifdef HAVE_IMAGEMAGICK
-DEFINES += -DHAVE_IMAGEMAGICK
+   DEFINES += -DHAVE_IMAGEMAGICK
 endif
+
 DEFINES += -DRECORDING_COVER='"Cover-Enigma"'
 
 # This is a simple workaround if one wants to use
 # softdevice plugin without a single 8bpp area,
 # because this combination shows some false colored
 # areas in menu OSD.
+
 ifdef CLEAR_BUG_WORKAROUND
-DEFINES += -DCLEAR_BUG_WORKAROUND
+   DEFINES += -DCLEAR_BUG_WORKAROUND
 endif
 
 ### The object files (add further files here):
@@ -128,27 +134,23 @@ endif
 OBJS = $(PLUGIN).o enigma.o config.o logo.o tools.o status.o texteffects.o setup.o font.o
 
 ifdef HAVE_IMAGEMAGICK
-OBJS += bitmap.o
+   OBJS += bitmap.o
 ifneq ($(HAVE_IMAGEMAGICK), GRAPHICS)
-LIBS += -lMagick++
-INCLUDES += -I/usr/include/ImageMagick -I/usr/local/include/ImageMagick
+   LIBS += -lMagick++
+   INCLUDES += -I/usr/include/ImageMagick -I/usr/local/include/ImageMagick
 else
-LIBS += $(shell pkg-config --libs GraphicsMagick++)
-INCLUDES += $(shell pkg-config --cflags GraphicsMagick++)
+   LIBS += $(shell pkg-config --libs GraphicsMagick++)
+   INCLUDES += $(shell pkg-config --cflags GraphicsMagick++)
 endif
 endif
 
-ifneq ($(shell which freetype-config),)
-	INCLUDES += $(shell freetype-config --cflags)
-	LIBS += $(shell freetype-config --libs)
-else
-	INCLUDES += -I/usr/include/freetype -I/usr/local/include/freetype
-	LIBS += -lfreetype
-endif
+INCLUDES += $(shell pkg-config freetype2 --cflags)
+LIBS += $(shell pkg-config freetype2 --libs)
 
 ### The main target:
 
-all: libvdr-$(PLUGIN).so i18n
+all: $(SOFILE) i18n
+
 
 ### Implicit rules:
 
@@ -167,36 +169,41 @@ $(DEPFILE): Makefile
 ### Internationalization (I18N):
 
 PODIR     = po
-LOCALEDIR = $(VDRDIR)/locale
 I18Npo    = $(wildcard $(PODIR)/*.po)
-I18Nmsgs  = $(addprefix $(LOCALEDIR)/, $(addsuffix /LC_MESSAGES/vdr-$(PLUGIN).mo, $(notdir $(foreach file, $(I18Npo), $(basename $(file))))))
+I18Nmo    = $(addsuffix .mo, $(foreach file, $(I18Npo), $(basename $(file))))
+I18Nmsgs  = $(addprefix $(DESTDIR)$(LOCDIR)/, $(addsuffix /LC_MESSAGES/vdr-$(PLUGIN).mo, $(notdir $(foreach file, $(I18Npo), $(basename $(file))))))
 I18Npot   = $(PODIR)/$(PLUGIN).pot
 
 %.mo: %.po
 	msgfmt -c -o $@ $<
 
-$(I18Npot): $(wildcard *.c)
-	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --package-name=vdr-$(PLUGIN) --package-version=$(VERSION) --msgid-bugs-address='<andreas@vdr-developer.org>' -o $@ $^
+$(I18Npot): $(wildcard *.c *.h)
+	xgettext -C -cTRANSLATORS --no-wrap --no-location -k -ktr -ktrNOOP --package-name=vdr-$(PLUGIN) --package-version=$(VERSION) --msgid-bugs-address='<vdr@jwendel.de>' -o $@ `ls $^`
 
 %.po: $(I18Npot)
-	msgmerge -U --no-wrap --no-location --backup=none --no-fuzzy-matching -q $@ $<
+	msgmerge -U --no-wrap --no-location --backup=none -q -N $@ $<
 	@touch $@
 
-$(I18Nmsgs): $(LOCALEDIR)/%/LC_MESSAGES/vdr-$(PLUGIN).mo: $(PODIR)/%.mo
-	@mkdir -p $(dir $@)
-	cp $< $@
+$(I18Nmsgs): $(DESTDIR)$(LOCDIR)/%/LC_MESSAGES/vdr-$(PLUGIN).mo: $(PODIR)/%.mo
+	install -D -m644 $< $@
 
 .PHONY: i18n
-i18n: $(I18Nmsgs) $(I18Npot)
+i18n: $(I18Nmo) $(I18Npot)
+
+install-i18n: $(I18Nmsgs)
 
 ### Targets:
 
-libvdr-$(PLUGIN).so: $(OBJS)
+$(SOFILE): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(LDFLAGS) -shared $(OBJS) $(LIBS) -o $@
 ifndef SKINENIGMA_DEBUG
 	@$(STRIP) $@
 endif
-	@cp --remove-destination $@ $(LIBDIR)/$@.$(APIVERSION)
+
+install-lib: $(SOFILE)
+	@install -D $^ $(DESTDIR)$(LIBDIR)/$^.$(APIVERSION)
+
+install: install-lib install-i18n
 
 dist: clean
 	@-rm -rf $(TMPDIR)/$(ARCHIVE)
