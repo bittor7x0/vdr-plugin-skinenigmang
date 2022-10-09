@@ -1,7 +1,12 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
-2015-xx-xx: Version 0.1.3
+2022-10-09: Version 0.1.4
+- Added: Patch by Jörg Wendel to improve epg image naming variants
+- Updated: New Makefile to behave nicely with modern VDR versions (Submitted by
+  Alexander Grothe)
+
+2015-09-20: Version 0.1.3
 - Fixed: Compile under VDR 2.3.1.
 - Added: Display Category/Genre/Contents in channel OSD (Submitted by dimeptr; Closes #1161)
 - Added: Support for color button reordering in VDR >=1.7.30 (Closes #1209)
