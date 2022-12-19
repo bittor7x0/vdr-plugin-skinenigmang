@@ -1,6 +1,10 @@
 VDR Skin 'EnigmaNG' Revision History
 ------------------------------------------
 
+2022-12-19: Version 0.1.5
+- Fixed: Memory leak when loading logos (Submitted by @bittor7x0)
+- Updated: Spanish translation (Submitted by @bittor7x0)
+
 2022-10-09: Version 0.1.4
 - Added: Patch by Jörg Wendel to improve epg image naming variants
 - Updated: New Makefile to behave nicely with modern VDR versions (Submitted by
